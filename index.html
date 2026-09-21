@@ -1,0 +1,1758 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#05030f">
+<title>CANTRICK</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --violet-deep:#5D3FD3; --violet:#8A6BFF; --cyan:#00C2FF; --gold:#FFC83D; --ice:#F5F7FB;
+  --void:#05030f; --void-2:#0c0824; --ok:#2EE6A6; --bad:#FF5C7A;
+  --panel:rgba(16,10,44,.62); --line:rgba(138,107,255,.4);
+  --rail:20vh; --hero-h:clamp(96px,19vh,170px); --ring:clamp(130px,30vh,250px);
+  --font:'Tajawal',system-ui,'Segoe UI',Tahoma,Arial,sans-serif;
+  --dir:1;
+}
+html[dir="rtl"]{--dir:-1}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overflow:hidden;background:var(--void);color:var(--ice);font-family:var(--font);touch-action:manipulation}
+body{font-size:16px;line-height:1.4;-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
+button:disabled{cursor:default}
+:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+.mono{font-family:ui-monospace,'SF Mono',Consolas,'Liberation Mono',monospace}
+html[lang="en"] .trk{letter-spacing:.08em}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes shake{20%{transform:translateX(-7px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(3px)}}
+
+/* ============ STAGE + BACKGROUND ============ */
+#stage{position:fixed;inset:0;overflow:hidden;
+  background:radial-gradient(120% 90% at 50% 105%,#1d1058 0%,#0b0727 46%,#05030f 82%)}
+#bg{position:absolute;inset:0;overflow:hidden}
+#stars{position:absolute;inset:0;width:100%;height:100%}
+.plx{position:absolute;left:0;will-change:transform}
+.nebula{border-radius:50%;pointer-events:none}
+.n1{width:1300px;height:78vh;top:-10%;background:radial-gradient(closest-side,rgba(93,63,211,.6),rgba(93,63,211,0) 72%)}
+.n2{width:1150px;height:70vh;top:24%;background:radial-gradient(closest-side,rgba(0,194,255,.26),rgba(0,194,255,0) 72%)}
+.n3{width:1250px;height:82vh;top:-6%;background:radial-gradient(closest-side,rgba(138,107,255,.42),rgba(138,107,255,0) 72%)}
+.n4{width:900px;height:50vh;top:46%;background:radial-gradient(closest-side,rgba(255,200,61,.11),rgba(255,200,61,0) 72%)}
+.planet{border-radius:50%}
+.pl-a{width:170px;height:170px;top:13%;
+  background:radial-gradient(circle at 30% 28%,#d6c9ff 0%,#8A6BFF 30%,#3d2a9e 62%,#160c46 100%);
+  box-shadow:0 0 70px rgba(138,107,255,.45),inset -24px -18px 44px rgba(0,0,0,.6)}
+.pl-a::after{content:'';position:absolute;left:-42%;right:-42%;top:42%;height:16%;border-radius:50%;
+  border:3px solid rgba(255,200,61,.55);transform:rotate(-16deg);box-shadow:0 0 16px rgba(255,200,61,.35)}
+.pl-b{width:96px;height:96px;top:30%;
+  background:radial-gradient(circle at 32% 30%,#c4f3ff,#00C2FF 36%,#0b5a8a 72%,#04182e);
+  box-shadow:0 0 50px rgba(0,194,255,.4),inset -14px -10px 26px rgba(0,0,0,.55)}
+.pl-c{width:54px;height:54px;top:9%;
+  background:radial-gradient(circle at 34% 30%,#fff2c4,#FFC83D 40%,#a06a00 80%);
+  box-shadow:0 0 34px rgba(255,200,61,.5),inset -8px -6px 14px rgba(0,0,0,.5)}
+.pl-d{width:340px;height:340px;top:44%;
+  background:radial-gradient(circle at 28% 24%,#5b45c9,#2a1a78 48%,#0d0630 100%);
+  box-shadow:inset 18px 12px 60px rgba(0,194,255,.4),0 0 90px rgba(93,63,211,.5)}
+.pl-e{width:70px;height:70px;top:20%;
+  background:radial-gradient(circle at 30% 30%,#ffffff,#b9b0ff 40%,#5D3FD3 80%);
+  box-shadow:0 0 40px rgba(138,107,255,.5),inset -10px -8px 18px rgba(0,0,0,.5)}
+.shoot{position:absolute;height:2px;width:140px;left:-200px;opacity:0;
+  background:linear-gradient(90deg,rgba(0,194,255,0),#fff);border-radius:2px;transform:rotate(18deg)}
+.s1{top:14%;animation:shoot 11s 3s infinite}
+.s2{top:30%;animation:shoot 17s 9s infinite}
+@keyframes shoot{0%{opacity:0;transform:translate(0,0) rotate(18deg)}2%{opacity:1}
+  12%{opacity:0;transform:translate(120vw,42vw) rotate(18deg)}100%{opacity:0}}
+#dial{position:absolute;left:50%;top:50%;width:min(120vmin,1000px);aspect-ratio:1;translate:-50% -50%;
+  border-radius:50%;pointer-events:none;opacity:0;transition:opacity 1s;
+  background:repeating-conic-gradient(from 0deg,rgba(138,107,255,.5) 0 .6deg,transparent .6deg 6deg);
+  -webkit-mask:radial-gradient(closest-side,transparent 88%,#000 89%,#000 92%,transparent 93%);
+  mask:radial-gradient(closest-side,transparent 88%,#000 89%,#000 92%,transparent 93%);
+  animation:spin 140s linear infinite}
+body:not([data-screen="explore"]) #dial{opacity:.55}
+
+/* ============ WORLD ============ */
+#world{position:absolute;left:0;top:0;height:100%;width:3600px;direction:ltr;will-change:transform}
+body:not([data-screen="explore"]) #world{visibility:hidden}
+#struts{position:absolute;left:0;width:100%;bottom:0;height:var(--rail);
+  background:repeating-linear-gradient(90deg,rgba(138,107,255,.4) 0 3px,transparent 3px 300px);
+  -webkit-mask-image:linear-gradient(to bottom,#000,transparent);mask-image:linear-gradient(to bottom,#000,transparent)}
+#rail{position:absolute;left:0;width:100%;bottom:var(--rail);height:6px;border-radius:3px;
+  background:linear-gradient(90deg,rgba(0,194,255,0),#00C2FF 3%,#8A6BFF 50%,#00C2FF 97%,rgba(0,194,255,0));
+  box-shadow:0 0 18px rgba(0,194,255,.7),0 0 70px rgba(93,63,211,.6)}
+#rail::after{content:'';position:absolute;left:0;right:0;top:14px;height:3px;opacity:.6;
+  background:repeating-linear-gradient(90deg,rgba(138,107,255,.8) 0 26px,transparent 26px 52px)}
+#railWash{position:absolute;left:0;width:100%;bottom:0;height:var(--rail);
+  background:linear-gradient(to bottom,rgba(93,63,211,.3),transparent)}
+.dock{position:absolute;bottom:calc(var(--rail) - 5px);width:220px;height:16px;margin-left:-110px;border-radius:50%;
+  background:radial-gradient(closest-side,rgba(255,200,61,.85),transparent)}
+#stations{position:absolute;inset:0;pointer-events:none}
+
+.station{--c:#00C2FF;--cr:0,194,255;position:absolute;bottom:var(--rail);pointer-events:auto;cursor:pointer;
+  width:calc(var(--ring)*1.3);margin-left:calc(var(--ring)*-.65);height:calc(var(--ring) + 6vh + 20px)}
+.beam{position:absolute;left:50%;bottom:0;width:calc(var(--ring)*.9);height:calc(var(--ring)*.75);
+  margin-left:calc(var(--ring)*-.45);opacity:.3;transition:opacity .4s;
+  background:linear-gradient(to top,rgba(var(--cr),.5),transparent);clip-path:polygon(18% 100%,82% 100%,100% 0,0 0)}
+.portal{position:absolute;left:50%;bottom:6vh;width:var(--ring);height:var(--ring);margin-left:calc(var(--ring)/-2);
+  transition:transform .55s cubic-bezier(.2,.9,.3,1),filter .5s}
+.ring{position:absolute;border-radius:50%}
+.ring.r1{inset:0;border:4px solid var(--c);
+  box-shadow:0 0 30px rgba(var(--cr),.85),inset 0 0 34px rgba(var(--cr),.5)}
+.ring.r2{inset:-14px;border:2px dashed rgba(var(--cr),.65);animation:spin 26s linear infinite}
+.ring.r3{inset:9px;background:conic-gradient(from 0deg,rgba(var(--cr),0),rgba(var(--cr),.75),rgba(var(--cr),0) 42%);
+  -webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 9px),#000 calc(100% - 8px));
+  mask:radial-gradient(farthest-side,transparent calc(100% - 9px),#000 calc(100% - 8px));animation:spin 5s linear infinite}
+.core{position:absolute;inset:14%;border-radius:50%;
+  background:radial-gradient(circle,rgba(var(--cr),.4),rgba(var(--cr),.1) 58%,transparent 72%);animation:corePulse 3s ease-in-out infinite}
+@keyframes corePulse{50%{transform:scale(1.12);opacity:.75}}
+.glyph{position:absolute;left:50%;top:50%;width:38%;height:38%;transform:translate(-50%,-50%);color:var(--c);
+  filter:drop-shadow(0 0 8px var(--c))}
+.pad{position:absolute;left:50%;bottom:-6px;width:calc(var(--ring)*1.1);height:16px;margin-left:calc(var(--ring)*-.55);
+  border-radius:50%;background:radial-gradient(closest-side,rgba(var(--cr),.95),rgba(var(--cr),0))}
+.prompt{position:absolute;left:50%;bottom:calc(6vh + var(--ring) + 22px);transform:translate(-50%,8px);opacity:0;
+  transition:opacity .35s,transform .35s;white-space:nowrap;padding:8px 16px;border-radius:999px;
+  background:rgba(12,8,36,.85);border:1px solid var(--gold);color:var(--gold);font-weight:700;font-size:14px;
+  box-shadow:0 0 22px rgba(255,200,61,.35);pointer-events:none}
+.tag{position:absolute;left:50%;top:calc(100% + 16px);transform:translateX(-50%);text-align:center;white-space:nowrap;pointer-events:none}
+.tag-main{font-weight:900;font-size:clamp(17px,3vh,28px);line-height:1.1;text-shadow:0 0 18px rgba(var(--cr),.85)}
+.tag-sub{font-weight:700;font-size:clamp(12px,2vh,17px);color:var(--c);margin-top:3px}
+.tag-state{display:inline-block;margin-top:7px;padding:3px 12px;border-radius:999px;font-size:12px;font-weight:700;
+  border:1px solid rgba(var(--cr),.7);color:var(--c);background:rgba(var(--cr),.1)}
+.station.soon .portal{opacity:.8;filter:saturate(.8)}
+.station.soon .tag-state{border-color:rgba(245,247,251,.3);color:rgba(245,247,251,.65);background:rgba(245,247,251,.05)}
+.station.active .portal{transform:scale(1.1);filter:brightness(1.3)}
+.station.active .beam{opacity:1}
+.station.active .ring.r1{animation:ringPulse 1.4s ease-in-out infinite}
+.station.active:not(.soon) .prompt{opacity:1;transform:translate(-50%,0)}
+@keyframes ringPulse{50%{box-shadow:0 0 60px rgba(var(--cr),1),inset 0 0 50px rgba(var(--cr),.8)}}
+.station.nope .portal{animation:shake .45s}
+
+/* ============ HERO (CSS/SVG ROBOT) ============ */
+#hero{position:absolute;left:0;bottom:calc(var(--rail) - 2px);width:calc(var(--hero-h)*.706);height:var(--hero-h);
+  margin-left:calc(var(--hero-h)*-.353);z-index:5;pointer-events:none;will-change:transform}
+#hero::after{content:'';position:absolute;left:-14%;right:-14%;bottom:3px;height:13px;border-radius:50%;z-index:-1;
+  background:radial-gradient(closest-side,rgba(0,194,255,.8),transparent)}
+#heroLean{width:100%;height:100%;transform-origin:50% 100%}
+#hero svg{width:100%;height:100%;overflow:visible;animation:spawn 1.3s .5s cubic-bezier(.2,.9,.3,1) backwards}
+@keyframes spawn{from{transform:translateY(-55vh);opacity:0}60%{opacity:1}}
+.bob{animation:floaty 2.6s ease-in-out infinite alternate}
+@keyframes floaty{from{transform:translateY(0)}to{transform:translateY(-5px)}}
+#hero.walk .bob{animation:hop .38s ease-in-out infinite}
+@keyframes hop{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+.leg,.arm{transform-box:fill-box;transform-origin:50% 0}
+.armL{animation:armIdleL 3.2s ease-in-out infinite alternate}
+.armR{animation:armIdleR 3.2s ease-in-out infinite alternate}
+@keyframes armIdleL{from{transform:rotate(3deg)}to{transform:rotate(-4deg)}}
+@keyframes armIdleR{from{transform:rotate(-3deg)}to{transform:rotate(4deg)}}
+#hero.walk .legL{animation:legA .38s ease-in-out infinite}
+#hero.walk .legR{animation:legB .38s ease-in-out infinite}
+#hero.walk .armL{animation:armB .38s ease-in-out infinite}
+#hero.walk .armR{animation:armA .38s ease-in-out infinite}
+@keyframes legA{0%,100%{transform:rotate(-26deg)}50%{transform:rotate(26deg)}}
+@keyframes legB{0%,100%{transform:rotate(26deg)}50%{transform:rotate(-26deg)}}
+@keyframes armA{0%,100%{transform:rotate(-20deg)}50%{transform:rotate(20deg)}}
+@keyframes armB{0%,100%{transform:rotate(20deg)}50%{transform:rotate(-20deg)}}
+.eyes{transform-box:fill-box;transform-origin:center;animation:blink 4.6s infinite;filter:drop-shadow(0 0 4px #00C2FF)}
+@keyframes blink{0%,92%,100%{transform:scaleY(1)}95%{transform:scaleY(.08)}}
+.eyeShift{transition:transform .2s}
+#hero.face-r .eyeShift{transform:translateX(3px)}
+#hero.face-l .eyeShift{transform:translateX(-3px)}
+.head{transform-box:view-box;transform-origin:60px 74px;transition:transform .25s}
+#hero.face-r .head{transform:rotate(3deg)}
+#hero.face-l .head{transform:rotate(-3deg)}
+.ant{transform-box:fill-box;transform-origin:center;animation:antPulse 1.6s ease-in-out infinite;filter:drop-shadow(0 0 5px #FFC83D)}
+@keyframes antPulse{50%{transform:scale(1.35);opacity:.7}}
+.corec{animation:coreBeat 2s ease-in-out infinite;transform-box:fill-box;transform-origin:center;filter:drop-shadow(0 0 6px #00C2FF)}
+@keyframes coreBeat{50%{transform:scale(1.2)}}
+
+/* ============ HUD ============ */
+#hud{position:fixed;inset:0;pointer-events:none;z-index:20}
+.xo,.nx{transition:opacity .5s,visibility .5s}
+body:not([data-screen="explore"]) .xo,body.warping .xo{opacity:0;visibility:hidden;pointer-events:none}
+body[data-screen="explore"] .nx{opacity:0;visibility:hidden;pointer-events:none}
+#top{position:absolute;top:0;left:0;right:0;display:flex;align-items:flex-start;justify-content:space-between;gap:12px;
+  padding:calc(14px + env(safe-area-inset-top)) 18px 0}
+#brand{display:flex;align-items:center;gap:10px;transition:opacity .8s}
+body.intro-on[data-screen="explore"] #brand{opacity:0}
+.logo{width:34px;height:34px;flex:none}
+.brand-word{font-weight:900;font-size:20px;letter-spacing:.18em;line-height:1}
+.brand-tag{font-size:11px;opacity:.7;margin-top:4px}
+.lang{pointer-events:auto;display:flex;direction:ltr;border:1px solid var(--line);border-radius:999px;overflow:hidden;
+  background:var(--panel);backdrop-filter:blur(10px)}
+.lang button{padding:8px 15px;font-weight:800;font-size:14px;transition:background .25s}
+.lang button+button{border-inline-start:1px solid var(--line)}
+.lang button.on{background:linear-gradient(135deg,var(--violet-deep),var(--violet));color:#fff}
+#crumbs{position:absolute;top:calc(20px + env(safe-area-inset-top));left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:10px;
+  font-weight:700;font-size:14px;white-space:nowrap}
+#crumbs .c{padding:5px 14px;border-radius:999px;border:1px solid var(--line);background:var(--panel);backdrop-filter:blur(8px)}
+#crumbs .sep{width:6px;height:6px;background:var(--cyan);transform:rotate(45deg);opacity:.8}
+#radar{position:absolute;top:calc(22px + env(safe-area-inset-top));left:50%;transform:translateX(-50%);width:min(240px,32vw);height:22px;direction:ltr}
+#radar .rl{position:absolute;left:0;right:0;top:10px;height:2px;border-radius:2px;background:linear-gradient(90deg,transparent,rgba(138,107,255,.8),transparent)}
+#radar .rm{position:absolute;top:5px;width:12px;height:12px;margin-left:-6px;border-radius:50%;border:2px solid var(--c);background:var(--void);transition:box-shadow .3s,transform .3s}
+#radar .rm.on{transform:scale(1.35);box-shadow:0 0 14px var(--c);background:var(--c)}
+#radar .rd{position:absolute;top:2px;width:18px;height:18px;margin-left:-9px;border-radius:50%;background:radial-gradient(circle,#fff 0 30%,var(--cyan) 32%,transparent 70%);box-shadow:0 0 16px var(--cyan)}
+#intro{position:absolute;left:50%;top:clamp(64px,11vh,120px);transform:translateX(-50%);width:min(94vw,900px);text-align:center;
+  transition:opacity .9s,transform .9s}
+body:not(.intro-on) #intro,body:not([data-screen="explore"]) #intro,body.warping #intro{opacity:0;transform:translateX(-50%) translateY(-26px) scale(.96)}
+.i-mark{display:flex;align-items:center;justify-content:center;gap:clamp(10px,2vh,18px);animation:rise 1.1s .1s cubic-bezier(.2,.9,.3,1) backwards}
+.i-mark .logo{width:clamp(40px,8vh,74px);height:clamp(40px,8vh,74px)}
+.i-word{font-weight:900;font-size:clamp(40px,9.5vh,88px);letter-spacing:.18em;line-height:1;
+  background:linear-gradient(90deg,#fff,#d7ccff 45%,#00C2FF);-webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 0 24px rgba(138,107,255,.65))}
+.i-tag{margin-top:clamp(6px,1.4vh,12px);color:var(--gold);font-weight:700;font-size:clamp(13px,2.1vh,18px);animation:rise 1s .5s cubic-bezier(.2,.9,.3,1) backwards}
+.i-line{font-weight:800;font-size:clamp(20px,4.2vh,38px);line-height:1.25;margin-top:clamp(8px,2vh,18px);animation:rise 1s .8s cubic-bezier(.2,.9,.3,1) backwards}
+.i-line+.i-line{margin-top:2px;color:var(--cyan);animation-delay:1.05s}
+@keyframes rise{from{opacity:0;transform:translateY(22px);filter:blur(6px)}}
+#hint{position:absolute;left:50%;transform:translateX(-50%);bottom:calc(24px + env(safe-area-inset-bottom));white-space:nowrap;
+  padding:9px 20px;border-radius:999px;background:var(--panel);border:1px solid var(--line);backdrop-filter:blur(10px);
+  font-weight:700;font-size:15px;color:var(--ice)}
+#pad{position:absolute;left:calc(16px + env(safe-area-inset-left));bottom:calc(16px + env(safe-area-inset-bottom));display:flex;gap:12px;direction:ltr}
+.pbtn{pointer-events:auto;width:clamp(58px,9.5vh,80px);height:clamp(58px,9.5vh,80px);border-radius:22px;display:grid;place-items:center;
+  background:var(--panel);border:1px solid var(--line);backdrop-filter:blur(10px);touch-action:none;user-select:none;-webkit-user-select:none;
+  transition:transform .12s,box-shadow .2s,border-color .2s}
+.pbtn svg{width:46%;height:46%;stroke:var(--ice);fill:none;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.pbtn.down{transform:scale(.93);border-color:var(--cyan);box-shadow:0 0 26px rgba(0,194,255,.75)}
+@media (pointer:coarse){.pbtn{width:clamp(76px,13vh,100px);height:clamp(76px,13vh,100px)}}
+#enterBtn{position:absolute;right:calc(16px + env(safe-area-inset-right));bottom:calc(16px + env(safe-area-inset-bottom));
+  padding:0 clamp(24px,4vw,40px);height:clamp(58px,9.5vh,80px);border-radius:22px;font-weight:900;font-size:19px;color:#2a1a00;
+  background:linear-gradient(135deg,#ffb020,var(--gold));box-shadow:0 0 34px rgba(255,200,61,.6);
+  opacity:0;visibility:hidden;transform:translateY(12px);transition:opacity .3s,transform .3s,visibility .3s}
+#enterBtn.show{opacity:1;visibility:visible;transform:none;pointer-events:auto;animation:enterGlow 1.6s ease-in-out infinite}
+body:not([data-screen="explore"]) #enterBtn,body.warping #enterBtn{opacity:0;visibility:hidden;pointer-events:none}
+@keyframes enterGlow{50%{box-shadow:0 0 56px rgba(255,200,61,.95)}}
+@media (max-width:720px){
+  #hint{bottom:calc(108px + env(safe-area-inset-bottom));font-size:13px;padding:7px 14px}
+  #radar{top:calc(66px + env(safe-area-inset-top));width:60vw}
+  #intro{top:clamp(104px,15vh,140px)}
+  .brand-tag{display:none}
+  #crumbs{display:none}
+}
+#backBtn{position:absolute;left:calc(18px + env(safe-area-inset-left));bottom:calc(18px + env(safe-area-inset-bottom));pointer-events:auto;
+  display:flex;align-items:center;gap:8px;padding:10px 18px;border-radius:999px;font-weight:700;background:var(--panel);
+  border:1px solid var(--line);backdrop-filter:blur(10px);transition:border-color .2s,box-shadow .2s}
+#backBtn:hover{border-color:var(--cyan);box-shadow:0 0 20px rgba(0,194,255,.4)}
+#backBtn svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+html[dir="rtl"] #backBtn{left:auto;right:calc(18px + env(safe-area-inset-right))}
+html[dir="rtl"] #backBtn svg{transform:scaleX(-1)}
+body:not([data-screen="levels"]):not([data-screen="lessons"]):not([data-screen="learn"]):not([data-screen="name"]) #backBtn{display:none}
+#toast{position:fixed;left:50%;bottom:calc(96px + env(safe-area-inset-bottom));transform:translate(-50%,20px);z-index:60;opacity:0;pointer-events:none;
+  padding:12px 22px;border-radius:16px;background:rgba(12,8,36,.94);border:1px solid var(--gold);color:var(--ice);font-weight:700;
+  max-width:90vw;text-align:center;transition:opacity .3s,transform .3s;box-shadow:0 0 30px rgba(255,200,61,.3)}
+#toast.show{opacity:1;transform:translate(-50%,0)}
+
+/* ============ SCREENS ============ */
+#screens{position:absolute;inset:0;pointer-events:none}
+.screen{position:absolute;inset:0;display:none;flex-direction:column;pointer-events:auto;z-index:2;overflow-y:auto;overflow-x:hidden;
+  padding:calc(78px + env(safe-area-inset-top)) 20px calc(78px + env(safe-area-inset-bottom))}
+.screen.on{display:flex}
+.screen>.wrap{margin:auto;width:100%;display:flex;flex-direction:column;align-items:center}
+.spec-head{--c:#FFC83D;--cr:255,200,61;text-align:center;margin-bottom:clamp(18px,4vh,40px)}
+.spec-badge{width:clamp(54px,9vh,76px);aspect-ratio:1;margin:0 auto 10px;border-radius:50%;display:grid;place-items:center;
+  border:2px solid var(--c);color:var(--c);box-shadow:0 0 30px rgba(var(--cr),.55),inset 0 0 24px rgba(var(--cr),.25)}
+.spec-badge svg{width:56%;height:56%}
+.spec-name{font-size:clamp(34px,8vh,72px);font-weight:900;line-height:1.08;color:var(--c);text-shadow:0 0 34px rgba(var(--cr),.6)}
+.spec-alt{font-size:clamp(14px,2.4vh,20px);opacity:.7;margin-top:4px;font-weight:700}
+.spec-cta{margin-top:14px;font-size:clamp(20px,3.6vh,32px);font-weight:800}
+.cards{display:flex;flex-wrap:wrap;justify-content:center;gap:clamp(14px,3vw,34px)}
+.node{--c:rgb(138,107,255);--cr:138,107,255;position:relative;width:clamp(150px,22vw,210px);padding:22px 14px 18px;border-radius:22px;
+  display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center;background:var(--panel);
+  border:1px solid rgba(var(--cr),.4);backdrop-filter:blur(10px);
+  transition:transform .3s cubic-bezier(.2,.9,.3,1),box-shadow .3s,border-color .3s}
+.cards:not(.static) .node{animation:nodeIn .7s calc(.45s + var(--i)*.12s) cubic-bezier(.2,.9,.3,1) backwards}
+@keyframes nodeIn{from{opacity:0;transform:translateY(34px) scale(.94)}}
+.orb{position:relative;width:clamp(70px,12vh,104px);aspect-ratio:1;border-radius:50%;display:grid;place-items:center;
+  background:radial-gradient(circle at 32% 28%,#fff 0,rgba(var(--cr),1) 30%,rgba(var(--cr),.35) 62%,#0c0824 100%);
+  box-shadow:0 0 34px rgba(var(--cr),.55),inset -10px -8px 20px rgba(0,0,0,.45)}
+.orb::after{content:'';position:absolute;inset:-12px;border-radius:50%;border:1px solid rgba(var(--cr),.7);
+  border-top-color:transparent;border-bottom-color:transparent;animation:spin 6s linear infinite}
+.orb .lock{width:38%;height:38%;color:rgba(245,247,251,.9)}
+.node-title{font-weight:900;font-size:clamp(20px,3.2vh,28px)}
+.node-sub{font-weight:700;font-size:15px;color:var(--c)}
+.node-state{font-size:12px;font-weight:700;padding:3px 14px;border-radius:999px;border:1px solid rgba(var(--cr),.7);color:var(--c);background:rgba(var(--cr),.1)}
+.node.active{border-color:var(--c)}
+.cards:not(.static) .node.active{animation:nodeIn .7s calc(.45s + var(--i)*.12s) cubic-bezier(.2,.9,.3,1) backwards,nodePulse 2.6s 1.5s ease-in-out infinite}
+.cards.static .node.active{animation:nodePulse 2.6s ease-in-out infinite}
+@keyframes nodePulse{50%{box-shadow:0 0 44px rgba(var(--cr),.55)}}
+.node.active:hover,.node.active:focus-visible{transform:translateY(-8px) scale(1.03)}
+.node.locked{opacity:.5;filter:saturate(.35)}
+.node.locked .orb::after{animation:none}
+.cards .node.shake{animation:shake .45s!important}
+.panel{position:relative;width:min(560px,100%);padding:clamp(22px,4vh,38px);border-radius:24px;
+  background:linear-gradient(160deg,rgba(30,18,80,.8),rgba(12,8,36,.86));border:1px solid var(--line);backdrop-filter:blur(14px);
+  box-shadow:0 30px 80px rgba(0,0,0,.55),0 0 70px rgba(93,63,211,.25)}
+.panel::before,.panel::after,.qcard::before,.qcard::after{content:'';position:absolute;width:30px;height:30px;border:2px solid var(--cyan);pointer-events:none}
+.panel::before,.qcard::before{top:-1px;left:-1px;border-right:0;border-bottom:0;border-top-left-radius:24px}
+.panel::after,.qcard::after{bottom:-1px;right:-1px;border-left:0;border-top:0;border-bottom-right-radius:24px}
+.h1{font-size:clamp(26px,4.6vh,42px);font-weight:900;line-height:1.2}
+.chip{display:inline-block;padding:6px 14px;border-radius:999px;font-size:13px;font-weight:700;color:var(--cyan);
+  border:1px solid rgba(0,194,255,.5);background:rgba(0,194,255,.08);margin-bottom:14px}
+.chip-topic{display:block;color:var(--gold);font-size:14px;font-weight:700;margin-top:-4px;margin-bottom:14px}
+.field{display:block;margin-top:22px}
+.field>span{display:block;font-weight:700;color:var(--gold);margin-bottom:8px;font-size:15px}
+#nameInput{width:100%;padding:16px 18px;border-radius:16px;background:rgba(5,3,15,.7);border:1px solid rgba(0,194,255,.5);color:var(--ice);
+  font:700 clamp(18px,3vh,24px) var(--font);outline:none;transition:box-shadow .25s,border-color .25s}
+#nameInput::placeholder{color:rgba(245,247,251,.4)}
+#nameInput:focus{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(0,194,255,.25),0 0 30px rgba(0,194,255,.35)}
+#nameInput.err{border-color:var(--bad);animation:shake .45s}
+.errmsg{color:var(--bad);font-weight:700;font-size:14px;margin-top:8px;min-height:20px}
+.cta{position:relative;padding:14px 28px;border-radius:16px;font-weight:800;font-size:17px;color:#fff;
+  background:linear-gradient(135deg,var(--violet-deep),var(--violet) 55%,var(--cyan));
+  box-shadow:0 10px 30px rgba(93,63,211,.5),inset 0 1px 0 rgba(255,255,255,.35);transition:transform .2s,box-shadow .2s}
+.cta:hover{transform:translateY(-2px);box-shadow:0 14px 40px rgba(0,194,255,.45),inset 0 1px 0 rgba(255,255,255,.35)}
+.cta.gold{background:linear-gradient(135deg,#ffb020,var(--gold));color:#2a1a00}
+.cta.ghost{background:rgba(255,255,255,.06);border:1px solid var(--line);box-shadow:none}
+.cta.block{width:100%;margin-top:6px}
+
+/* launch */
+.count-wrap{position:relative;width:clamp(150px,26vh,230px);aspect-ratio:1;display:grid;place-items:center}
+.count-wrap svg{position:absolute;inset:0;width:100%;height:100%;animation:spin 3s linear infinite}
+.count{font-size:clamp(70px,14vh,120px);font-weight:900;color:var(--gold);text-shadow:0 0 40px rgba(255,200,61,.7)}
+.count.pop{animation:countPop .75s cubic-bezier(.2,.9,.3,1)}
+@keyframes countPop{from{transform:scale(2.2);opacity:0}30%{opacity:1}to{transform:scale(1)}}
+.l-title{margin-top:22px;font-weight:700;font-size:clamp(16px,2.6vh,22px);color:var(--cyan)}
+.l-name{margin-top:8px;font-weight:900;font-size:clamp(24px,4.4vh,40px)}
+.l-mission{margin-top:6px;opacity:.75;font-weight:700}
+
+/* quiz */
+.quiz{width:min(880px,100%);display:flex;flex-direction:column;gap:14px;perspective:1300px}
+.q-top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.q-label{font-weight:900;font-size:clamp(16px,2.6vh,22px);color:var(--cyan)}
+.q-score{padding:5px 16px;border-radius:999px;font-weight:800;background:var(--panel);border:1px solid var(--line)}
+.track{display:flex;align-items:center;direction:ltr}
+.tn{width:14px;height:14px;border-radius:50%;flex:none;border:2px solid rgba(138,107,255,.6);transition:background .3s,border-color .3s,box-shadow .3s}
+.tl{flex:1;height:2px;background:rgba(138,107,255,.3);min-width:4px}
+.tl.done{background:linear-gradient(90deg,var(--violet),var(--cyan))}
+.tn.cur{border-color:var(--cyan);background:rgba(0,194,255,.35);box-shadow:0 0 14px var(--cyan);animation:curPulse 1.4s ease-in-out infinite}
+.tn.ok{background:var(--ok);border-color:var(--ok)}
+.tn.bad{background:var(--bad);border-color:var(--bad)}
+@keyframes curPulse{50%{transform:scale(1.3)}}
+.qcard{position:relative;padding:clamp(18px,3.2vh,32px);border-radius:24px;border:1px solid var(--line);backdrop-filter:blur(14px);
+  background:linear-gradient(160deg,rgba(30,18,80,.8),rgba(12,8,36,.86));box-shadow:0 30px 80px rgba(0,0,0,.5),0 0 60px rgba(93,63,211,.25)}
+.qcard.pre{opacity:0}
+.qcard.enter{animation:cardIn .75s cubic-bezier(.2,.9,.25,1) backwards}
+.qcard.leaving{animation:cardOut .3s ease-in both}
+@keyframes cardIn{from{opacity:0;transform:translateY(46px) rotateX(16deg) scale(.95)}}
+@keyframes cardOut{to{opacity:0;transform:translateX(calc(-70px*var(--dir))) rotateY(calc(-10deg*var(--dir))) scale(.95)}}
+.q-text{font-size:clamp(19px,3.2vh,28px);font-weight:800;line-height:1.5}
+.code{direction:ltr;text-align:left;font-family:ui-monospace,'SF Mono',Consolas,'Liberation Mono',monospace;background:#070418;
+  border:1px solid rgba(0,194,255,.35);border-radius:14px;padding:14px 16px;margin-top:14px;font-size:clamp(13px,2.2vh,16px);
+  line-height:1.65;color:#cfe9ff;overflow-x:auto;white-space:pre}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:18px}
+@media (max-width:720px){.opts{grid-template-columns:1fr}}
+.opt{display:flex;align-items:center;gap:12px;text-align:start;min-height:62px;padding:12px 16px;border-radius:16px;
+  background:rgba(93,63,211,.16);border:1px solid rgba(138,107,255,.45);font-weight:700;font-size:clamp(15px,2.3vh,18px);
+  transition:transform .2s,border-color .2s,background .2s,box-shadow .2s,opacity .3s}
+.opt .ltr{width:34px;height:34px;border-radius:10px;flex:none;display:grid;place-items:center;font-weight:900;background:rgba(138,107,255,.3)}
+.opt.code-o{direction:ltr;text-align:left;font-family:ui-monospace,'SF Mono',Consolas,monospace;font-size:clamp(13px,2.1vh,16px)}
+.qcard.enter .opt{animation:optIn .55s calc(.3s + var(--i)*.08s) cubic-bezier(.2,.9,.25,1) backwards}
+@keyframes optIn{from{opacity:0;transform:translateY(16px)}}
+.opt:hover:not(:disabled){transform:translateY(-2px);border-color:var(--cyan);background:rgba(0,194,255,.12)}
+.opt.ok{border-color:var(--ok);background:rgba(46,230,166,.16);box-shadow:0 0 26px rgba(46,230,166,.4)}
+.opt.ok .ltr{background:var(--ok);color:#04150f}
+.opt.bad{border-color:var(--bad);background:rgba(255,92,122,.15);box-shadow:0 0 26px rgba(255,92,122,.35);animation:shake .45s}
+.opt.bad .ltr{background:var(--bad);color:#2a0009}
+.opt.dim{opacity:.45}
+.fb{display:none;margin-top:18px;padding:16px 18px;border-radius:16px}
+.fb.show{display:block;animation:fbIn .45s cubic-bezier(.2,.9,.3,1)}
+@keyframes fbIn{from{opacity:0;transform:translateY(12px)}}
+.fb.ok{border:1px solid var(--ok);background:rgba(46,230,166,.09)}
+.fb.bad{border:1px solid var(--bad);background:rgba(255,92,122,.09)}
+.fb-head{display:flex;align-items:center;gap:10px;font-size:19px}
+.fb-head svg{width:24px;height:24px;flex:none;fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.fb-head.ok{color:var(--ok)}.fb-head.ok svg{stroke:var(--ok)}
+.fb-head.bad{color:var(--bad)}.fb-head.bad svg{stroke:var(--bad)}
+.fb-ans{margin-top:8px;font-weight:700;color:var(--ice)}
+.fb-ans span{color:var(--gold)}
+.fb-why{margin-top:8px;opacity:.88;line-height:1.6}
+.fb-actions{margin-top:14px;display:flex;justify-content:flex-end}
+
+/* result */
+.result{text-align:center}
+.res-title{font-size:clamp(28px,5.4vh,50px);font-weight:900;background:linear-gradient(90deg,#fff,#d7ccff 40%,var(--cyan));
+  -webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 20px rgba(138,107,255,.6))}
+.res-lbl{margin-top:18px;font-size:13px;font-weight:700;opacity:.7}
+.res-name{font-size:clamp(22px,4vh,34px);font-weight:900;color:var(--gold);word-break:break-word}
+.gauge{position:relative;width:clamp(150px,26vh,210px);aspect-ratio:1;margin:18px auto 6px}
+.gauge svg{width:100%;height:100%;transform:rotate(-90deg)}
+.gauge .bgc{fill:none;stroke:rgba(138,107,255,.25);stroke-width:9}
+.gauge .fgc{fill:none;stroke:url(#lg);stroke-width:9;stroke-linecap:round;stroke-dasharray:339.3;stroke-dashoffset:339.3;
+  transition:stroke-dashoffset 1.6s cubic-bezier(.2,.8,.2,1);filter:drop-shadow(0 0 8px rgba(0,194,255,.7))}
+.gauge-in{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.g-lbl{font-size:12px;font-weight:700;opacity:.7}
+.g-val{font-size:clamp(34px,6.4vh,54px);font-weight:900;line-height:1.1;direction:ltr}
+.g-val small{font-size:.5em;opacity:.65}
+.spark{position:absolute;left:50%;top:50%;width:6px;height:6px;border-radius:50%;animation:sparkOut 1.5s ease-out forwards}
+@keyframes sparkOut{from{transform:translate(0,0) scale(1);opacity:1}to{transform:translate(var(--dx),var(--dy)) scale(0);opacity:0}}
+.res-msg{margin-top:10px;font-weight:700;line-height:1.6;font-size:clamp(15px,2.4vh,19px)}
+.save{margin-top:16px;display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;font-size:14px;font-weight:700}
+.save .dot{width:10px;height:10px;border-radius:50%;background:var(--gold);animation:curPulse 1s infinite}
+.save.saved .dot{background:var(--ok);animation:none}
+.save.fail .dot{background:var(--bad);animation:none}
+.save button{padding:5px 14px;border-radius:999px;border:1px solid var(--line);font-weight:700}
+.res-actions{margin-top:22px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.result.pre .gauge,.result.pre .res-msg{opacity:0}
+
+/* ============ BLACK HOLE ============ */
+#bh{position:fixed;inset:0;z-index:100;display:none;pointer-events:none;overflow:hidden}
+#bh.on{display:block}
+#bhCanvas{position:absolute;inset:0;width:100%;height:100%}
+#bhCore{position:absolute;left:50%;top:50%;width:min(76vmin,580px);aspect-ratio:1;translate:-50% -50%;transform:scale(0);opacity:0}
+.bh-glow{position:absolute;inset:-35%;border-radius:50%;
+  background:radial-gradient(closest-side,rgba(138,107,255,.6),rgba(0,194,255,.2) 46%,transparent 72%)}
+.bh-disk{position:absolute;inset:0;border-radius:50%;filter:blur(2px) saturate(1.3);animation:spin 1.6s linear infinite;
+  background:conic-gradient(from 0deg,#5D3FD3,#00C2FF,#F5F7FB,#FFC83D,#8A6BFF,#5D3FD3);
+  -webkit-mask:radial-gradient(closest-side,transparent 38%,#000 44%,#000 62%,transparent 80%);
+  mask:radial-gradient(closest-side,transparent 38%,#000 44%,#000 62%,transparent 80%)}
+.bh-band{position:absolute;left:-12%;right:-12%;top:45%;height:10%;border-radius:50%;transform:rotate(-12deg);opacity:.9;filter:blur(6px);
+  background:linear-gradient(90deg,transparent,#FFC83D,#fff,#FFC83D,transparent)}
+.bh-hole{position:absolute;inset:30%;border-radius:50%;background:#000;
+  box-shadow:0 0 60px 30px #000,0 0 0 3px rgba(255,255,255,.6),0 0 44px 8px rgba(0,194,255,.75)}
+#irisRing{position:fixed;left:50%;top:50%;translate:-50% -50%;width:12px;height:12px;border-radius:50%;z-index:90;display:none;pointer-events:none;
+  border:3px solid var(--cyan);box-shadow:0 0 40px var(--cyan),inset 0 0 40px var(--cyan)}
+#irisRing.on{display:block}
+
+@media (prefers-reduced-motion:reduce){
+  *:not(#hero):not(#hero *){animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+}
+
+.panel.wide{width:min(880px,100%)}
+.lesson{margin:12px 0 18px;font-size:clamp(15px,2.3vh,18px);line-height:1.75}
+.lesson h3{color:var(--gold);margin:16px 0 6px;font-size:1.05em}.lesson p{margin:8px 0}.lesson .code{margin:10px 0}
+.practice{margin:18px 0;padding:16px;border-radius:18px;border:1px solid var(--line);background:rgba(255,255,255,.04)}
+.pr-h{font-weight:900;color:var(--cyan);margin-bottom:6px}.pr-task{margin-bottom:10px;font-weight:700}
+.pyed{display:block;width:100%;min-height:170px;resize:vertical;padding:12px;border:1px solid var(--line);border-radius:12px;color:var(--ice);font-size:15px;line-height:1.5;tab-size:4;white-space:pre;overflow:auto}
+.pr-bar{display:flex;gap:10px;margin:10px 0;flex-wrap:wrap}.pr-bar .cta{padding:10px 22px;font-size:15px}
+.pyout{min-height:52px;margin:0;white-space:pre-wrap;color:#b8f5d0}.pyout.err{color:var(--bad)}
+.pr-res{margin-top:10px;font-weight:800;white-space:pre-wrap}.pr-res.ok{color:var(--ok)}.pr-res.no{color:var(--bad)}
+</style>
+</head>
+<body data-screen="explore" class="intro-on">
+
+<!-- shared gradient used by logo + result gauge -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8A6BFF"/><stop offset="1" stop-color="#00C2FF"/></linearGradient>
+</defs></svg>
+
+<div id="stage">
+  <div id="bg">
+    <div class="nebula n1 plx" data-x="-250" data-p=".05"></div>
+    <div class="nebula n2 plx" data-x="500" data-p=".06"></div>
+    <div class="nebula n3 plx" data-x="800" data-p=".05"></div>
+    <div class="nebula n4 plx" data-x="200" data-p=".08"></div>
+    <canvas id="stars"></canvas>
+    <div class="planet pl-a plx" data-x="300" data-p=".16"></div>
+    <div class="planet pl-c plx" data-x="820" data-p=".24"></div>
+    <div class="planet pl-b plx" data-x="1150" data-p=".16"></div>
+    <div class="planet pl-d plx" data-x="1500" data-p=".1"></div>
+    <div class="planet pl-e plx" data-x="1750" data-p=".2"></div>
+    <div class="shoot s1"></div><div class="shoot s2"></div>
+    <div id="dial"></div>
+  </div>
+
+  <div id="world">
+    <div id="railWash"></div>
+    <div id="struts"></div>
+    <div id="rail"></div>
+    <div class="dock" style="left:320px"></div>
+    <div id="stations"></div>
+    <div id="hero">
+      <div id="heroLean">
+        <svg viewBox="0 0 120 170" aria-label="CANTRICK robot">
+          <defs>
+            <linearGradient id="hBody" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F5F7FB"/><stop offset="1" stop-color="#B9B4E8"/></linearGradient>
+            <linearGradient id="hDark" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2E1E78"/><stop offset="1" stop-color="#120A35"/></linearGradient>
+          </defs>
+          <g class="bob">
+            <g class="leg legL"><rect x="42" y="118" width="14" height="34" rx="6" fill="url(#hDark)"/><rect x="37" y="148" width="24" height="10" rx="5" fill="#5D3FD3"/><rect x="40" y="154" width="18" height="3" rx="1.5" fill="#00C2FF"/></g>
+            <g class="leg legR"><rect x="64" y="118" width="14" height="34" rx="6" fill="url(#hDark)"/><rect x="59" y="148" width="24" height="10" rx="5" fill="#5D3FD3"/><rect x="62" y="154" width="18" height="3" rx="1.5" fill="#00C2FF"/></g>
+            <g class="arm armL"><rect x="18" y="82" width="12" height="30" rx="6" fill="#8A6BFF"/><circle cx="24" cy="115" r="6.5" fill="#F5F7FB"/></g>
+            <g class="arm armR"><rect x="90" y="82" width="12" height="30" rx="6" fill="#8A6BFF"/><circle cx="96" cy="115" r="6.5" fill="#F5F7FB"/></g>
+            <rect x="32" y="74" width="56" height="52" rx="16" fill="url(#hBody)"/>
+            <rect x="40" y="86" width="40" height="30" rx="10" fill="url(#hDark)"/>
+            <circle class="corec" cx="60" cy="101" r="8" fill="#00C2FF"/>
+            <circle cx="60" cy="101" r="3.5" fill="#F5F7FB"/>
+            <rect x="44" y="118" width="32" height="3" rx="1.5" fill="#FFC83D"/>
+            <rect x="52" y="66" width="16" height="10" rx="3" fill="#5D3FD3"/>
+            <g class="head">
+              <line x1="60" y1="20" x2="60" y2="32" stroke="#8A6BFF" stroke-width="3" stroke-linecap="round"/>
+              <circle class="ant" cx="60" cy="16" r="5" fill="#FFC83D"/>
+              <rect x="20" y="44" width="9" height="20" rx="4.5" fill="#5D3FD3"/>
+              <rect x="91" y="44" width="9" height="20" rx="4.5" fill="#5D3FD3"/>
+              <rect x="27" y="30" width="66" height="46" rx="21" fill="url(#hBody)"/>
+              <rect x="34" y="39" width="52" height="28" rx="14" fill="url(#hDark)"/>
+              <g class="eyeShift"><g class="eyes"><ellipse cx="50" cy="53" rx="5" ry="6.5" fill="#00C2FF"/><ellipse cx="70" cy="53" rx="5" ry="6.5" fill="#00C2FF"/></g></g>
+            </g>
+          </g>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <div id="screens">
+    <!-- LEVELS -->
+    <section class="screen" id="scr-levels"><div class="wrap">
+      <div class="spec-head" id="levelsHead"></div>
+      <div class="cards" id="levelCards"></div>
+    </div></section>
+
+    <!-- LESSONS -->
+    <section class="screen" id="scr-lessons"><div class="wrap">
+      <div class="spec-head" id="lessonsHead"></div>
+      <div class="cards" id="lessonCards"></div>
+    </div></section>
+
+    <!-- NAME -->
+    <section class="screen" id="scr-name"><div class="wrap">
+      <div class="panel">
+        <span class="chip" id="nameMission"></span>
+        <span class="chip-topic" id="nameTopic"></span>
+        <h1 class="h1" data-i18n="name_title"></h1>
+        <label class="field"><span data-i18n="student_name"></span>
+          <input id="nameInput" type="text" maxlength="40" autocomplete="off" autocapitalize="words" spellcheck="false" data-i18n-ph="name_ph">
+        </label>
+        <div class="errmsg" id="nameErr"></div>
+        <button class="cta gold block" id="startBtn" data-i18n="start_mission"></button>
+      </div>
+    </div></section>
+
+    <!-- LEARN (Software lesson + Python practice) -->
+    <section class="screen" id="scr-learn"><div class="wrap">
+      <div class="panel wide">
+        <span class="chip" id="lnMission"></span>
+        <h1 class="h1" id="lnTitle"></h1>
+        <div class="lesson" id="lnBody"></div>
+        <div class="practice" id="lnPractice">
+          <div class="pr-h" data-i18n="practice_title"></div>
+          <div class="pr-task" id="lnTask"></div>
+          <textarea id="pyCode" class="code pyed" spellcheck="false" autocapitalize="off" autocomplete="off"></textarea>
+          <div class="pr-bar"><button class="cta gold" id="pyRun" data-i18n="py_run"></button><button class="cta ghost" id="pyReset" data-i18n="py_reset"></button></div>
+          <pre class="code pyout" id="pyOut"></pre>
+          <div class="pr-res" id="pyRes"></div>
+        </div>
+        <button class="cta gold block" id="lnNext" data-i18n="learn_next"></button>
+      </div>
+    </div></section>
+
+    <!-- LAUNCH -->
+    <section class="screen" id="scr-launch"><div class="wrap" style="text-align:center">
+      <div class="count-wrap">
+        <svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="46" fill="none" stroke="url(#lg)" stroke-width="2.5" stroke-dasharray="70 22 12 22" stroke-linecap="round"/></svg>
+        <div class="count" id="count">3</div>
+      </div>
+      <div class="l-title" data-i18n="launch_in"></div>
+      <div class="l-name" id="launchName"></div>
+      <div class="l-mission" id="launchMission"></div>
+    </div></section>
+
+    <!-- QUIZ -->
+    <section class="screen" id="scr-quiz"><div class="wrap">
+      <div class="quiz">
+        <div class="q-top"><div class="q-label trk" id="qLabel"></div><div class="q-score" id="qScore"></div></div>
+        <div class="track" id="track"></div>
+        <div class="qcard pre" id="qCard"></div>
+      </div>
+    </div></section>
+
+    <!-- RESULT -->
+    <section class="screen" id="scr-result"><div class="wrap">
+      <div class="panel result pre" id="resultPanel">
+        <div class="res-title trk" data-i18n="complete"></div>
+        <div class="res-lbl" data-i18n="student_name"></div>
+        <div class="res-name" id="resName"></div>
+        <div class="gauge" id="gauge">
+          <svg viewBox="0 0 120 120"><circle class="bgc" cx="60" cy="60" r="54"/><circle class="fgc" id="gaugeFg" cx="60" cy="60" r="54"/></svg>
+          <div class="gauge-in"><div class="g-lbl" data-i18n="score_word"></div><div class="g-val"><span id="gVal">0</span><small> / <span id="gTot">10</span></small></div></div>
+        </div>
+        <p class="res-msg" id="resMsg"></p>
+        <div class="save" id="saveBox"><span class="dot"></span><span id="saveText"></span><button id="retryBtn" data-i18n="retry" hidden></button></div>
+        <div class="res-actions">
+          <button class="cta" id="againBtn" data-i18n="replay"></button>
+          <button class="cta ghost" id="homeBtn" data-i18n="home"></button>
+        </div>
+      </div>
+    </div></section>
+  </div>
+</div>
+
+<!-- HUD (stays above stage) -->
+<div id="hud">
+  <div id="top">
+    <div id="brand">
+      <svg class="logo" viewBox="0 0 40 40"><path d="M29.9 10.1A14 14 0 1 0 29.9 29.9" fill="none" stroke="url(#lg)" stroke-width="5" stroke-linecap="round"/><circle cx="20" cy="20" r="4" fill="#FFC83D"/></svg>
+      <div><div class="brand-word">CANTRICK</div><div class="brand-tag" data-i18n="brand_tag"></div></div>
+    </div>
+    <div class="lang" role="group" aria-label="Language">
+      <button id="langAr" data-lang="ar">عربي</button><button id="langEn" data-lang="en">EN</button>
+    </div>
+  </div>
+
+  <div id="crumbs" class="nx"></div>
+
+  <div id="radar" class="xo"></div>
+
+  <div id="intro">
+    <div class="i-mark">
+      <svg class="logo" viewBox="0 0 40 40"><path d="M29.9 10.1A14 14 0 1 0 29.9 29.9" fill="none" stroke="url(#lg)" stroke-width="5" stroke-linecap="round"/><circle cx="20" cy="20" r="4" fill="#FFC83D"/></svg>
+      <div class="i-word">CANTRICK</div>
+    </div>
+    <div class="i-tag" data-i18n="brand_tag"></div>
+    <div class="i-line" data-i18n="intro_1"></div>
+    <div class="i-line" data-i18n="intro_2"></div>
+  </div>
+
+  <div id="hint" class="xo" data-i18n="hint"></div>
+
+  <div id="pad" class="xo">
+    <button class="pbtn" id="btnL" aria-label="Left"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
+    <button class="pbtn" id="btnR" aria-label="Right"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></button>
+  </div>
+  <button id="enterBtn" data-i18n="enter_btn"></button>
+
+  <button id="backBtn" class="nx"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg><span data-i18n="back"></span></button>
+</div>
+
+<div id="toast" role="status"></div>
+<div id="irisRing"></div>
+
+<!-- BLACK HOLE OVERLAY -->
+<div id="bh" aria-hidden="true">
+  <canvas id="bhCanvas"></canvas>
+  <div id="bhCore"><div class="bh-glow"></div><div class="bh-disk"></div><div class="bh-band"></div><div class="bh-hole"></div></div>
+</div>
+
+<script>
+/*
+=====================================================================
+ CANTRICK - reusable mission template (single file, no install)
+
+ ONE-TIME SUPABASE SETUP (SQL editor) so the game can save results:
+   alter table quiz_results enable row level security;
+   create policy "allow anon insert" on quiz_results
+     for insert to anon with check (true);
+
+ FUTURE MISSIONS - only change these:
+   SPECIALIZATION, LEVEL, LESSON, QUIZ_NAME.
+   Questions are loaded from the Supabase quiz_questions table; local questions are fallback only (Robotics only).
+   SOFTWARE lessons: just insert rows with quiz_name = "Software - <Topic> - <Lesson>" (see loadSoftwareLessons).
+=====================================================================
+*/
+
+// ========================================
+// 1. CANTRICK CONFIGURATION
+// ========================================
+
+// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+// >>>  THE ONLY THING YOU MUST EDIT:                            <<<
+// >>>  Paste your Supabase PUBLISHABLE / anon key below.        <<<
+// >>>  NEVER paste a service_role or secret key here.           <<<
+// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+const SUPABASE_URL =
+"https://fghtbhxhmhbksjoviahn.supabase.co";
+
+const SUPABASE_KEY =
+"sb_publishable_B5KwRdB3FRz110f1uy2z4g_KHIZMaKA";
+
+let QUIZ_NAME =
+"Arduino - Level 2 - Lesson 1";
+
+// ---- Mission selection (change for future missions) ----
+let SPECIALIZATION = "robotics";   // "software" | "robotics" | "games"
+let LEVEL          = 2;            // 1 | 2 | 3
+let LESSON         = 1;            // 1 | 2 | 3
+let MISSION_SUBJECT = { en: "Arduino", ar: "أردوينو" };
+const ROBOTICS_CFG = { LEVEL, LESSON, QUIZ_NAME, MISSION_SUBJECT };   // Robotics defaults (never edited at runtime)
+
+// ========================================
+// 2. SPECIALIZATIONS
+// ========================================
+// x = position of the portal on the space track (world is 3600 px wide)
+const SPECIALIZATIONS = [
+  { id: "software", x: 1000, color: "#00C2FF", rgb: "0,194,255",
+    name: { en: "SOFTWARE", ar: "البرمجيات" } },
+  { id: "robotics", x: 1900, color: "#FFC83D", rgb: "255,200,61",
+    name: { en: "ROBOTICS", ar: "الروبوتات" } },
+  { id: "games",    x: 2800, color: "#8A6BFF", rgb: "138,107,255",
+    name: { en: "GAME DEVELOPMENT", ar: "تطوير الألعاب" } }
+];
+
+const GLYPH_INNER = {
+  software: '<polyline points="20,20 8,32 20,44"/><polyline points="44,20 56,32 44,44"/><line x1="37" y1="14" x2="27" y2="50"/>',
+  robotics: '<rect x="14" y="22" width="36" height="28" rx="8"/><line x1="32" y1="22" x2="32" y2="12"/><circle cx="32" cy="9" r="3"/><circle cx="24" cy="35" r="3.2" fill="currentColor"/><circle cx="40" cy="35" r="3.2" fill="currentColor"/><line x1="25" y1="43" x2="39" y2="43"/><line x1="8" y1="31" x2="8" y2="41"/><line x1="56" y1="31" x2="56" y2="41"/>',
+  games:    '<rect x="6" y="20" width="52" height="26" rx="13"/><line x1="19" y1="27" x2="19" y2="39"/><line x1="13" y1="33" x2="25" y2="33"/><circle cx="42" cy="29" r="2.6" fill="currentColor"/><circle cx="49" cy="36" r="2.6" fill="currentColor"/>'
+};
+function glyphSVG(id, cls) {
+  return '<svg class="' + cls + '" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">' + GLYPH_INNER[id] + '</svg>';
+}
+
+// ========================================
+// 3. LEVELS
+// ========================================
+const LEVELS = [
+  { n: 1, rgb: "0,194,255" },
+  { n: 2, rgb: "255,200,61" },
+  { n: 3, rgb: "138,107,255" }
+];
+
+// ========================================
+// 4. LESSONS
+// ========================================
+// title = null means the lesson has no topic yet (it stays locked)
+const LESSONS = [
+  { n: 1, rgb: "0,194,255",   title: { en: "Push Button + LED", ar: "زر الضغط + الليد" } },
+  { n: 2, rgb: "255,200,61",  title: null },
+  { n: 3, rgb: "138,107,255", title: null }
+];
+
+// ========================================
+// 5. QUESTIONS
+// ========================================
+// correct = index (0-3) of the right option.
+// options can be { en, ar } objects, or plain strings (used for code, same in both languages).
+const LOCAL_QUESTIONS = [
+  {
+    q: { en: "In a Push Button + LED project, which part is the INPUT and which part is the OUTPUT?",
+         ar: "في مشروع الزر + الليد، أي جزء هو المُدخل (INPUT) وأي جزء هو المُخرج (OUTPUT)؟" },
+    options: [
+      { en: "The LED is the input and the button is the output", ar: "الليد مُدخل والزر مُخرج" },
+      { en: "The button is the input and the LED is the output", ar: "الزر مُدخل والليد مُخرج" },
+      { en: "Both are inputs", ar: "كلاهما مُدخل" },
+      { en: "Both are outputs", ar: "كلاهما مُخرج" }
+    ],
+    correct: 1,
+    why: { en: "The button sends information into the Arduino (INPUT). The LED receives commands from the Arduino (OUTPUT).",
+           ar: "الزر يرسل معلومة إلى الأردوينو (INPUT)، أما الليد فيستقبل أوامر من الأردوينو (OUTPUT)." }
+  },
+  {
+    q: { en: "What does a digital INPUT pin read?", ar: "ماذا يقرأ طرف الإدخال الرقمي (Digital INPUT)؟" },
+    options: [
+      { en: "Only two states: HIGH or LOW", ar: "حالتين فقط: HIGH أو LOW" },
+      { en: "Any number from 0 to 1023", ar: "أي رقم من 0 إلى 1023" },
+      { en: "Only the color of light", ar: "لون الضوء فقط" },
+      { en: "Only the letters written in the code", ar: "الحروف المكتوبة في الكود فقط" }
+    ],
+    correct: 0,
+    why: { en: "A digital pin only understands two states: HIGH (about 5V) or LOW (0V). Values from 0 to 1023 belong to analog inputs.",
+           ar: "الطرف الرقمي يفهم حالتين فقط: HIGH (حوالي 5 فولت) أو LOW (صفر فولت). القيم من 0 إلى 1023 تخص المداخل التناظرية." }
+  },
+  {
+    q: { en: "What can a digital OUTPUT pin do?", ar: "ماذا يفعل طرف الإخراج الرقمي (Digital OUTPUT)؟" },
+    options: [
+      { en: "Read whether a button is pressed", ar: "يقرأ إذا كان الزر مضغوطًا" },
+      { en: "Store the whole program", ar: "يخزّن البرنامج كاملًا" },
+      { en: "Send HIGH or LOW to control a device like an LED", ar: "يرسل HIGH أو LOW للتحكم في جهاز مثل الليد" },
+      { en: "Measure the temperature", ar: "يقيس درجة الحرارة" }
+    ],
+    correct: 2,
+    why: { en: "An OUTPUT pin sends HIGH (5V) to turn a device on, or LOW (0V) to turn it off.",
+           ar: "طرف الإخراج يرسل HIGH (5 فولت) لتشغيل الجهاز، أو LOW (صفر فولت) لإيقافه." }
+  },
+  {
+    q: { en: "A push button connects 5V to pin 2 when pressed, and a resistor holds pin 2 at GND otherwise. What does pin 2 read while the button is pressed?",
+         ar: "زر ضغط يوصّل 5V بالطرف 2 عند الضغط، ومقاومة تُبقي الطرف 2 على GND عند عدم الضغط. ماذا يقرأ الطرف 2 أثناء الضغط على الزر؟" },
+    options: [
+      { en: "LOW", ar: "LOW" },
+      { en: "Nothing at all", ar: "لا يقرأ شيئًا" },
+      { en: "It depends on the LED color", ar: "يعتمد على لون الليد" },
+      { en: "HIGH", ar: "HIGH" }
+    ],
+    correct: 3,
+    why: { en: "Pressing the button closes the path from 5V to the pin, so the pin sees 5V and reads HIGH. When released, the resistor pulls it back to LOW.",
+           ar: "الضغط على الزر يغلق المسار من 5V إلى الطرف، فيرى الطرف 5 فولت ويقرأ HIGH. وعند الترك تعيده المقاومة إلى LOW." }
+  },
+  {
+    q: { en: "How should an LED be wired to digital pin 8?", ar: "كيف يُوصَّل الليد بالطرف الرقمي 8؟" },
+    options: [
+      { en: "Long leg to GND, short leg to pin 8", ar: "الرجل الطويلة إلى GND والقصيرة إلى الطرف 8" },
+      { en: "Pin 8, then a resistor, then the long leg. The short leg goes to GND", ar: "الطرف 8 ثم مقاومة ثم الرجل الطويلة، والرجل القصيرة إلى GND" },
+      { en: "Both legs directly to 5V", ar: "الرجلان مباشرة إلى 5V" },
+      { en: "Both legs directly to pin 8", ar: "الرجلان مباشرة إلى الطرف 8" }
+    ],
+    correct: 1,
+    why: { en: "The long leg (anode) is the positive side and faces the pin through a resistor. The short leg (cathode) returns to GND to complete the circuit.",
+           ar: "الرجل الطويلة (anode) هي الجهة الموجبة وتتصل بالطرف عبر مقاومة. والرجل القصيرة (cathode) تعود إلى GND لإكمال الدائرة." }
+  },
+  {
+    q: { en: "Why do we place a resistor in series with the LED?", ar: "لماذا نضع مقاومة (Resistor) على التوالي مع الليد؟" },
+    options: [
+      { en: "To make the LED blink automatically", ar: "لجعل الليد يومض تلقائيًا" },
+      { en: "To make the code run faster", ar: "لجعل الكود أسرع" },
+      { en: "To limit the current and protect the LED", ar: "لتحديد التيار وحماية الليد" },
+      { en: "To turn the LED into a button", ar: "لتحويل الليد إلى زر" }
+    ],
+    correct: 2,
+    why: { en: "Without a resistor, too much current can flow and damage the LED or the pin. The resistor limits the current.",
+           ar: "بدون مقاومة قد يمر تيار كبير يتلف الليد أو الطرف. المقاومة تحدّ من التيار." }
+  },
+  {
+    q: { en: "The LED is connected to digital pin 8. Which line prepares pin 8 as an OUTPUT?",
+         ar: "الليد موصول بالطرف الرقمي 8. أي سطر يجهّز الطرف 8 كمُخرج (OUTPUT)؟" },
+    codeOptions: true,
+    options: ["pinMode(8, OUTPUT);", "pinMode(8, INPUT);", "digitalRead(8);", "digitalWrite(OUTPUT, 8);"],
+    correct: 0,
+    why: { en: "pinMode(pin, mode) tells the Arduino how a pin will be used. Use OUTPUT for the LED and INPUT for the button.",
+           ar: "الدالة pinMode(pin, mode) تخبر الأردوينو كيف سيُستخدم الطرف. نستخدم OUTPUT للّيد وINPUT للزر." }
+  },
+  {
+    q: { en: "Which line reads the button on pin 2 and stores its state in a variable?",
+         ar: "أي سطر يقرأ حالة الزر على الطرف 2 ويحفظها في متغير؟" },
+    codeOptions: true,
+    options: ["int state = digitalWrite(2);", "int state = pinMode(2);", "int state = digitalRead(8);", "int state = digitalRead(2);"],
+    correct: 3,
+    why: { en: "digitalRead(pin) returns HIGH or LOW from an input pin. Here the button is connected to pin 2.",
+           ar: "الدالة digitalRead(pin) ترجع HIGH أو LOW من طرف الإدخال. هنا الزر موصول بالطرف 2." }
+  },
+  {
+    q: { en: "Which line turns ON the LED connected to pin 8?", ar: "أي سطر يُشغّل الليد الموصول بالطرف 8؟" },
+    codeOptions: true,
+    options: ["digitalWrite(8, LOW);", "digitalWrite(8, HIGH);", "digitalRead(8, HIGH);", "pinMode(8, HIGH);"],
+    correct: 1,
+    why: { en: "digitalWrite(pin, HIGH) sends 5V to the pin, so current flows through the LED and it lights up.",
+           ar: "الدالة digitalWrite(pin, HIGH) ترسل 5 فولت إلى الطرف، فيمر التيار في الليد ويضيء." }
+  },
+  {
+    q: { en: "Read this code. What will the LED do?", ar: "اقرأ هذا الكود. ماذا سيفعل الليد؟" },
+    code: "if (digitalRead(2) == HIGH) {\n  digitalWrite(8, HIGH);\n} else {\n  digitalWrite(8, LOW);\n}",
+    options: [
+      { en: "Stay ON all the time", ar: "يبقى مضاءً طوال الوقت" },
+      { en: "Stay OFF all the time", ar: "يبقى مطفأً طوال الوقت" },
+      { en: "Turn ON only while the button is pressed", ar: "يضيء فقط أثناء الضغط على الزر" },
+      { en: "Blink forever", ar: "يومض إلى الأبد" }
+    ],
+    correct: 2,
+    why: { en: "When the button is pressed, pin 2 reads HIGH, so the LED turns on. When it is released, the else part turns the LED off.",
+           ar: "عند الضغط على الزر يقرأ الطرف 2 القيمة HIGH فيضيء الليد. وعند تركه يطفئ جزء else الليد." }
+  }
+];
+let QUESTIONS = LOCAL_QUESTIONS.slice();
+let TOTAL = QUESTIONS.length;
+
+// Supabase is the live Question Bank. The local questions above are only a safe fallback
+// so the mission still opens if the database has not been seeded yet.
+async function loadQuestionsFromSupabase() {
+  QUESTIONS = SPECIALIZATION === "robotics" ? LOCAL_QUESTIONS.slice() : []; TOTAL = QUESTIONS.length;
+  if (!SUPABASE_KEY || SUPABASE_KEY.indexOf("PASTE_YOUR") !== -1) return;
+  const url = SUPABASE_URL + "/rest/v1/quiz_questions" +
+    "?select=id,quiz_name,question_number,question_en,question_ar,options_en,options_ar,correct_index,why_en,why_ar,code,code_options" +
+    "&quiz_name=eq." + encodeURIComponent(QUIZ_NAME) +
+    "&order=question_number.asc";
+  const headers = { "apikey": SUPABASE_KEY };
+  if (SUPABASE_KEY.indexOf("eyJ") === 0) headers["Authorization"] = "Bearer " + SUPABASE_KEY;
+  const res = await fetch(url, { headers });
+  if (!res.ok) {
+    const body = await res.text().catch(() => "");
+    throw new Error("Question Bank HTTP " + res.status + " " + body);
+  }
+  const rows = await res.json();
+  if (!Array.isArray(rows) || !rows.length) { if (SPECIALIZATION === "robotics") return; throw new Error("No questions found for " + QUIZ_NAME); }
+  QUESTIONS = rows.map(r => {
+    const en = Array.isArray(r.options_en) ? r.options_en : [];
+    const ar = Array.isArray(r.options_ar) ? r.options_ar : [];
+    const options = en.map((x, i) => ({ en: x, ar: ar[i] ?? x }));
+    const codeOptions = r.code_options === true;
+    return {
+      q: { en: r.question_en, ar: r.question_ar },
+      options,
+      correct: Number(r.correct_index),
+      codeOptions,
+      why: { en: r.why_en || "", ar: r.why_ar || "" },
+      ...(r.code ? { code: r.code } : {})
+    };
+  });
+  TOTAL = QUESTIONS.length;
+}
+
+
+// ========================================
+// UI TEXT (every visible string: Arabic + English)
+// ========================================
+const T = {
+  brand_tag:   { en: "Experience the work. Discover the path.", ar: "جرّب العمل. اكتشف طريقك." },
+  intro_1:     { en: "Explore the universe.", ar: "استكشف الكون." },
+  intro_2:     { en: "Discover what you can do.", ar: "اكتشف ما يمكنك فعله." },
+  hint:        { en: "Use \u2190 \u2192 to explore", ar: "استخدم الأسهم \u2190 \u2192 للاستكشاف" },
+  enter_prompt:{ en: "Press ENTER or tap to enter", ar: "اضغط ENTER أو المس للدخول" },
+  enter_btn:   { en: "ENTER", ar: "دخول" },
+  state_ready: { en: "Mission ready", ar: "المهمة جاهزة" },
+  state_soon:  { en: "Coming soon", ar: "قريبًا" },
+  soon_toast:  { en: "This universe opens in a future mission.", ar: "هذا الكون سيفتح في مهمة قادمة." },
+  choose_mission: { en: "Choose your mission", ar: "اختر مهمتك" },
+  choose_lesson:  { en: "Choose your lesson", ar: "اختر درسك" },
+  level:       { en: "Level", ar: "المستوى" },
+  lesson:      { en: "Lesson", ar: "الدرس" },
+  active:      { en: "Active", ar: "متاح" },
+  locked:      { en: "Locked", ar: "مقفل" },
+  locked_toast:{ en: "This one opens in another mission.", ar: "هذا الخيار سيفتح في مهمة أخرى." },
+  back:        { en: "Back", ar: "رجوع" },
+  name_title:  { en: "Who is flying this mission?", ar: "من سيقود هذه المهمة؟" },
+  student_name:{ en: "Student Name", ar: "اسم الطالب" },
+  name_ph:     { en: "Type your name", ar: "اكتب اسمك" },
+  name_err:    { en: "Please enter your name to continue.", ar: "من فضلك اكتب اسمك للمتابعة." },
+  loading_questions: { en: "Loading mission data...", ar: "جارٍ تحميل بيانات المهمة..." },
+  learn_next:  { en: "Continue to the quiz", ar: "تابع إلى الاختبار" },
+  practice_title:{ en: "Practice: write & run Python", ar: "تدريب: اكتب الكود وشغّله" },
+  py_run:      { en: "Run", ar: "تشغيل" },
+  py_reset:    { en: "Reset", ar: "إعادة" },
+  py_loading:  { en: "Loading Python (first time only)...", ar: "جاري تحميل بايثون (أول مرة فقط)..." },
+  py_running:  { en: "Running...", ar: "جاري التشغيل..." },
+  py_ok:       { en: "Correct! Well done.", ar: "صحيح! أحسنت." },
+  py_bad:      { en: "Not quite. Expected output:", ar: "ليس بعد. الناتج المطلوب:" },
+  py_need:     { en: "Your code must use:", ar: "يجب أن يستخدم كودك:" },
+  py_done:     { en: "Ran successfully.", ar: "تم التشغيل بنجاح." },
+  py_fail:     { en: "Could not load the Python engine. Check your internet connection.", ar: "تعذر تحميل محرك بايثون. تأكد من الاتصال بالإنترنت." },
+  software_load_error: { en: "Could not load Software lessons from Supabase. Please try again.", ar: "تعذر تحميل دروس البرمجيات من Supabase. حاول مرة أخرى." },
+  question_load_error: { en: "Could not load the mission from Supabase. Please check the Question Bank and try again.", ar: "تعذر تحميل المهمة من Supabase. تحقق من بنك الأسئلة وحاول مرة أخرى." },
+  start_mission:{ en: "Start Mission", ar: "ابدأ المهمة" },
+  launch_in:   { en: "Mission starts in", ar: "تبدأ المهمة خلال" },
+  mission_word:{ en: "MISSION", ar: "المهمة" },
+  score_word:  { en: "Score", ar: "النتيجة" },
+  next:        { en: "NEXT CHALLENGE", ar: "التحدي التالي" },
+  finish:      { en: "FINISH MISSION", ar: "إنهاء المهمة" },
+  correct:     { en: "Correct", ar: "إجابة صحيحة" },
+  wrong:       { en: "Not quite", ar: "ليست صحيحة" },
+  correct_is:  { en: "Correct answer:", ar: "الإجابة الصحيحة:" },
+  complete:    { en: "MISSION COMPLETE", ar: "اكتملت المهمة" },
+  saving:      { en: "Saving your result...", ar: "جارٍ حفظ نتيجتك..." },
+  saved:       { en: "Result saved", ar: "تم حفظ النتيجة" },
+  save_nokey:  { en: "Not saved: paste your Supabase key in the CONFIGURATION section.", ar: "لم يتم الحفظ: ضع مفتاح Supabase في قسم CONFIGURATION." },
+  save_bad:    { en: "Not saved: a secret key was detected. Use the publishable key only.", ar: "لم يتم الحفظ: تم اكتشاف مفتاح سري. استخدم المفتاح العام (publishable) فقط." },
+  save_error:  { en: "Could not save the result. Check the connection and try again.", ar: "تعذر حفظ النتيجة. تحقق من الاتصال وحاول مرة أخرى." },
+  retry:       { en: "Try again", ar: "حاول مرة أخرى" },
+  replay:      { en: "Replay Mission", ar: "أعد المهمة" },
+  home:        { en: "Return to Space", ar: "العودة إلى الفضاء" },
+  perf_4:      { en: "Perfect run. You mastered this mission.", ar: "أداء مثالي. لقد أتقنت هذه المهمة." },
+  perf_3:      { en: "Excellent work. You are one step from a perfect run.", ar: "عمل ممتاز. أنت على بعد خطوة من العلامة الكاملة." },
+  perf_2:      { en: "Good progress. Review the lesson and try again to reach the top.", ar: "تقدم جيد. راجع الدرس وحاول مرة أخرى للوصول إلى القمة." },
+  perf_1:      { en: "Every explorer starts somewhere. Review the lesson and launch again.", ar: "كل مستكشف يبدأ من مكان ما. راجع الدرس وانطلق من جديد." }
+};
+const LETTERS = { en: ["A", "B", "C", "D"], ar: ["أ", "ب", "ج", "د"] };
+
+// ========================================
+// STATE + HELPERS
+// ========================================
+const S = {
+  lang: "en", screen: "explore", busy: false,
+  name: "", qi: 0, answers: [], score: 0,
+  saveState: "idle", launchToken: 0
+};
+const $  = (s, r) => (r || document).querySelector(s);
+const $$ = (s, r) => Array.from((r || document).querySelectorAll(s));
+const wait = ms => new Promise(r => setTimeout(r, ms));
+const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+const t = k => T[k][S.lang];
+const L = x => x == null ? "" : (typeof x === "string" ? x : (x[S.lang] ?? x.en ?? x.ar ?? ""));
+const pad2 = n => String(n).padStart(2, "0");
+const esc = s => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+const reduceMotion = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+const isAvailable = id => id === "robotics" || id === "software";
+const spec = () => SPECIALIZATIONS.find(s => s.id === SPECIALIZATION);
+const lessonData = () => lessonsFor().find(l => l.n === LESSON);
+const CHECK = '<svg viewBox="0 0 24 24"><path d="M4 12.5l5 5 11-11"/></svg>';
+const CROSS = '<svg viewBox="0 0 24 24"><path d="M5 5l14 14M19 5L5 19"/></svg>';
+const LOCK = '<svg class="lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>';
+
+// ========================================
+// 6. SUPABASE
+// ========================================
+function keyRole() {
+  try {
+    const p = SUPABASE_KEY.split(".")[1];
+    return JSON.parse(atob(p.replace(/-/g, "+").replace(/_/g, "/"))).role;
+  } catch (e) { return null; }
+}
+async function submitResult(studentName, score, total) {
+  if (!SUPABASE_KEY || SUPABASE_KEY.indexOf("PASTE_YOUR") !== -1) {
+    const e = new Error("Supabase key not set"); e.code = "NO_KEY"; throw e;
+  }
+  if (keyRole() === "service_role" || SUPABASE_KEY.indexOf("sb_secret_") === 0) {
+    const e = new Error("Secret key refused"); e.code = "BAD_KEY"; throw e;
+  }
+  const headers = { "apikey": SUPABASE_KEY, "Content-Type": "application/json", "Prefer": "return=minimal" };
+  if (SUPABASE_KEY.indexOf("eyJ") === 0) headers["Authorization"] = "Bearer " + SUPABASE_KEY;
+  const res = await fetch(SUPABASE_URL + "/rest/v1/quiz_results", {
+    method: "POST", headers: headers,
+    body: JSON.stringify({ student_name: studentName, quiz_name: QUIZ_NAME, score: score, total: total })
+  });
+  if (!res.ok) {
+    const body = await res.text().catch(() => "");
+    const e = new Error("HTTP " + res.status + " " + body); e.code = "HTTP"; throw e;
+  }
+}
+async function saveResult() {
+  S.saveState = "saving"; updateSaveUI();
+  try {
+    await submitResult(S.name, S.score, TOTAL);
+    S.saveState = "saved";
+  } catch (e) {
+    console.warn("[CANTRICK] Save failed:", e);
+    S.saveState = e.code === "NO_KEY" ? "nokey" : e.code === "BAD_KEY" ? "badkey" : "error";
+  }
+  updateSaveUI();
+}
+function updateSaveUI() {
+  const box = $("#saveBox"), txt = $("#saveText"), retry = $("#retryBtn");
+  const map = { idle: "", saving: "saving", saved: "saved", nokey: "save_nokey", badkey: "save_bad", error: "save_error" };
+  txt.textContent = map[S.saveState] ? t(map[S.saveState]) : "";
+  box.classList.toggle("saved", S.saveState === "saved");
+  box.classList.toggle("fail", ["nokey", "badkey", "error"].indexOf(S.saveState) !== -1);
+  retry.hidden = S.saveState !== "error";
+  box.style.visibility = S.saveState === "idle" ? "hidden" : "visible";
+}
+
+// ========================================
+// 7. GAME MOVEMENT
+// ========================================
+const WORLD_W = 3600, START_X = 320;
+const MAX_V = 520, ACC = 2400, DEC = 3400, NEAR = 150;
+const hero = { x: START_X, v: 0 };
+let camX = 0, drift = 0, autoWalk = null, activeSt = null;
+const keys = { left: false, right: false };
+const padHeld = { left: false, right: false };
+const worldEl = $("#world"), heroEl = $("#hero"), leanEl = $("#heroLean");
+const plx = $$(".plx").map(el => ({ el: el, x: +el.dataset.x, p: +el.dataset.p }));
+
+function buildStations() {
+  $("#stations").innerHTML = SPECIALIZATIONS.map(s =>
+    '<div class="station" data-id="' + s.id + '" style="left:' + s.x + 'px;--c:' + s.color + ';--cr:' + s.rgb + '">' +
+      '<div class="beam"></div>' +
+      '<div class="portal"><div class="ring r3"></div><div class="ring r1"></div><div class="ring r2"></div><div class="core"></div>' + glyphSVG(s.id, "glyph") + '</div>' +
+      '<div class="pad"></div>' +
+      '<div class="prompt" data-i18n="enter_prompt"></div>' +
+      '<div class="tag"><div class="tag-main trk"></div><div class="tag-sub"></div><div class="tag-state"></div></div>' +
+    '</div>').join("");
+  $$(".station").forEach(el => el.addEventListener("click", () => onStationClick(el.dataset.id)));
+  $("#radar").innerHTML = '<div class="rl"></div>' + SPECIALIZATIONS.map(s =>
+    '<div class="rm" data-id="' + s.id + '" style="left:' + (s.x / WORLD_W * 100) + '%;--c:' + s.color + '"></div>').join("") + '<div class="rd" id="rDot"></div>';
+}
+function updateStationText() {
+  const other = S.lang === "en" ? "ar" : "en";
+  $$(".station").forEach(el => {
+    const s = SPECIALIZATIONS.find(x => x.id === el.dataset.id);
+    $(".tag-main", el).textContent = s.name[S.lang];
+    $(".tag-sub", el).textContent = s.name[other];
+    $(".tag-state", el).textContent = isAvailable(s.id) ? t("state_ready") : t("state_soon");
+    el.classList.toggle("soon", !isAvailable(s.id));
+  });
+}
+function onStationClick(id) {
+  if (S.screen !== "explore" || S.busy) return;
+  const s = SPECIALIZATIONS.find(x => x.id === id);
+  if (Math.abs(hero.x - s.x) < NEAR) enterStation(id);
+  else autoWalk = { x: s.x, id: id };
+}
+async function enterStation(id) {
+  if (S.busy || S.screen !== "explore") return;
+  if (!isAvailable(id)) {
+    toast(t("soon_toast"));
+    const el = $('.station[data-id="' + id + '"]');
+    el.classList.remove("nope"); void el.offsetWidth; el.classList.add("nope");
+    return;
+  }
+  if (id === "software") {
+    let ok = true;
+    S.busy = true;
+    try { await loadSoftwareLessons(); if (!SW_LESSONS.length) throw new Error("No Software lessons found in quiz_questions"); }
+    catch (e) { console.warn("[CANTRICK] Software lessons load failed:", e); toast(t("software_load_error")); ok = false; }
+    S.busy = false;
+    if (!ok) return;
+  }
+  applyMission(id);
+  hero.v = 0; keys.left = keys.right = padHeld.left = padHeld.right = false; autoWalk = null;
+  await go("levels", "blackhole");
+}
+function stepHero(dt) {
+  let dir = (keys.right || padHeld.right ? 1 : 0) - (keys.left || padHeld.left ? 1 : 0);
+  if (dir !== 0) autoWalk = null;
+  let target = dir * MAX_V;
+  if (dir === 0 && autoWalk) {
+    const d = autoWalk.x - hero.x;
+    if (Math.abs(d) < 10) {
+      const id = autoWalk.id; hero.x = autoWalk.x; hero.v = 0; autoWalk = null;
+      enterStation(id); return;
+    }
+    target = clamp(d * 4, -MAX_V, MAX_V);
+    if (Math.abs(target) < 60) target = Math.sign(d) * 60;
+  }
+  const rate = (target !== 0 && (Math.sign(target) === Math.sign(hero.v) || hero.v === 0)) ? ACC : DEC;
+  hero.v += clamp(target - hero.v, -rate * dt, rate * dt);
+  hero.x += hero.v * dt;
+  if (hero.x < 100) { hero.x = 100; hero.v = Math.max(0, hero.v); }
+  if (hero.x > WORLD_W - 100) { hero.x = WORLD_W - 100; hero.v = Math.min(0, hero.v); }
+}
+function updateWorld(dt) {
+  const vw = innerWidth;
+  const camTarget = clamp(hero.x - vw / 2 + hero.v * 0.28, 0, Math.max(0, WORLD_W - vw));
+  camX += (camTarget - camX) * (1 - Math.exp(-5.5 * dt));
+  worldEl.style.transform = "translate3d(" + (-camX) + "px,0,0)";
+  heroEl.style.transform = "translate3d(" + hero.x + "px,0,0)";
+  leanEl.style.transform = "rotate(" + (hero.v / MAX_V * 5).toFixed(2) + "deg)";
+  const moving = Math.abs(hero.v) > 25;
+  heroEl.classList.toggle("walk", moving);
+  if (hero.v > 25) { heroEl.classList.add("face-r"); heroEl.classList.remove("face-l"); }
+  else if (hero.v < -25) { heroEl.classList.add("face-l"); heroEl.classList.remove("face-r"); }
+  for (const o of plx) o.el.style.transform = "translate3d(" + (o.x - camX * o.p) + "px,0,0)";
+
+  let near = null;
+  for (const s of SPECIALIZATIONS) if (Math.abs(hero.x - s.x) < NEAR) near = s;
+  if ((near && near.id) !== (activeSt && activeSt.id)) {
+    activeSt = near;
+    $$(".station").forEach(el => el.classList.toggle("active", !!near && el.dataset.id === near.id));
+    $$("#radar .rm").forEach(el => el.classList.toggle("on", !!near && el.dataset.id === near.id));
+    $("#enterBtn").classList.toggle("show", !!near && isAvailable(near.id));
+  }
+  $("#rDot").style.left = (hero.x / WORLD_W * 100) + "%";
+  if (Math.abs(hero.x - START_X) > 50) document.body.classList.remove("intro-on");
+}
+
+// ---- stars (parallax canvas) ----
+const starCv = $("#stars"), sx = starCv.getContext("2d");
+let SW = 0, SH = 0, stars = [];
+const LAYER_F = [0.05, 0.14, 0.3];
+function resizeStars() {
+  const dpr = Math.min(2, window.devicePixelRatio || 1);
+  SW = innerWidth; SH = innerHeight;
+  starCv.width = SW * dpr; starCv.height = SH * dpr;
+  sx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  stars = [];
+  const n = Math.round(SW * SH / 5200);
+  for (let i = 0; i < n; i++) {
+    const l = Math.random() < 0.6 ? 0 : (Math.random() < 0.65 ? 1 : 2);
+    stars.push({ x: Math.random() * SW, y: Math.random() * SH, l: l,
+      r: [0.6, 1, 1.6][l] * (0.6 + Math.random() * 0.7), a: 0.4 + Math.random() * 0.6,
+      ph: Math.random() * 6.28, tw: 0.8 + Math.random() * 2 });
+  }
+}
+function drawStars(now) {
+  sx.clearRect(0, 0, SW, SH);
+  const off = camX + drift;
+  for (const s of stars) {
+    let x = (s.x - off * LAYER_F[s.l]) % SW; if (x < 0) x += SW;
+    sx.globalAlpha = s.a * (0.65 + 0.35 * Math.sin(now * 0.001 * s.tw + s.ph));
+    sx.fillStyle = s.l === 2 ? "#bfe9ff" : (s.l === 1 ? "#e5deff" : "#ffffff");
+    sx.beginPath(); sx.arc(x, s.y, s.r, 0, 6.283); sx.fill();
+  }
+  sx.globalAlpha = 1;
+}
+
+// ---- input ----
+function bindMovementInput() {
+  addEventListener("keydown", e => {
+    const tag = e.target && e.target.tagName;
+    if (tag === "INPUT" || tag === "TEXTAREA") return;
+    const k = e.key;
+    if (S.screen === "explore" && !S.busy) {
+      if (k === "ArrowLeft" || k === "a" || k === "A") { keys.left = true; e.preventDefault(); }
+      else if (k === "ArrowRight" || k === "d" || k === "D") { keys.right = true; e.preventDefault(); }
+      else if (k === "Enter" && tag !== "BUTTON" && activeSt) { e.preventDefault(); enterStation(activeSt.id); }
+      return;
+    }
+    if (S.busy) return;
+    if (S.screen === "quiz") {
+      const idx = "1234".indexOf(k);
+      if (idx > -1 && idx < QUESTIONS[S.qi].options.length) answer(idx);
+      else if (k === "Enter" && tag !== "BUTTON" && S.answers[S.qi] !== null) nextQuestion();
+    } else if ((S.screen === "levels" || S.screen === "lessons") && k === "Enter" && tag !== "BUTTON") {
+      const a = $("#scr-" + S.screen + " .node.active"); if (a) a.click();
+    }
+  });
+  addEventListener("keyup", e => {
+    const k = e.key;
+    if (k === "ArrowLeft" || k === "a" || k === "A") keys.left = false;
+    if (k === "ArrowRight" || k === "d" || k === "D") keys.right = false;
+  });
+  const clearKeys = () => { keys.left = keys.right = padHeld.left = padHeld.right = false; };
+  addEventListener("blur", clearKeys);
+  document.addEventListener("visibilitychange", clearKeys);
+  const hold = (el, side) => {
+    const on = e => { e.preventDefault(); padHeld[side] = true; autoWalk = null; el.classList.add("down"); try { el.setPointerCapture(e.pointerId); } catch (_) {} };
+    const off = () => { padHeld[side] = false; el.classList.remove("down"); };
+    el.addEventListener("pointerdown", on);
+    ["pointerup", "pointercancel", "lostpointercapture", "pointerleave"].forEach(ev => el.addEventListener(ev, off));
+    el.addEventListener("contextmenu", e => e.preventDefault());
+  };
+  hold($("#btnL"), "left"); hold($("#btnR"), "right");
+  $("#enterBtn").addEventListener("click", () => { if (activeSt) enterStation(activeSt.id); });
+}
+
+// ========================================
+// 8. SCREEN TRANSITIONS
+// ========================================
+async function go(next, mode, auto) {
+  mode = mode || "iris";
+  if (S.busy) { if (!auto) return; while (S.busy) await wait(40); }
+  S.busy = true;
+  const prev = S.screen;
+  const swap = () => applyScreen(next);
+  try {
+    if (mode === "blackhole") await blackHole(swap); else await iris(prev, next, swap);
+  } finally { S.busy = false; }
+  afterScreen(next);
+}
+function applyScreen(next) {
+  S.screen = next;
+  document.body.dataset.screen = next;
+  $$(".screen").forEach(s => s.classList.toggle("on", s.id === "scr-" + next));
+  if (next === "levels") renderLevels(false);
+  if (next === "lessons") renderLessons(false);
+  if (next === "learn") renderLearn(true);
+  if (next === "name") renderName();
+  if (next === "launch") renderLaunch();
+  if (next === "quiz") renderQuiz("pre");
+  if (next === "result") renderResult(false);
+  updateCrumbs();
+  const el = $("#scr-" + next); if (el) el.scrollTop = 0;
+}
+function afterScreen(next) {
+  if (next === "levels" || next === "lessons") focusActiveNode();
+  if (next === "name") { const i = $("#nameInput"); i.focus(); }
+  if (next === "launch") runCountdown();
+  if (next === "quiz") playCardIn();
+  if (next === "result") playResult();
+}
+function focusActiveNode() {
+  const a = $("#scr-" + S.screen + " .node.active"); if (a) a.focus({ preventScroll: true });
+}
+
+// ---- black hole ----
+const bhCv = $("#bhCanvas"), bhx = bhCv.getContext("2d");
+let bhRun = false;
+function bhStart() {
+  const dpr = Math.min(2, window.devicePixelRatio || 1);
+  const W = innerWidth, H = innerHeight;
+  bhCv.width = W * dpr; bhCv.height = H * dpr; bhx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  const R = Math.hypot(W, H) / 2, cols = ["#8A6BFF", "#00C2FF", "#F5F7FB", "#FFC83D"];
+  const ps = Array.from({ length: 260 }, () => ({
+    a: Math.random() * 6.283, r: R * (0.25 + Math.random() * 0.9), s: 0.6 + Math.random() * 1.4,
+    c: cols[(Math.random() * 4) | 0]
+  }));
+  bhRun = true;
+  let last = performance.now();
+  const step = now => {
+    if (!bhRun) return;
+    const dt = Math.min(0.05, (now - last) / 1000); last = now;
+    bhx.clearRect(0, 0, W, H);
+    const cx = W / 2, cy = H / 2;
+    for (const p of ps) {
+      const pa = p.a, pr = p.r;
+      p.a += dt * p.s * (1.2 + 260 / (p.r + 30));
+      p.r -= dt * (60 + p.r * 0.9) * p.s * 0.9;
+      if (p.r < 12) { p.r = R * (0.6 + Math.random() * 0.5); p.a = Math.random() * 6.283; continue; }
+      const ta = p.a - (p.a - pa) * 6, tr = p.r + (pr - p.r) * 6;
+      bhx.strokeStyle = p.c;
+      bhx.globalAlpha = clamp(1 - p.r / R, 0, 1) * 0.9 + 0.1;
+      bhx.lineWidth = 1.5;
+      bhx.beginPath();
+      bhx.moveTo(cx + Math.cos(ta) * tr, cy + Math.sin(ta) * tr * 0.8);
+      bhx.lineTo(cx + Math.cos(p.a) * p.r, cy + Math.sin(p.a) * p.r * 0.8);
+      bhx.stroke();
+    }
+    bhx.globalAlpha = 1;
+    requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
+}
+async function blackHole(swap) {
+  const bh = $("#bh"), core = $("#bhCore"), stage = $("#stage");
+  document.body.classList.add("warping");
+  const clean = () => { core.getAnimations().forEach(a => a.cancel()); stage.getAnimations().forEach(a => a.cancel()); document.body.classList.remove("warping"); };
+  if (reduceMotion) {
+    await stage.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 300, fill: "forwards" }).finished;
+    swap();
+    await stage.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 400, fill: "forwards" }).finished;
+    clean(); return;
+  }
+  bh.classList.add("on"); bhStart();
+  core.animate([{ transform: "scale(0) rotate(0deg)", opacity: 0 }, { transform: "scale(1) rotate(60deg)", opacity: 1 }],
+    { duration: 1000, easing: "cubic-bezier(.16,1,.3,1)", fill: "forwards" });
+  await wait(650);
+  await stage.animate([
+    { transform: "scale(1) rotate(0deg)", filter: "blur(0px)", opacity: 1 },
+    { transform: "scale(.03) rotate(-720deg)", filter: "blur(5px)", opacity: 0 }
+  ], { duration: 1500, easing: "cubic-bezier(.55,0,.9,.45)", fill: "forwards" }).finished;
+  swap();
+  const p1 = core.animate([{ transform: "scale(1) rotate(60deg)", opacity: 1 }, { transform: "scale(2.4) rotate(200deg)", opacity: 0 }],
+    { duration: 1100, easing: "ease-out", fill: "forwards" }).finished;
+  const p2 = stage.animate([
+    { transform: "scale(.04) rotate(540deg)", filter: "blur(5px)", opacity: 0 },
+    { transform: "scale(1) rotate(0deg)", filter: "blur(0px)", opacity: 1 }
+  ], { duration: 1200, easing: "cubic-bezier(.16,1,.3,1)", fill: "forwards" }).finished;
+  await Promise.all([p1, p2]);
+  bhRun = false; bh.classList.remove("on"); clean();
+}
+
+// ---- iris / warp between other screens ----
+async function iris(prev, next, swap) {
+  if (reduceMotion) { swap(); return; }
+  const ring = $("#irisRing");
+  const outEl = prev === "explore" ? null : $("#scr-" + prev);
+  ring.classList.add("on");
+  ring.animate([{ width: "12px", height: "12px", opacity: 0.95 }, { width: "2600px", height: "2600px", opacity: 0 }],
+    { duration: 900, easing: "cubic-bezier(.2,.7,.2,1)" }).finished.then(() => ring.classList.remove("on"), () => ring.classList.remove("on"));
+  if (outEl) {
+    await outEl.animate([
+      { opacity: 1, transform: "scale(1)", filter: "blur(0px)" },
+      { opacity: 0, transform: "scale(.92)", filter: "blur(6px)" }
+    ], { duration: 300, easing: "ease-in", fill: "forwards" }).finished;
+  }
+  swap();
+  if (outEl) outEl.getAnimations().forEach(a => a.cancel());
+  if (next === "explore") {
+    await worldEl.animate([{ opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)" }],
+      { duration: 800, easing: "cubic-bezier(.2,.8,.2,1)" }).finished;
+  } else {
+    await $("#scr-" + next).animate([
+      { clipPath: "circle(0% at 50% 50%)", opacity: 0.2, transform: "scale(1.08)" },
+      { clipPath: "circle(75% at 50% 50%)", opacity: 1, transform: "scale(1)" }
+    ], { duration: 800, easing: "cubic-bezier(.2,.8,.2,1)" }).finished;
+  }
+}
+
+let toastTimer;
+function toast(msg) {
+  const el = $("#toast"); el.textContent = msg; el.classList.add("show");
+  clearTimeout(toastTimer); toastTimer = setTimeout(() => el.classList.remove("show"), 2600);
+}
+
+// ---- SOFTWARE: lessons are discovered from Supabase (no extra table, no hardcoded questions) ----
+// Any quiz_questions row whose quiz_name starts with "Software - " becomes a lesson.
+// Lessons are sorted by quiz_name; 3 lessons per level (max 3 levels x 3 lessons = 9).
+const SOFTWARE_PREFIX = "Software - ";
+let SW_LESSONS = null;   // [{ quiz, level, n, title }]
+async function loadSoftwareLessons() {
+  if (SW_LESSONS) return SW_LESSONS;
+  const headers = { "apikey": SUPABASE_KEY };
+  if (SUPABASE_KEY.indexOf("eyJ") === 0) headers["Authorization"] = "Bearer " + SUPABASE_KEY;
+  const res = await fetch(SUPABASE_URL + "/rest/v1/quiz_questions?select=quiz_name&quiz_name=like." +
+    encodeURIComponent(SOFTWARE_PREFIX + "*") + "&order=quiz_name.asc&limit=2000", { headers });
+  if (!res.ok) throw new Error("Software lessons HTTP " + res.status + " " + await res.text().catch(() => ""));
+  const rows = await res.json(), names = [];
+  for (const r of rows) if (r.quiz_name && names.indexOf(r.quiz_name) < 0) names.push(r.quiz_name);
+  SW_LESSONS = names.slice(0, 9).map((q, i) => {
+    const ti = q.slice(SOFTWARE_PREFIX.length);
+    return { quiz: q, level: Math.floor(i / 3) + 1, n: i % 3 + 1, title: { en: ti, ar: ti } };
+  });
+  return SW_LESSONS;
+}
+function applyMission(id) {
+  SPECIALIZATION = id;
+  if (id === "robotics") {
+    LEVEL = ROBOTICS_CFG.LEVEL; LESSON = ROBOTICS_CFG.LESSON; QUIZ_NAME = ROBOTICS_CFG.QUIZ_NAME; MISSION_SUBJECT = ROBOTICS_CFG.MISSION_SUBJECT;
+  } else {
+    LEVEL = 0; LESSON = 0; QUIZ_NAME = ""; MISSION_SUBJECT = { en: "Software", ar: "البرمجيات" };
+  }
+}
+function lessonsFor() {
+  if (SPECIALIZATION !== "software") return LESSONS;
+  return LESSONS.map(l => {
+    const m = (SW_LESSONS || []).find(x => x.level === LEVEL && x.n === l.n);
+    return { n: l.n, rgb: l.rgb, title: m ? m.title : null };
+  });
+}
+const levelActive = n => SPECIALIZATION === "software" ? (SW_LESSONS || []).some(x => x.level === n) : n === LEVEL;
+const lessonActive = l => SPECIALIZATION === "software" ? !!l.title : l.n === LESSON;
+
+// ---- SOFTWARE LESSON (shown before the quiz) + Python practice ----
+// Content comes from the Supabase table "software_lessons" (row per quiz_name). DEFAULT_LESSONS is only a fallback.
+const DEFAULT_LESSONS = {"Software - Python - Loops & Debugging": {"content_en": "## What is a loop?\nA loop repeats code, so you don't have to write it again and again.\n\n```\nfor i in range(1, 4):\n    print(i)\n```\nThis prints 1, 2, 3. Note that range(1, 4) stops BEFORE 4.\n\n## The while loop\n```\nn = 3\nwhile n > 0:\n    print(n)\n    n = n - 1\n```\nA while loop keeps running as long as its condition is True. If the condition never becomes False, the loop never ends (an infinite loop).\n\n## Debugging: the 4 classic bugs\n1. Missing colon : after for / while / if.\n2. Wrong indentation: the code inside the loop must be indented.\n3. Off-by-one: range(1, 5) gives 1, 2, 3, 4 - not 5.\n4. Infinite loop: forgetting to change the variable inside a while loop.\n\nTip: read the error message from the bottom. It tells you the line number and what is wrong.", "content_ar": "## ما هي الحلقة (Loop)؟\nالحلقة تكرّر الكود بدل ما نكتبه مرات كثيرة.\n\n```\nfor i in range(1, 4):\n    print(i)\n```\nيطبع 1 ثم 2 ثم 3. لاحظ أن range(1, 4) تتوقف قبل الرقم 4.\n\n## حلقة while\n```\nn = 3\nwhile n > 0:\n    print(n)\n    n = n - 1\n```\nحلقة while تستمر طالما الشرط صحيح (True). لو لم يصبح الشرط False أبدًا فلن تنتهي الحلقة (حلقة لا نهائية).\n\n## تصحيح الأخطاء: ٤ أخطاء شائعة\n1. نسيان النقطتين : بعد for / while / if.\n2. المسافة البادئة (Indentation) خاطئة: الكود داخل الحلقة لازم يكون مُزاحًا.\n3. خطأ الواحد (Off-by-one): range(1, 5) تعطي 1, 2, 3, 4 وليس 5.\n4. حلقة لا نهائية: نسيان تغيير المتغير داخل while.\n\nنصيحة: اقرأ رسالة الخطأ من الأسفل، فهي تخبرك برقم السطر والمشكلة.", "task_en": "Fix the 3 bugs so the program prints the numbers 1 to 5 (each on its own line), then prints Done. Then press Run.", "task_ar": "أصلح الأخطاء الثلاثة ليطبع البرنامج الأرقام من 1 إلى 5 (كل رقم في سطر)، ثم يطبع Done. بعدها اضغط تشغيل.", "starter_code": "# Fix the bugs!\nfor i in range(1, 5)\nprint(i)\nprint(\"Done\")\n", "expected_output": "1\n2\n3\n4\n5\nDone", "must_contain": "for,range"}};
+const LESSON_CACHE = {};
+let CUR_LESSON = null;
+async function loadLessonContent(q) {
+  if (q in LESSON_CACHE) return LESSON_CACHE[q];
+  let row = null;
+  try {
+    const headers = { "apikey": SUPABASE_KEY };
+    if (SUPABASE_KEY.indexOf("eyJ") === 0) headers["Authorization"] = "Bearer " + SUPABASE_KEY;
+    const res = await fetch(SUPABASE_URL + "/rest/v1/software_lessons?select=*&limit=1&quiz_name=eq." + encodeURIComponent(q), { headers });
+    if (res.ok) { const rows = await res.json(); if (rows && rows[0]) row = rows[0]; }
+  } catch (e) { console.warn("[CANTRICK] software_lessons fetch failed:", e); }
+  return (LESSON_CACHE[q] = row || DEFAULT_LESSONS[q] || null);
+}
+async function openLesson() {
+  if (SPECIALIZATION !== "software") { go("name"); return; }
+  S.busy = true;
+  try { CUR_LESSON = await loadLessonContent(QUIZ_NAME); } catch (e) { CUR_LESSON = null; }
+  S.busy = false;
+  go(CUR_LESSON ? "learn" : "name");
+}
+function mdLite(txt) {   // "## title", blank line = paragraph, ``` = code block
+  return String(txt || "").split(/```/).map((part, i) => i % 2
+    ? '<pre class="code">' + esc(part.replace(/^(python|py)\n/, "").replace(/^\n|\n$/g, "")) + '</pre>'
+    : part.split(/\n{2,}/).map(b => b.trim()).filter(Boolean).map(b => b.indexOf("## ") === 0 ? "<h3>" + esc(b.slice(3)) + "</h3>" : "<p>" + esc(b).replace(/\n/g, "<br>") + "</p>").join("")).join("");
+}
+function renderLearn(reset) {
+  const c = CUR_LESSON; if (!c) return;
+  $("#lnMission").textContent = missionTitle();
+  const ls = lessonData(); $("#lnTitle").textContent = ls && ls.title ? L(ls.title) : "";
+  $("#lnBody").innerHTML = mdLite(c["content_" + S.lang] || c.content_en || c.content_ar);
+  $("#lnTask").textContent = c["task_" + S.lang] || c.task_en || c.task_ar || "";
+  $("#lnPractice").hidden = !(c.starter_code || c.task_en || c.task_ar);
+  if (reset) {
+    $("#pyCode").value = c.starter_code || "";
+    $("#pyOut").textContent = ""; $("#pyOut").className = "code pyout";
+    $("#pyRes").textContent = ""; $("#pyRes").className = "pr-res";
+  }
+}
+let pyodideP = null;
+function getPyodide() {
+  if (pyodideP) return pyodideP;
+  pyodideP = new Promise((res, rej) => {
+    const sc = document.createElement("script");
+    sc.src = "https://cdn.jsdelivr.net/pyodide/v0.26.4/full/pyodide.js";
+    sc.onload = () => loadPyodide().then(res, rej);
+    sc.onerror = () => rej(new Error("Pyodide script failed to load"));
+    document.head.appendChild(sc);
+  }).catch(e => { pyodideP = null; throw e; });
+  return pyodideP;
+}
+const PY_RUNNER = `
+import sys, io, json, time, traceback
+__buf = io.StringIO(); __o, __e = sys.stdout, sys.stderr
+sys.stdout = sys.stderr = __buf
+__err = ""; __t0 = time.time()
+def __tr(frame, event, arg):
+    if time.time() - __t0 > 4:
+        raise TimeoutError("Your program ran for too long - is there an infinite loop?")
+    return __tr
+try:
+    __code = compile(__src, "<your code>", "exec")
+    sys.settrace(__tr)
+    exec(__code, {"__name__": "__main__"})
+except BaseException:
+    __err = traceback.format_exc()
+finally:
+    sys.settrace(None)
+    sys.stdout, sys.stderr = __o, __e
+json.dumps([__buf.getvalue(), __err])
+`;
+function cleanTb(err) {   // hide the runner's own frames, keep the student's line + error
+  const a = err.trim().split("\n"), out = [];
+  for (let i = 0; i < a.length; i++) {
+    if (/File "<exec>"/.test(a[i])) { while (i + 1 < a.length && /^ {4}/.test(a[i + 1])) i++; continue; }
+    if (a[i].indexOf("Traceback (most") < 0) out.push(a[i]);
+  }
+  return out.join("\n");
+}
+async function runPython() {
+  const out = $("#pyOut"), res = $("#pyRes"), btn = $("#pyRun"), code = $("#pyCode").value;
+  btn.disabled = true; out.className = "code pyout"; res.className = "pr-res"; res.textContent = "";
+  out.textContent = t(pyodideP ? "py_running" : "py_loading");
+  try {
+    const py = await getPyodide();
+    out.textContent = t("py_running");
+    py.globals.set("__src", code);
+    const [so, err] = JSON.parse(await py.runPythonAsync(PY_RUNNER));
+    out.textContent = so + (err ? (so ? "\n" : "") + cleanTb(err) : "");
+    out.classList.toggle("err", !!err);
+    if (err) return;
+    const c = CUR_LESSON, exp = (c.expected_output || "").replace(/\r/g, "").trim();
+    const must = (c.must_contain || "").split(",").map(x => x.trim()).filter(Boolean);
+    const okOut = !exp || so.replace(/\r/g, "").trim() === exp;
+    const missing = must.filter(w => code.indexOf(w) < 0);
+    if (okOut && !missing.length) { res.textContent = (exp || must.length) ? t("py_ok") : t("py_done"); res.classList.add("ok"); }
+    else { res.textContent = !okOut ? t("py_bad") + "\n" + exp : t("py_need") + " " + missing.join(", "); res.classList.add("no"); }
+  } catch (e) {
+    console.warn("[CANTRICK] Python run failed:", e);
+    out.textContent = t("py_fail"); out.classList.add("err");
+  } finally { btn.disabled = false; }
+}
+
+// ---- screen renderers: levels / lessons / name / launch ----
+function headHTML(subKey) {
+  const s = spec(), other = S.lang === "en" ? "ar" : "en";
+  return '<div class="spec-badge">' + glyphSVG(s.id, "") + '</div>' +
+    '<div class="spec-name trk">' + esc(s.name[S.lang]) + '</div>' +
+    '<div class="spec-alt">' + esc(s.name[other]) + '</div>' +
+    '<div class="spec-cta">' + t(subKey) + '</div>';
+}
+function nodeHTML(kind, item, active, i) {
+  const sub = kind === "lesson" && item.title ? '<span class="node-sub">' + esc(L(item.title)) + '</span>' : "";
+  return '<button class="node ' + (active ? "active" : "locked") + '" data-kind="' + kind + '" data-n="' + item.n +
+    '" style="--i:' + i + ';--cr:' + item.rgb + ';--c:rgb(' + item.rgb + ')" aria-disabled="' + (!active) + '">' +
+    '<span class="orb">' + (active ? "" : LOCK) + '</span>' +
+    '<span class="node-title">' + t(kind) + ' ' + item.n + '</span>' + sub +
+    '<span class="node-state">' + (active ? t("active") : t("locked")) + '</span></button>';
+}
+function renderLevels(stat) {
+  const spc = spec();
+  const head = $("#levelsHead"); head.style.setProperty("--c", spc.color); head.style.setProperty("--cr", spc.rgb);
+  head.innerHTML = headHTML("choose_mission");
+  const box = $("#levelCards"); box.classList.toggle("static", !!stat);
+  box.innerHTML = LEVELS.map((l, i) => nodeHTML("level", l, levelActive(l.n), i)).join("");
+}
+function renderLessons(stat) {
+  const spc = spec();
+  const head = $("#lessonsHead"); head.style.setProperty("--c", spc.color); head.style.setProperty("--cr", spc.rgb);
+  head.innerHTML = headHTML("choose_lesson");
+  const box = $("#lessonCards"); box.classList.toggle("static", !!stat);
+  box.innerHTML = lessonsFor().map((l, i) => nodeHTML("lesson", l, lessonActive(l), i)).join("");
+}
+function missionTitle() {
+  return L(MISSION_SUBJECT) + " - " + t("level") + " " + LEVEL + " - " + t("lesson") + " " + LESSON;
+}
+function renderName() {
+  $("#nameMission").textContent = missionTitle();
+  const ls = lessonData(); $("#nameTopic").textContent = ls && ls.title ? L(ls.title) : "";
+}
+function renderLaunch() {
+  $("#launchName").textContent = S.name;
+  $("#launchMission").textContent = missionTitle();
+}
+async function runCountdown() {
+  const el = $("#count"), token = ++S.launchToken;
+  for (const n of [3, 2, 1]) {
+    if (token !== S.launchToken) return;
+    el.textContent = n; el.classList.remove("pop"); void el.offsetWidth; el.classList.add("pop");
+    await wait(reduceMotion ? 500 : 750);
+  }
+  if (token !== S.launchToken || S.screen !== "launch") return;
+  startQuiz();
+  go("quiz", "iris", true);
+}
+function updateCrumbs() {
+  const parts = [];
+  if (["levels", "lessons", "learn", "name", "launch", "quiz", "result"].indexOf(S.screen) > -1) parts.push(spec().name[S.lang]);
+  if (["lessons", "learn", "name", "launch", "quiz", "result"].indexOf(S.screen) > -1) parts.push(t("level") + " " + LEVEL);
+  if (["learn", "name", "launch", "quiz", "result"].indexOf(S.screen) > -1) parts.push(t("lesson") + " " + LESSON);
+  $("#crumbs").innerHTML = parts.map(p => '<span class="c">' + esc(p) + '</span>').join('<span class="sep"></span>');
+}
+function bindScreenInput() {
+  document.addEventListener("click", e => {
+    const node = e.target.closest && e.target.closest(".node");
+    if (!node || S.busy) return;
+    if (node.classList.contains("locked")) {
+      node.classList.remove("shake"); void node.offsetWidth; node.classList.add("shake");
+      toast(t("locked_toast")); return;
+    }
+    if (node.dataset.kind === "level") { LEVEL = +node.dataset.n; go("lessons"); }
+    else {
+      LESSON = +node.dataset.n;
+      if (SPECIALIZATION === "software") QUIZ_NAME = SW_LESSONS.find(x => x.level === LEVEL && x.n === LESSON).quiz;
+      openLesson();
+    }
+  });
+  $("#backBtn").addEventListener("click", () => {
+    const back = { levels: "explore", lessons: "levels", learn: "lessons", name: (SPECIALIZATION === "software" && CUR_LESSON) ? "learn" : "lessons" }[S.screen];
+    if (back) go(back);
+  });
+  $("#startBtn").addEventListener("click", submitName);
+  $("#lnNext").addEventListener("click", () => go("name"));
+  $("#pyRun").addEventListener("click", runPython);
+  $("#pyReset").addEventListener("click", () => renderLearn(true));
+  $("#pyCode").addEventListener("keydown", e => { if (e.key === "Tab") { e.preventDefault(); e.target.setRangeText("    ", e.target.selectionStart, e.target.selectionEnd, "end"); } });
+  $("#nameInput").addEventListener("keydown", e => { if (e.key === "Enter") { e.preventDefault(); submitName(); } });
+  $("#nameInput").addEventListener("input", () => { $("#nameInput").classList.remove("err"); $("#nameErr").textContent = ""; });
+  $("#qCard").addEventListener("click", e => {
+    const opt = e.target.closest(".opt"); if (opt) { answer(+opt.dataset.i); return; }
+    if (e.target.closest("#nextBtn")) nextQuestion();
+  });
+  $("#retryBtn").addEventListener("click", saveResult);
+  $("#againBtn").addEventListener("click", () => { if (S.busy) return; startQuiz(); go("launch"); });
+  $("#homeBtn").addEventListener("click", () => go("explore"));
+}
+async function submitName() {
+  if (S.busy) return;
+  const v = $("#nameInput").value.trim().replace(/\s+/g, " ");
+  if (!v) {
+    const i = $("#nameInput"); i.classList.remove("err"); void i.offsetWidth; i.classList.add("err");
+    $("#nameErr").textContent = t("name_err"); i.focus(); return;
+  }
+  S.name = v;
+  const startBtn = $("#startBtn");
+  const oldText = startBtn.textContent;
+  startBtn.disabled = true;
+  startBtn.textContent = t("loading_questions");
+  try {
+    await loadQuestionsFromSupabase();
+    if (!QUESTIONS.length) throw new Error("No questions available");
+    startQuiz();
+    await go("launch");
+  } catch (e) {
+    console.warn("[CANTRICK] Question Bank load failed:", e);
+    $("#nameErr").textContent = t("question_load_error");
+    toast(t("question_load_error"));
+  } finally {
+    startBtn.disabled = false;
+    startBtn.textContent = oldText;
+  }
+}
+
+// ========================================
+// 9. QUIZ ENGINE
+// ========================================
+function startQuiz() {
+  S.qi = 0; S.score = 0; S.answers = new Array(TOTAL).fill(null); S.saveState = "idle";
+}
+function renderQuiz(mode) {
+  const q = QUESTIONS[S.qi], picked = S.answers[S.qi];
+  $("#qLabel").innerHTML = t("mission_word") + ' <bdi dir="ltr">' + pad2(S.qi + 1) + " / " + pad2(TOTAL) + "</bdi>";
+  updateQuizHeader();
+  const opts = q.options.map((o, i) => {
+    let cls = "";
+    if (picked !== null) cls = i === q.correct ? " ok" : (i === picked ? " bad" : " dim");
+    return '<button class="opt' + (q.codeOptions ? " code-o" : "") + cls + '" data-i="' + i + '" style="--i:' + i + '"' + (picked !== null ? " disabled" : "") + '>' +
+      '<span class="ltr">' + LETTERS[S.lang][i] + '</span><span class="otxt">' + esc(L(o)) + '</span></button>';
+  }).join("");
+  const card = $("#qCard");
+  card.innerHTML =
+    '<div class="q-text">' + esc(L(q.q)) + '</div>' +
+    (q.code ? '<pre class="code">' + esc(q.code) + '</pre>' : "") +
+    '<div class="opts">' + opts + '</div><div class="fb" id="fb"></div>';
+  card.className = mode === "pre" ? "qcard pre" : "qcard";
+  if (mode === "enter") { void card.offsetWidth; card.className = "qcard enter"; }
+  if (picked !== null) showFeedback(q, picked);
+}
+function playCardIn() {
+  const card = $("#qCard");
+  card.className = "qcard"; void card.offsetWidth; card.className = "qcard enter";
+  setTimeout(() => card.classList.remove("enter"), 1400);
+}
+function updateQuizHeader() {
+  $("#qScore").innerHTML = t("score_word") + " <bdi dir=\"ltr\">" + S.score + "</bdi>";
+  let h = "";
+  for (let i = 0; i < TOTAL; i++) {
+    let c = "";
+    if (S.answers[i] !== null) c = S.answers[i] === QUESTIONS[i].correct ? "ok" : "bad";
+    else if (i === S.qi) c = "cur";
+    h += '<span class="tn ' + c + '"></span>';
+    if (i < TOTAL - 1) h += '<span class="tl' + (S.answers[i] !== null ? " done" : "") + '"></span>';
+  }
+  $("#track").innerHTML = h;
+}
+function showFeedback(q, picked) {
+  const ok = picked === q.correct, fb = $("#fb");
+  fb.className = "fb show " + (ok ? "ok" : "bad");
+  fb.innerHTML =
+    '<div class="fb-head ' + (ok ? "ok" : "bad") + '">' + (ok ? CHECK : CROSS) + "<strong>" + t(ok ? "correct" : "wrong") + "</strong></div>" +
+    (ok ? "" : '<p class="fb-ans">' + t("correct_is") + ' <span' + (q.codeOptions ? ' dir="ltr" class="mono"' : "") + ">" + esc(L(q.options[q.correct])) + "</span></p>") +
+    '<p class="fb-why">' + esc(L(q.why)) + "</p>" +
+    '<div class="fb-actions"><button class="cta" id="nextBtn">' + t(S.qi === TOTAL - 1 ? "finish" : "next") + "</button></div>";
+}
+function answer(i) {
+  if (S.busy || S.screen !== "quiz") return;
+  const q = QUESTIONS[S.qi];
+  if (S.answers[S.qi] !== null || !q.options[i]) return;
+  S.answers[S.qi] = i;
+  if (i === q.correct) S.score++;
+  $$("#qCard .opt").forEach((el, idx) => {
+    el.disabled = true;
+    el.classList.add(idx === q.correct ? "ok" : (idx === i ? "bad" : "dim"));
+  });
+  updateQuizHeader();
+  showFeedback(q, i);
+  const nb = $("#nextBtn");
+  if (nb) { nb.focus({ preventScroll: true }); nb.scrollIntoView({ behavior: "smooth", block: "nearest" }); }
+}
+async function nextQuestion() {
+  if (S.busy || S.answers[S.qi] === null) return;
+  if (S.qi >= TOTAL - 1) { go("result"); return; }
+  S.busy = true;
+  const card = $("#qCard");
+  card.classList.remove("enter"); card.classList.add("leaving");
+  await wait(300);
+  S.qi++;
+  S.busy = false;
+  renderQuiz("enter");
+  setTimeout(() => card.classList.remove("enter"), 1400);
+}
+
+// ---- result ----
+function perfKey(score, total) {
+  const p = score / total;
+  return p === 1 ? "perf_4" : p >= 0.8 ? "perf_3" : p >= 0.5 ? "perf_2" : "perf_1";
+}
+function renderResult(final) {
+  $("#resName").textContent = S.name;
+  $("#gTot").textContent = TOTAL;
+  $("#resMsg").textContent = t(perfKey(S.score, TOTAL));
+  const panel = $("#resultPanel");
+  if (final === true) {
+    panel.classList.remove("pre");
+    $("#gVal").textContent = S.score;
+    $("#gaugeFg").style.strokeDashoffset = 339.3 * (1 - S.score / TOTAL);
+  } else {
+    panel.classList.add("pre");
+    $("#gVal").textContent = "0";
+    $("#gaugeFg").style.transition = "none";
+    $("#gaugeFg").style.strokeDashoffset = 339.3;
+  }
+  updateSaveUI();
+}
+function playResult() {
+  const panel = $("#resultPanel"), fg = $("#gaugeFg");
+  panel.classList.remove("pre");
+  void fg.getBoundingClientRect();
+  fg.style.transition = "stroke-dashoffset 1.6s cubic-bezier(.2,.8,.2,1)";
+  fg.style.strokeDashoffset = 339.3 * (1 - S.score / TOTAL);
+  const val = $("#gVal"), dur = 1400, t0 = performance.now();
+  const tick = now => {
+    const p = clamp((now - t0) / dur, 0, 1);
+    val.textContent = Math.round(S.score * (1 - Math.pow(1 - p, 3)));
+    if (p < 1) requestAnimationFrame(tick);
+  };
+  requestAnimationFrame(tick);
+  const gauge = $("#gauge"); $$(".spark", gauge).forEach(n => n.remove());
+  const n = 8 + S.score * 3, cols = ["#8A6BFF", "#00C2FF", "#FFC83D", "#F5F7FB"];
+  for (let i = 0; i < n; i++) {
+    const a = Math.random() * 6.283, d = 90 + Math.random() * 110, sp = document.createElement("i");
+    sp.className = "spark";
+    sp.style.cssText = "--dx:" + Math.cos(a) * d + "px;--dy:" + Math.sin(a) * d + "px;background:" + cols[i % 4] + ";animation-delay:" + (0.5 + Math.random() * 0.5) + "s";
+    gauge.appendChild(sp);
+  }
+  saveResult();
+}
+
+// ========================================
+// LANGUAGE (instant switch, no reload)
+// ========================================
+function applyI18n() {
+  $$("[data-i18n]").forEach(el => { el.textContent = t(el.dataset.i18n); });
+  $$("[data-i18n-ph]").forEach(el => { el.placeholder = t(el.dataset.i18nPh); });
+}
+function setLang(l) {
+  S.lang = l;
+  document.documentElement.lang = l;
+  document.documentElement.dir = l === "ar" ? "rtl" : "ltr";
+  try { localStorage.setItem("cantrick_lang", l); } catch (e) {}
+  $("#langAr").classList.toggle("on", l === "ar");
+  $("#langEn").classList.toggle("on", l === "en");
+  applyI18n(); updateStationText(); updateCrumbs();
+  if (S.screen === "levels") renderLevels(true);
+  if (S.screen === "lessons") renderLessons(true);
+  if (S.screen === "levels" || S.screen === "lessons") focusActiveNode();
+  if (S.screen === "learn") renderLearn(false);
+  if (S.screen === "name") renderName();
+  if (S.screen === "launch") renderLaunch();
+  if (S.screen === "quiz") renderQuiz("static");
+  if (S.screen === "result") { renderResult(true); }
+}
+
+// ========================================
+// BOOT
+// ========================================
+let lastT = performance.now();
+function frame(now) {
+  const dt = Math.min(0.05, (now - lastT) / 1000); lastT = now;
+  if (S.screen === "explore" && !S.busy) { stepHero(dt); updateWorld(dt); }
+  else if (S.screen !== "explore") drift += dt * 14;
+  drawStars(now);
+  requestAnimationFrame(frame);
+}
+function boot() {
+  let lang = (navigator.language || "").toLowerCase().indexOf("ar") === 0 ? "ar" : "en";
+  try { const saved = localStorage.getItem("cantrick_lang"); if (saved === "ar" || saved === "en") lang = saved; } catch (e) {}
+  buildStations();
+  resizeStars();
+  addEventListener("resize", resizeStars);
+  bindMovementInput();
+  bindScreenInput();
+  $("#langAr").addEventListener("click", () => setLang("ar"));
+  $("#langEn").addEventListener("click", () => setLang("en"));
+  setLang(lang);
+  updateWorld(0.016);
+  requestAnimationFrame(frame);
+}
+boot();
+</script>
+</body>
+</html>
