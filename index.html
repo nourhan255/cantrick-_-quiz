@@ -314,6 +314,10 @@ body:not([data-screen="levels"]):not([data-screen="lessons"]):not([data-screen="
 .l-name{margin-top:8px;font-weight:900;font-size:clamp(24px,4.4vh,40px)}
 .l-mission{margin-top:6px;opacity:.75;font-weight:700}
 
+
+.answer-wrap.big-code-answer{gap:14px}
+.answer-wrap.big-code-answer .code-answer{min-height:360px;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:14px;line-height:1.6}
+.code-answer{width:100%;resize:vertical}
 /* quiz */
 .quiz{width:min(880px,100%);display:flex;flex-direction:column;gap:14px;perspective:1300px}
 .q-top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
@@ -353,6 +357,11 @@ body:not([data-screen="levels"]):not([data-screen="lessons"]):not([data-screen="
 .opt.bad{border-color:var(--bad);background:rgba(255,92,122,.15);box-shadow:0 0 26px rgba(255,92,122,.35);animation:shake .45s}
 .opt.bad .ltr{background:var(--bad);color:#2a0009}
 .opt.dim{opacity:.45}
+.answer-wrap{display:flex;flex-direction:column;gap:12px;margin-top:18px}
+.code-answer{width:100%;min-height:110px;border:2px solid rgba(138,107,255,.35);border-radius:16px;padding:14px 16px;background:rgba(8,12,28,.72);color:#eef0ff;font:600 16px/1.6 ui-monospace,'SF Mono',Consolas,monospace;resize:vertical;outline:none}
+.code-answer:focus{border-color:var(--cyan);box-shadow:0 0 24px rgba(0,194,255,.16)}
+.answer-submit{align-self:flex-start}
+
 .fb{display:none;margin-top:18px;padding:16px 18px;border-radius:16px}
 .fb.show{display:block;animation:fbIn .45s cubic-bezier(.2,.9,.3,1)}
 @keyframes fbIn{from{opacity:0;transform:translateY(12px)}}
@@ -425,6 +434,45 @@ body:not([data-screen="levels"]):not([data-screen="lessons"]):not([data-screen="
 .pr-bar{display:flex;gap:10px;margin:10px 0;flex-wrap:wrap}.pr-bar .cta{padding:10px 22px;font-size:15px}
 .pyout{min-height:52px;margin:0;white-space:pre-wrap;color:#b8f5d0}.pyout.err{color:var(--bad)}
 .pr-res{margin-top:10px;font-weight:800;white-space:pre-wrap}.pr-res.ok{color:var(--ok)}.pr-res.no{color:var(--bad)}
+
+/* ===== SOFTWARE LESSON 3 — MULTI PAGE ===== */
+.sw3-wrap{margin-top:18px}
+.sw3-progress{position:sticky;top:8px;z-index:5;background:rgba(10,8,30,.88);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.12);border-radius:18px;padding:12px 14px;margin-bottom:16px}
+.sw3-progress-top{display:flex;align-items:center;justify-content:space-between;gap:12px;font-weight:800}
+.sw3-progress-track{height:7px;border-radius:99px;background:rgba(255,255,255,.1);overflow:hidden;margin-top:9px}
+.sw3-progress-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,#00c2ff,#8a6bff);transition:width .3s ease}
+.sw3-page{display:none;animation:sw3in .3s ease}
+.sw3-page.active{display:block}
+@keyframes sw3in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.sw3-content{background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:clamp(18px,3vw,30px)}
+.sw3-content h1,.sw3-content h2{margin-top:0;color:#fff}
+.sw3-content h2{font-size:clamp(20px,3vw,28px);margin-top:28px}
+.sw3-content h3{color:#9bdfff;margin-top:25px}
+.sw3-content p{line-height:1.9;margin:12px 0}
+.sw3-content blockquote{margin:16px 0;padding:14px 18px;border-right:4px solid #8a6bff;background:rgba(138,107,255,.09);border-radius:12px}
+.sw3-content pre.sw3-code{direction:ltr;text-align:left;position:relative;background:#10101b;color:#e9ecff;border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:16px;overflow:auto;line-height:1.6;margin:14px 0}
+.sw3-copy{position:absolute;top:8px;right:8px;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.08);color:#fff;border-radius:9px;padding:5px 9px;cursor:pointer;font-size:12px}
+.sw3-copy:hover{background:rgba(255,255,255,.15)}
+.sw3-content code.sw3-inline{direction:ltr;display:inline-block;background:rgba(0,194,255,.1);border:1px solid rgba(0,194,255,.18);padding:1px 6px;border-radius:6px}
+.sw3-content ul,.sw3-content ol{padding-inline-start:28px;line-height:1.9}
+.sw3-content table{width:100%;border-collapse:collapse;margin:14px 0}
+.sw3-content th,.sw3-content td{border:1px solid rgba(255,255,255,.14);padding:9px;text-align:start}
+.sw3-nav{display:flex;gap:10px;margin-top:16px}
+.sw3-nav button{flex:1}
+.sw3-nav .sw3-next{flex:1.5}
+.sw3-page-dot{display:inline-flex;width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.2);margin-inline:3px}
+.sw3-page-dot.active{background:#00c2ff;box-shadow:0 0 10px #00c2ff}
+
+</style>
+
+<style>
+.photo-panel{text-align:center;max-width:720px;margin:auto}
+.photo-sub{color:var(--muted);max-width:560px;margin:8px auto 20px;line-height:1.8}
+.upload-box{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;min-height:190px;border:2px dashed rgba(255,200,61,.75);border-radius:22px;background:rgba(255,200,61,.07);cursor:pointer;padding:24px;transition:.2s}
+.upload-box:hover{transform:translateY(-2px);border-color:#FFC83D;background:rgba(255,200,61,.11)}
+.upload-box span{color:var(--muted);font-size:.85rem}.upload-icon{font-size:3rem}.photo-preview-wrap{margin:16px 0}.photo-preview{display:block;max-width:100%;max-height:360px;margin:0 auto 12px;border-radius:18px;border:2px solid rgba(255,255,255,.12);object-fit:contain}
+.photo-preview-wrap img{display:block;max-width:100%;max-height:360px;margin:0 auto 12px;border-radius:18px;object-fit:contain}
+#resultProjectPhoto{display:block;max-width:100%;max-height:300px;margin:18px auto;border-radius:18px;object-fit:contain;border:2px solid rgba(255,255,255,.1)}
 </style>
 </head>
 <body data-screen="explore" class="intro-on">
@@ -522,6 +570,8 @@ body:not([data-screen="levels"]):not([data-screen="lessons"]):not([data-screen="
         <span class="chip" id="lnMission"></span>
         <h1 class="h1" id="lnTitle"></h1>
         <div class="lesson" id="lnBody"></div>
+        <div id="softwareLesson3Pages" style="display:none"></div>
+        <iframe id="roboticsLesson3Frame" title="Smart Garage Lesson" style="display:none;width:100%;height:900px;border:0;border-radius:20px;background:#fff"></iframe>
         <div class="practice" id="lnPractice">
           <div class="pr-h" data-i18n="practice_title"></div>
           <div class="pr-task" id="lnTask"></div>
@@ -554,6 +604,27 @@ body:not([data-screen="levels"]):not([data-screen="lessons"]):not([data-screen="
       </div>
     </div></section>
 
+    <!-- PROJECT PHOTO -->
+    <section class="screen" id="scr-photo"><div class="wrap">
+      <div class="panel photo-panel">
+        <span class="chip">PROJECT PROOF</span>
+        <h1 class="h1">📸 صورة مشروعك</h1>
+        <p class="photo-sub">بعد ما خلصت الاختبار، ارفع صورة الجراج الذكي اللي بنيته. الصورة هتظهر مع نتيجتك.</p>
+        <label class="upload-box" for="projectPhotoInput">
+          <input id="projectPhotoInput" type="file" accept="image/png,image/jpeg,image/webp" hidden>
+          <div class="upload-icon">📷</div>
+          <strong id="photoPickText">اختار صورة المشروع</strong>
+          <span>JPG / PNG / WEBP</span>
+        </label>
+        <div id="photoPreviewWrap" class="photo-preview-wrap" hidden>
+          <img id="photoPreview" alt="Project preview">
+          <button type="button" class="cta ghost" id="photoChangeBtn">تغيير الصورة</button>
+        </div>
+        <div class="errmsg" id="photoErr"></div>
+        <button class="cta gold block" id="photoContinueBtn" disabled>🏆 عرض النتيجة</button>
+      </div>
+    </div></section>
+
     <!-- RESULT -->
     <section class="screen" id="scr-result"><div class="wrap">
       <div class="panel result pre" id="resultPanel">
@@ -564,7 +635,7 @@ body:not([data-screen="levels"]):not([data-screen="lessons"]):not([data-screen="
           <svg viewBox="0 0 120 120"><circle class="bgc" cx="60" cy="60" r="54"/><circle class="fgc" id="gaugeFg" cx="60" cy="60" r="54"/></svg>
           <div class="gauge-in"><div class="g-lbl" data-i18n="score_word"></div><div class="g-val"><span id="gVal">0</span><small> / <span id="gTot">10</span></small></div></div>
         </div>
-        <p class="res-msg" id="resMsg"></p>
+        <p class="res-msg" id="resMsg"></p><img id="resultProjectPhoto" alt="Project photo" hidden>
         <div class="save" id="saveBox"><span class="dot"></span><span id="saveText"></span><button id="retryBtn" data-i18n="retry" hidden></button></div>
         <div class="res-actions">
           <button class="cta" id="againBtn" data-i18n="replay"></button>
@@ -701,8 +772,8 @@ const LEVELS = [
 // title = null means the lesson has no topic yet (it stays locked)
 const LESSONS = [
   { n: 1, rgb: "0,194,255",   title: { en: "Push Button + LED", ar: "زر الضغط + الليد" } },
-  { n: 2, rgb: "255,200,61",  title: null },
-  { n: 3, rgb: "138,107,255", title: null }
+  { n: 2, rgb: "255,200,61",  title: { en: "Ultrasonic + Servo", ar: "الالتراسونيك + السيرفو" } },
+  { n: 3, rgb: "138,107,255", title: { en: "Smart Garage", ar: "جراج ذكي" } }
 ];
 
 // ========================================
@@ -828,10 +899,38 @@ const LOCAL_QUESTIONS = [
 let QUESTIONS = LOCAL_QUESTIONS.slice();
 let TOTAL = QUESTIONS.length;
 
+const ROBOTICS_LESSON3_QUESTIONS = [
+  {q:{en:"The car is getting close to the garage. Which part detects that the car is close?",ar:"العربية قربت من الجراج، مين اللي يعرف إن العربية قربت؟"},options:[{en:"Servo Motor",ar:"Servo Motor"},{en:"Ultrasonic Sensor",ar:"Ultrasonic Sensor"},{en:"LED",ar:"LED"},{en:"Buzzer",ar:"Buzzer"}],correct:1,why:{en:"The ultrasonic sensor measures the distance between the sensor and the car.",ar:"حساس الالتراسونيك بيقيس المسافة بين الحساس والعربية."}},
+  {q:{en:"If the car gets closer to the ultrasonic sensor, what happens to the measured distance?",ar:"لو العربية قربت من الـUltrasonic Sensor، قراءة المسافة هتعمل إيه؟"},options:[{en:"It increases",ar:"تزيد"},{en:"It decreases",ar:"تقل"},{en:"It always stays the same",ar:"تفضل ثابتة"},{en:"It becomes an angle",ar:"تتحول لزاوية"}],correct:1,why:{en:"When the car moves closer, the distance between it and the sensor becomes smaller.",ar:"لما العربية تقرب، المسافة بينها وبين الحساس بتقل."}},
+  {q:{en:"What does the Trig pin do on the ultrasonic sensor?",ar:"الـTrig في حساس Ultrasonic بيعمل إيه؟"},options:[{en:"Receives the returning wave",ar:"يستقبل رجوع الموجة"},{en:"Sends the ultrasonic wave",ar:"يرسل الموجة الصوتية"},{en:"Moves the servo",ar:"يحرك السيرفو"},{en:"Prints the distance on Serial Monitor",ar:"يطبع المسافة على Serial Monitor"}],correct:1,why:{en:"Trig starts the ultrasonic measurement by sending a short trigger pulse.",ar:"الـTrig بيبدأ عملية القياس عن طريق إرسال نبضة تشغيل قصيرة للحساس."}},
+  {q:{en:"For the Arduino, the Trig pin is an INPUT or an OUTPUT?",ar:"بالنسبة للأردوينو، الـTrig يعتبر إيه؟"},options:[{en:"INPUT",ar:"INPUT"},{en:"OUTPUT",ar:"OUTPUT"},{en:"Both INPUT and OUTPUT",ar:"INPUT و OUTPUT معًا"},{en:"It is not a pin",ar:"مش Pin"}],correct:1,why:{en:"The Arduino sends the trigger pulse through Trig, so Trig is configured as OUTPUT.",ar:"الأردوينو بيرسل نبضة الـTrigger من خلاله، لذلك الـTrig بيتجهز كـOUTPUT."}},
+  {q:{en:"What does the Echo pin do on the ultrasonic sensor?",ar:"الـEcho في حساس Ultrasonic بيعمل إيه؟"},options:[{en:"Sends the ultrasonic wave",ar:"يرسل الموجة الصوتية"},{en:"Receives the returning echo signal",ar:"يستقبل إشارة رجوع الموجة"},{en:"Moves the servo",ar:"يحرك السيرفو"},{en:"Opens the gate",ar:"يفتح البوابة"}],correct:1,why:{en:"Echo tells the Arduino about the returning pulse so the travel time can be measured.",ar:"الـEcho بيوصل للأردوينو إشارة رجوع الموجة عشان نقدر نقيس زمن الرحلة."}},
+  {type:"text",answer:"pinMode(trigPin, OUTPUT);",q:{en:"🐛 Find the bug. This code has one mistake. What is wrong, and write the correct line instead of the wrong line:",ar:"🐛 اكتشف الخطأ. الكود ده فيه غلطة واحدة. إيه الغلط؟ واكتب السطر الصحيح بدل السطر الغلط:"},code:"const int trigPin = 9;\nconst int echoPin = 10;\n\nvoid setup() {\n  pinMode(trigPin, INPUT);\n  pinMode(echoPin, INPUT);\n}",why:{en:"Trig sends the trigger signal from the Arduino, so it must be OUTPUT. Echo remains INPUT.",ar:"الـTrig بيرسل إشارة التشغيل من الأردوينو، لذلك لازم يكون OUTPUT. أما الـEcho فيظل INPUT."}},
+  {q:{en:"Which command do we use to tell the servo which angle to move to?",ar:"أي أمر بنستخدمه عشان نحدد الزاوية اللي هيروح لها الـServo؟"},options:[{en:"attach()",ar:"attach()"},{en:"write()",ar:"write()"},{en:"pinMode()",ar:"pinMode()"},{en:"digitalWrite()",ar:"digitalWrite()"}],correct:1,why:{en:"write() sets the target angle for the servo.",ar:"write() بتحدد الزاوية المطلوبة للسيرفو."}},
+  {type:"text",answer:"myServo.write(90);",q:{en:"🎯 Complete the servo code. We want myServo to move to 90°. Write the missing line:",ar:"🎯 أكمل كود الـServo. عايزين myServo يتحرك لزاوية 90°. اكتب السطر الناقص:"},code:"#include <Servo.h>\n\nServo myServo;\n\nvoid setup() {\n  myServo.attach(6);\n}\n\nvoid loop() {\n  ______________________\n}",why:{en:"myServo is the Servo object, and write(90) commands it to move to the 90° position.",ar:"myServo هو اسم كائن السيرفو، وwrite(90) بتطلب منه يتحرك لوضع 90 درجة."}},
+  {q:{en:"What does this if condition mean?",ar:"إيه معنى الـif دي؟"},code:"if (distance < 15) {\n  gate.write(90);\n}",options:[{en:"If the distance is greater than 15 cm, open the gate",ar:"لو المسافة أكبر من 15 سم افتح"},{en:"If the distance is less than 15 cm, open the gate",ar:"لو المسافة أقل من 15 سم افتح"},{en:"Open the gate for 15 seconds",ar:"افتح لمدة 15 ثانية"},{en:"Move the servo 15 degrees",ar:"حرّك السيرفو 15 درجة"}],correct:1,why:{en:"The < sign means the distance must be less than 15 cm. Then the gate is told to move to 90°.",ar:"علامة < معناها إن المسافة لازم تكون أقل من 15 سم، وبعدها البوابة تتحرك لـ90 درجة."}},
+  {q:{en:"The car is 10 cm away. What happens with this code?",ar:"العربية على بُعد 10 سم. إيه اللي هيحصل؟"},code:"if (distance < 15) {\n  gate.write(90);\n} else {\n  gate.write(0);\n}",options:[{en:"The gate closes",ar:"البوابة تقفل"},{en:"The gate opens",ar:"البوابة تفتح"},{en:"The sensor stops",ar:"الحساس يتوقف"},{en:"The servo measures the distance",ar:"السيرفو يقيس المسافة"}],correct:1,why:{en:"10 is less than 15, so the if part runs and the gate moves to 90°.",ar:"10 أقل من 15، لذلك جزء if هو اللي هيتنفذ والبوابة تروح لـ90 درجة."}},
+  {type:"text",answer:"Serial.begin(9600);",q:{en:"📟 Write the Serial Monitor setup line. Complete the code so we can start Serial Monitor at 9600:",ar:"📟 اكتب كود الـSerial Monitor. أكمل الكود عشان نبدأ Serial Monitor بسرعة 9600:"},code:"void setup() {\n  __________________________\n}",why:{en:"Serial.begin(9600) starts serial communication at a speed of 9600 bits per second, which matches the Serial Monitor setting.",ar:"Serial.begin(9600) بيبدأ الاتصال التسلسلي بسرعة 9600، ولازم نفس السرعة تتحدد في Serial Monitor."}}
+];
+
+
+const SOFTWARE_LESSON3_QUESTIONS = [
+  {q:{en:"Python Lists start their indexes from which number?",ar:"الـList في Python بتبدأ الـindex من أنهي رقم؟"},options:[{en:"0",ar:"0"},{en:"1",ar:"1"},{en:"-1",ar:"-1"},{en:"It depends on the List",ar:"حسب الـList"}],correct:0,why:{en:"Python uses zero-based indexing, so the first item is at index 0.",ar:"Python بتستخدم zero-based indexing، يعني أول عنصر موجود عند index 0."}},
+  {q:{en:"The client wants to change Omar to Omar Hassan without creating a new List. Which line is correct?",ar:"العميل عايز يغيّر Omar إلى Omar Hassan من غير ما يعمل List جديدة. أنهي سطر صح؟"},options:["customers[2] = \"Omar Hassan\"","customers[2].append(\"Omar Hassan\")","customers.add(\"Omar Hassan\")","customers.insert(\"Omar Hassan\")"],correct:0,codeOptions:true,why:{en:"An item can be updated directly by assigning a new value to its index.",ar:"نقدر نغيّر قيمة عنصر مباشرة عن طريق إسناد قيمة جديدة للـindex بتاعه."}},
+  {q:{en:"The client wants to add a new customer to the end of the List. Which method should you use?",ar:"العميل عايز يضيف عميل جديد في آخر الـList. نستخدم أنهي method؟"},options:[{en:"append()",ar:"append()"},{en:"insert()",ar:"insert()"},{en:"remove()",ar:"remove()"},{en:"delete()",ar:"delete()"}],correct:0,why:{en:"append() adds one item to the end of a List.",ar:"append() بتضيف عنصر واحد في نهاية الـList."}},
+  {q:{en:"You need to add \"Khaled\" at index 1. Which line is correct?",ar:"عايزين نضيف \"Khaled\" عند index 1. أنهي سطر صح؟"},options:["customers.insert(1, \"Khaled\")","customers.append(1, \"Khaled\")","customers.insert(\"Khaled\", 1)","customers[1].add(\"Khaled\")"],correct:0,codeOptions:true,why:{en:"insert(index, value) adds the value at the requested position.",ar:"insert(index, value) بتضيف القيمة في الـposition المطلوب."}},
+  {q:{en:"Which line removes the customer named Sara by value?",ar:"أنهي سطر بيحذف العميل Sara باستخدام الاسم؟"},options:["del customers[\"Sara\"]","customers.remove(\"Sara\")","customers.delete(\"Sara\")","customers.pop(\"Sara\")"],correct:1,codeOptions:true,why:{en:"remove(value) searches for that value and removes it from the List.",ar:"remove(value) بتدور على القيمة دي وتحذفها من الـList."}},
+  {q:{en:"The client asks: \"How many customers are currently registered?\" Which expression gives the number of items?",ar:"العميل بيسأل: \"عندنا كام عميل حاليًا؟\" أنهي expression بتجيب عدد العناصر؟"},options:["count(customers)","customers.length","len(customers)","size(customers)"],correct:2,codeOptions:true,why:{en:"len(customers) returns the number of items in the List.",ar:"len(customers) بترجع عدد العناصر الموجودة في الـList."}},
+  {q:{en:"Why do we use while True in the Customer Management System?",ar:"ليه بنستخدم while True في Customer Management System؟"},options:[{en:"To keep the menu running until we choose Exit",ar:"عشان الـmenu تفضل شغالة لحد ما نختار Exit"},{en:"To print the List only once",ar:"عشان نطبع الـList مرة واحدة"},{en:"To create a new customer",ar:"عشان نعمل عميل جديد"},{en:"To sort the customers",ar:"عشان نرتب العملاء"}],correct:0,why:{en:"while True keeps the system running, and break can stop it when the employee chooses Exit.",ar:"while True بتخلي السيستم شغال، وbreak بتوقفه لما الموظف يختار Exit."}},
+  {type:"code_task",answer:{required:["customers =", "while True", "choice = input", "for customer in customers", ".append(", ".remove(", "break"],anyOf:[["if choice == \"1\"","if choice == '1'"],["elif choice == \"2\"","elif choice == '2'"]],},q:{en:"💼 CLIENT CODING TASK — Build the Customer Management System\n\nYou are a Junior Python Developer at TechHub. The client needs a working Customer Management System.\n\nStart with:\ncustomers = [\"Ahmed\", \"Mariam\", \"Omar\", \"Sara\"]\n\nYour program must:\n1. Keep showing the menu until the employee chooses 5.\n2. Option 1: show all customers using a for loop.\n3. Option 2: ask for a customer name and search for it. Show found/not found.\n4. Option 3: ask for a name and add it with append().\n5. Option 4: ask for a name, check that it exists, then remove it.\n6. Option 5: print System closed. and stop with break.\n7. Handle an invalid menu choice with an error message.\n\n✍️ Write the Python code for the whole system.",ar:"💼 مهمة العميل — ابنِ Customer Management System\n\nأنت Junior Python Developer في TechHub. العميل محتاج Customer Management System شغال.\n\nابدأ بـ:\ncustomers = [\"Ahmed\", \"Mariam\", \"Omar\", \"Sara\"]\n\nلازم البرنامج:\n1. يفضل يعرض الـmenu لحد ما الموظف يختار 5.\n2. الاختيار 1: يعرض كل العملاء باستخدام for loop.\n3. الاختيار 2: يطلب اسم عميل ويبحث عنه ويعرض found/not found.\n4. الاختيار 3: يطلب اسم ويضيفه باستخدام append().\n5. الاختيار 4: يطلب اسم، يتأكد إنه موجود، ثم يحذفه.\n6. الاختيار 5: يطبع System closed. ويوقف الـloop باستخدام break.\n7. يتعامل مع اختيار غير صحيح برسالة خطأ.\n\n✍️ اكتب كود Python كامل للسيستم."},why:{en:"A correct solution should combine the List, for loop, if/elif/else, while loop, input, append/remove, and break skills from the lesson.",ar:"الحل الصحيح لازم يجمع مهارات الدرس: List وfor وif/elif/else وwhile وinput وappend/remove وbreak."}},
+  {type:"debug",answer:{mustContain:["if customer == name"],mustNotContain:["if customer = name"]},q:{en:"🐛 DEBUGGING TASK 1\n\nThe client reports: Search is not working. Find the bug and rewrite the incorrect line correctly.\n\nCode:\nname = input(\"Enter customer name: \" )\n\nfor customer in customers:\n    if customer = name:\n        print(\"Customer found!\")",ar:"🐛 مهمة Debugging 1\n\nالعميل بيقول إن البحث مش شغال. اكتشف الغلط واكتب السطر الغلط بشكل صحيح.\n\nالكود:\nname = input(\"Enter customer name: \" )\n\nfor customer in customers:\n    if customer = name:\n        print(\"Customer found!\")"},why:{en:"A comparison needs ==. A single = is assignment, while == checks whether the two values are equal.",ar:"المقارنة بتستخدم ==. أما = فهي للإسناد، و== بتختبر هل القيمتين متساويتين."}},
+  {type:"debug",answer:{mustContain:["if name in customers:","customers.remove(name)"],mustNotContain:["if name not in customers:"]},q:{en:"🐛 DEBUGGING TASK 2\n\nThe client says: Delete Customer is doing the opposite of what we need. Find the logic bug and rewrite the two-line block correctly.\n\nBuggy code:\nif name not in customers:\n    customers.remove(name)",ar:"🐛 مهمة Debugging 2\n\nالعميل بيقول إن Delete Customer بتعمل عكس المطلوب. اكتشف الغلط المنطقي واكتب البلوك الصحيح.\n\nالكود الغلط:\nif name not in customers:\n    customers.remove(name)"},why:{en:"We should remove the customer only when the name exists in the List. So the condition must be in, not not in.",ar:"لازم نحذف العميل فقط لو الاسم موجود في الـList، لذلك الشرط الصحيح هو in وليس not in."}}
+];
+
 // Supabase is the live Question Bank. The local questions above are only a safe fallback
 // so the mission still opens if the database has not been seeded yet.
 async function loadQuestionsFromSupabase() {
-  QUESTIONS = SPECIALIZATION === "robotics" ? LOCAL_QUESTIONS.slice() : []; TOTAL = QUESTIONS.length;
+  QUESTIONS = SPECIALIZATION === "robotics" ? ((LEVEL === 2 && LESSON === 3) ? ROBOTICS_LESSON3_QUESTIONS.slice() : LOCAL_QUESTIONS.slice()) : ((SPECIALIZATION === "software" && LESSON === 3) ? SOFTWARE_LESSON3_QUESTIONS.slice() : []); TOTAL = QUESTIONS.length;
   if (!SUPABASE_KEY || SUPABASE_KEY.indexOf("PASTE_YOUR") !== -1) return;
   const url = SUPABASE_URL + "/rest/v1/quiz_questions" +
     "?select=id,quiz_name,question_number,question_en,question_ar,options_en,options_ar,correct_index,why_en,why_ar,code,code_options" +
@@ -845,7 +944,7 @@ async function loadQuestionsFromSupabase() {
     throw new Error("Question Bank HTTP " + res.status + " " + body);
   }
   const rows = await res.json();
-  if (!Array.isArray(rows) || !rows.length) { if (SPECIALIZATION === "robotics") return; throw new Error("No questions found for " + QUIZ_NAME); }
+  if (!Array.isArray(rows) || !rows.length) { if (SPECIALIZATION === "robotics" || (SPECIALIZATION === "software" && LESSON === 3)) return; throw new Error("No questions found for " + QUIZ_NAME); }
   QUESTIONS = rows.map(r => {
     const en = Array.isArray(r.options_en) ? r.options_en : [];
     const ar = Array.isArray(r.options_ar) ? r.options_ar : [];
@@ -934,7 +1033,7 @@ const LETTERS = { en: ["A", "B", "C", "D"], ar: ["أ", "ب", "ج", "د"] };
 const S = {
   lang: "en", screen: "explore", busy: false,
   name: "", qi: 0, answers: [], score: 0,
-  saveState: "idle", launchToken: 0
+  saveState: "idle", projectImage: "", launchToken: 0
 };
 const $  = (s, r) => (r || document).querySelector(s);
 const $$ = (s, r) => Array.from((r || document).querySelectorAll(s));
@@ -1199,6 +1298,7 @@ function applyScreen(next) {
   if (next === "name") renderName();
   if (next === "launch") renderLaunch();
   if (next === "quiz") renderQuiz("pre");
+  if (next === "photo") renderPhoto();
   if (next === "result") renderResult(false);
   updateCrumbs();
   const el = $("#scr-" + next); if (el) el.scrollTop = 0;
@@ -1345,15 +1445,18 @@ function applyMission(id) {
 function lessonsFor() {
   if (SPECIALIZATION !== "software") return LESSONS;
   return LESSONS.map(l => {
+    if (l.n === 3) return { n: 3, rgb: l.rgb, title: { en: "Customer Management System", ar: "نظام إدارة العملاء" } };
     const m = (SW_LESSONS || []).find(x => x.level === LEVEL && x.n === l.n);
     return { n: l.n, rgb: l.rgb, title: m ? m.title : null };
   });
 }
 const levelActive = n => SPECIALIZATION === "software" ? (SW_LESSONS || []).some(x => x.level === n) : n === LEVEL;
-const lessonActive = l => SPECIALIZATION === "software" ? !!l.title : l.n === LESSON;
+const lessonActive = l => SPECIALIZATION === "software" ? !!l.title : true;
 
 // ---- SOFTWARE LESSON (shown before the quiz) + Python practice ----
 // Content comes from the Supabase table "software_lessons" (row per quiz_name). DEFAULT_LESSONS is only a fallback.
+const SOFTWARE_LESSON3_PAGES = [{"title": "01 — You’re Hired & Understanding the Data", "content": "# 👨‍💻 Python Job Simulation\n\n## Session 01 — Customer Management System\n\n**Role:** Junior Python Developer\n**Client:** TechHub\n**Project:** Customer Management System\n\n### 🎯 Session Goals\n\nBy the end of this session, you will be able to:\n\n- Work with Python Lists.\n- Add, remove, update, and access data inside a List.\n- Use `for` loops to process List items.\n- Use `while` loops to keep a system running.\n- Use `if / elif / else` to control program behavior.\n- Build a small real-world management system.\n- Test your program and handle unexpected input.\n\n---\n\n# 🎬 01 — You’re Hired!\n\nCongratulations! 🎉\n\nYou have joined **TechHub** as a **Junior Python Developer**.\n\nYour first client needs a system to help employees manage their customers.\n\n### 📩 Client Request\n\n> **We need a simple Customer Management System.**\n>\n> Our employees should be able to:\n>\n> 1. See all customers\n> 2. Search for a customer\n> 3. Add a new customer\n> 4. Delete a customer\n> 5. Exit the system\n>\n> The system should remain open until the employee chooses Exit.\n\n---\n\n# 🧩 02 — Understanding the Data\n\nThe company already has some customers:\n\n```python\ncustomers = [\"Ahmed\", \"Mariam\", \"Omar\", \"Sara\"]\n```\n\n### Think Like a Developer\n\n**Question 1:**\nWhat type of data is `customers`?\n\n**Question 2:**\nWhy is a List useful here?\n\n**Question 3:**\nWhat would happen if the company had 1,000 customers?\n\n---"}, {"title": "02 — Working with Lists", "content": "# 📦 03 — Working with Lists\n\nA **List** allows us to store multiple values together.\n\n```python\ncustomers = [\"Ahmed\", \"Mariam\", \"Omar\", \"Sara\"]\n```\n\nEach customer has a position called an **index**.\n\n```text\nAhmed    → 0\nMariam   → 1\nOmar     → 2\nSara     → 3\n```\n\nRemember:\n\n> Python List indexes start from **0**.\n\n---\n\n# 🔍 Accessing List Items\n\nYou can access an item using its index:\n\n```python\nprint(customers[0])\n```\n\nOutput:\n\n```text\nAhmed\n```\n\nTry:\n\n```python\nprint(customers[2])\n```\n\nWhat will happen?\n\n---\n\n# ✏️ Changing an Item\n\nThe client tells you:\n\n> \"Mariam changed her name to Mariam Ali.\"\n\nYou can update the item:\n\n```python\ncustomers[1] = \"Mariam Ali\"\n```\n\nNow:\n\n```python\nprint(customers)\n```\n\nOutput:\n\n```text\n[\"Ahmed\", \"Mariam Ali\", \"Omar\", \"Sara\"]\n```\n\n### 🧠 Your Turn\n\nChange:\n\n```text\nOmar → Omar Hassan\n```\n\nwithout creating a new List.\n\n---\n\n# ➕ Adding Customers\n\nThe client says:\n\n> \"We have two new customers.\"\n\nUse `.append()`:\n\n```python\ncustomers.append(\"Ali\")\ncustomers.append(\"Nour\")\n```\n\nNow the List contains:\n\n```text\nAhmed\nMariam Ali\nOmar\nSara\nAli\nNour\n```\n\n### 🎯 Challenge\n\nAdd:\n\n```text\nYoussef\nSalma\n```\n\nto the List.\n\n---\n\n# ➕ Adding at a Specific Position\n\nSometimes the client doesn't want a customer added at the end.\n\nYou can use `.insert()`.\n\n```python\ncustomers.insert(1, \"Khaled\")\n```\n\nThis adds `\"Khaled\"` at index `1`.\n\n### Think:\n\nWhat will happen to the indexes of the customers after Khaled is inserted?\n\n---\n\n# ❌ Removing a Customer\n\nThe client says:\n\n> \"Sara is no longer a customer. Remove her.\"\n\nUse:\n\n```python\ncustomers.remove(\"Sara\")\n```\n\nNow Sara is removed from the List.\n\n### 🎯 Challenge\n\nRemove:\n\n```text\nAli\n```\n\nfrom the List.\n\n---\n\n# 🗑️ Removing by Position\n\nYou can also remove an item using its index.\n\n```python\ndel customers[2]\n```\n\nThis removes the item at index `2`.\n\n### ⚠️ Developer Warning\n\nWhen you remove an item, the indexes of the items after it can change.\n\nSo always think about the current List before using an index.\n\n---\n\n# 🔢 Knowing How Many Customers We Have\n\nThe client asks:\n\n> \"How many customers do we currently have?\"\n\nUse:\n\n```python\nlen(customers)\n```\n\nExample:\n\n```python\nprint(len(customers))\n```\n\nOutput:\n\n```text\n6\n```\n\n---\n\n# 🔎 Checking If a Customer Exists\n\nBefore deleting a customer, we may want to check if the customer exists.\n\nPython allows us to use:\n\n```python\nif \"Omar\" in customers:\n    print(\"Customer exists.\")\n```\n\nAnd:\n\n```python\nif \"Khaled\" not in customers:\n    print(\"Customer does not exist.\")\n```\n\n### 🎯 Client Task\n\nBefore deleting a customer, check whether the customer exists.\n\n---"}, {"title": "03 — List Manipulation Challenge", "content": "# 🧪 LIST MANIPULATION CHALLENGE\n\nThe client sends you the following data:\n\n```python\ncustomers = [\"Ahmed\", \"Mariam\", \"Omar\", \"Sara\", \"Ali\"]\n```\n\nComplete the following tasks:\n\n### Task 1\n\nChange:\n\n```text\nMariam → Mariam Hassan\n```\n\n### Task 2\n\nAdd:\n\n```text\nYoussef\n```\n\n### Task 3\n\nAdd:\n\n```text\nNour\n```\n\nat index `2`.\n\n### Task 4\n\nRemove:\n\n```text\nSara\n```\n\n### Task 5\n\nPrint the first customer.\n\n### Task 6\n\nPrint the number of customers.\n\n### Task 7\n\nCheck whether:\n\n```text\nAli\n```\n\nexists.\n\n### Task 8\n\nCheck whether:\n\n```text\nKhaled\n```\n\nexists.\n\n---"}, {"title": "04 — Customer Report & for Loop", "content": "# 🔄 04 — Customer Report\n\nThe client now says:\n\n> \"I need a report showing every customer.\"\n\nWe could write:\n\n```python\nprint(customers[0])\nprint(customers[1])\nprint(customers[2])\n```\n\nBut what if there are 1,000 customers?\n\nWe need a better solution.\n\n## `for` Loop\n\n```python\nfor customer in customers:\n    print(customer)\n```\n\nThe loop takes each item from the List one by one.\n\n---\n\n# 🔢 Customer Numbering\n\nThe client says:\n\n> \"Number the customers in the report.\"\n\nExpected output:\n\n```text\n1. Ahmed\n2. Mariam\n3. Omar\n4. Sara\n```\n\nOne possible solution:\n\n```python\nfor i in range(len(customers)):\n    print(i + 1, customers[i])\n```\n\n### Think\n\nWhat does each of these do?\n\n```python\nlen(customers)\n```\n\n```python\nrange(...)\n```\n\n```python\ncustomers[i]\n```\n\n---"}, {"title": "05 — Customer Search & Bug Report", "content": "# 🔎 05 — Customer Search\n\nThe client needs a search feature.\n\nThe employee enters:\n\n```text\nEnter customer name: Omar\n```\n\nThe system should search the List.\n\nWe already know how to go through every customer:\n\n```python\nfor customer in customers:\n```\n\nNow combine it with a condition:\n\n```python\nname = input(\"Enter customer name: \")\n\nfor customer in customers:\n    if customer == name:\n        print(\"Customer found!\")\n```\n\n---\n\n# 🐛 Bug Report\n\nThe client tested the system and searched for:\n\n```text\nKhaled\n```\n\nBut Khaled doesn't exist.\n\nNothing happened.\n\nThe client says:\n\n> \"I need the system to tell me when the customer doesn't exist.\"\n\nWe need to track whether we found the customer.\n\n```python\nfound = False\n```\n\nThen:\n\n```python\nfor customer in customers:\n    if customer == name:\n        found = True\n```\n\nFinally:\n\n```python\nif found:\n    print(\"Customer found!\")\nelse:\n    print(\"Customer not found.\")\n```\n\n---"}, {"title": "06 — while Loop & Exit", "content": "# ♾️ 06 — The Client Has Another Problem\n\nThe system currently performs an operation and then stops.\n\nThe client says:\n\n> \"I don't want my employee to restart the program every time they want to perform another operation.\"\n\nWe need the system to work like this:\n\n```text\nOpen System\n      ↓\nChoose Operation\n      ↓\nPerform Operation\n      ↓\nBack to Menu\n      ↓\nChoose Another Operation\n      ↓\nPerform Operation\n      ↓\n...\n```\n\nThis is where we need a new type of loop.\n\n# `while` Loop\n\nA `while` loop repeats code while a condition is true.\n\nFor our system, we can use:\n\n```python\nwhile True:\n```\n\nThis means the system keeps running.\n\n---\n\n# 🛑 How Do We Exit?\n\nIf the loop keeps running, how can we stop it?\n\nWe can use:\n\n```python\nbreak\n```\n\nExample:\n\n```python\nwhile True:\n\n    choice = input(\"Choose an option: \")\n\n    if choice == \"5\":\n        break\n```\n\nWhen the user chooses `5`, the loop stops.\n\n---"}, {"title": "07 — Build the Customer Management System", "content": "# 🏢 07 — Build the Customer Management System\n\nThe client now wants the complete system.\n\n## Main Menu\n\n```text\n========================\n Customer Management\n========================\n\n1. Show Customers\n2. Search Customer\n3. Add Customer\n4. Delete Customer\n5. Exit\n```\n\nStart with:\n\n```python\ncustomers = [\"Ahmed\", \"Mariam\", \"Omar\", \"Sara\"]\n\nwhile True:\n\n    print(\"1. Show Customers\")\n    print(\"2. Search Customer\")\n    print(\"3. Add Customer\")\n    print(\"4. Delete Customer\")\n    print(\"5. Exit\")\n\n    choice = input(\"Choose an option: \")\n```\n\nNow your job is to complete each feature.\n\n---\n\n# 🧩 TASK 1 — Show Customers\n\nIf the employee chooses:\n\n```text\n1\n```\n\nshow all customers.\n\n### Hint:\n\nYou already know:\n\n```python\nfor\n```\n\nand:\n\n```python\ncustomers\n```\n\n---\n\n# 🧩 TASK 2 — Search Customer\n\nIf the employee chooses:\n\n```text\n2\n```\n\nAsk:\n\n```text\nEnter customer name:\n```\n\nThen search the List.\n\nThe system should display either:\n\n```text\nCustomer found!\n```\n\nor:\n\n```text\nCustomer not found.\n```\n\n---\n\n# 🧩 TASK 3 — Add Customer\n\nIf the employee chooses:\n\n```text\n3\n```\n\nask for the customer's name.\n\nThen add the customer to the List.\n\n### Hint:\n\n```python\n.append()\n```\n\n---\n\n# 🧩 TASK 4 — Delete Customer\n\nIf the employee chooses:\n\n```text\n4\n```\n\nask for the customer's name.\n\nBefore deleting:\n\n> Check whether the customer exists.\n\nThen:\n\n- If found → delete the customer.\n- If not found → show `\"Customer not found.\"`\n\n### Hint:\n\nYou already know:\n\n```python\nin\n```\n\nand:\n\n```python\n.remove()\n```\n\n---\n\n# 🧩 TASK 5 — Exit\n\nIf the employee chooses:\n\n```text\n5\n```\n\ndisplay:\n\n```text\nSystem closed.\n```\n\nThen stop the `while` loop.\n\n### Hint:\n\n```python\nbreak\n```\n\n---"}, {"title": "08 — Change Request & Input Validation", "content": "# 🚨 08 — Client Change Request\n\nThe client tests the system and sends a new requirement:\n\n> \"If the employee enters an invalid menu option, the system should not close. It should show an error and display the menu again.\"\n\nExample:\n\n```text\nChoose an option: 9\n\nInvalid option. Please try again.\n```\n\nThen the menu appears again.\n\n### Your Task\n\nAdd this behavior to your system.\n\n---\n\n# 🛡️ 09 — Input Validation\n\nThe client discovers another problem.\n\nWhen adding a customer, an employee can enter:\n\n```text\nEnter customer name:\n```\n\nand press Enter without typing anything.\n\nThe client says:\n\n> \"A customer name cannot be empty.\"\n\nYour job:\n\n1. Ask for the name.\n2. Check if it's empty.\n3. If empty → ask again.\n4. Continue only when a valid name is entered.\n\n### Hint\n\nYou can use a `while` loop.\n\nThink:\n\n> \"Keep asking **while** the input is invalid.\"\n\n---"}, {"title": "09 — QA & Final Challenge", "content": "# 🧪 10 — You Are Now QA\n\nYour development work is finished.\n\nNow you are the **QA Tester**.\n\nTest your system using these cases:\n\n| Test | Action              | Expected Result      |\n| ---- | ------------------- | -------------------- |\n| 1    | Show Customers      | All customers appear |\n| 2    | Search `Omar`       | Customer found       |\n| 3    | Search `Khaled`     | Customer not found   |\n| 4    | Add `Nour`          | Nour is added        |\n| 5    | Delete `Omar`       | Omar is removed      |\n| 6    | Delete `Khaled`     | Customer not found   |\n| 7    | Enter `9`           | Invalid option       |\n| 8    | Empty customer name | Ask again            |\n| 9    | Choose `5`          | System closes        |\n\n---\n\n# 🏆 FINAL CHALLENGE — Version 2.0\n\nThe client sends one final request:\n\n> **\"We want to know how many customers are currently registered.\"**\n\nAdd a new menu option:\n\n```text\n6. Customer Statistics\n```\n\nWhen selected, the system should display:\n\n```text\nTotal Customers: 7\n```\n\n### Hint\n\nYou already learned everything you need:\n\n```python\nlen(customers)\n```\n\n---\n\n# 🚀 Bonus Challenge\n\nThe client now says:\n\n> \"Show me only the customers whose names start with the letter A.\"\n\nFor example:\n\n```text\nAhmed\nAli\nAmr\n```\n\n### Think:\n\nYou already know:\n\n- List\n- `for`\n- `if`\n\nCan you combine them?\n\n---"}, {"title": "10 — Bonus & Developer Mindset", "content": "# 💼 Developer Mindset\n\nDuring this project, remember the development process:\n\n```text\nCLIENT REQUIREMENT\n       ↓\nUNDERSTAND THE PROBLEM\n       ↓\nBREAK IT INTO TASKS\n       ↓\nCHOOSE PYTHON TOOLS\n       ↓\nWRITE THE CODE\n       ↓\nTEST\n       ↓\nFIND BUGS\n       ↓\nFIX\n       ↓\nCLIENT CHANGE REQUEST\n       ↓\nVERSION 2.0\n```\n\n**You are not just learning Python.**\n\nYou are practicing how a **Junior Python Developer** thinks when receiving a real task from a client."}];
+
 const DEFAULT_LESSONS = {"Software - Python - Loops & Debugging": {"content_en": "## What is a loop?\nA loop repeats code, so you don't have to write it again and again.\n\n```\nfor i in range(1, 4):\n    print(i)\n```\nThis prints 1, 2, 3. Note that range(1, 4) stops BEFORE 4.\n\n## The while loop\n```\nn = 3\nwhile n > 0:\n    print(n)\n    n = n - 1\n```\nA while loop keeps running as long as its condition is True. If the condition never becomes False, the loop never ends (an infinite loop).\n\n## Debugging: the 4 classic bugs\n1. Missing colon : after for / while / if.\n2. Wrong indentation: the code inside the loop must be indented.\n3. Off-by-one: range(1, 5) gives 1, 2, 3, 4 - not 5.\n4. Infinite loop: forgetting to change the variable inside a while loop.\n\nTip: read the error message from the bottom. It tells you the line number and what is wrong.", "content_ar": "## ما هي الحلقة (Loop)؟\nالحلقة تكرّر الكود بدل ما نكتبه مرات كثيرة.\n\n```\nfor i in range(1, 4):\n    print(i)\n```\nيطبع 1 ثم 2 ثم 3. لاحظ أن range(1, 4) تتوقف قبل الرقم 4.\n\n## حلقة while\n```\nn = 3\nwhile n > 0:\n    print(n)\n    n = n - 1\n```\nحلقة while تستمر طالما الشرط صحيح (True). لو لم يصبح الشرط False أبدًا فلن تنتهي الحلقة (حلقة لا نهائية).\n\n## تصحيح الأخطاء: ٤ أخطاء شائعة\n1. نسيان النقطتين : بعد for / while / if.\n2. المسافة البادئة (Indentation) خاطئة: الكود داخل الحلقة لازم يكون مُزاحًا.\n3. خطأ الواحد (Off-by-one): range(1, 5) تعطي 1, 2, 3, 4 وليس 5.\n4. حلقة لا نهائية: نسيان تغيير المتغير داخل while.\n\nنصيحة: اقرأ رسالة الخطأ من الأسفل، فهي تخبرك برقم السطر والمشكلة.", "task_en": "Fix the 3 bugs so the program prints the numbers 1 to 5 (each on its own line), then prints Done. Then press Run.", "task_ar": "أصلح الأخطاء الثلاثة ليطبع البرنامج الأرقام من 1 إلى 5 (كل رقم في سطر)، ثم يطبع Done. بعدها اضغط تشغيل.", "starter_code": "# Fix the bugs!\nfor i in range(1, 5)\nprint(i)\nprint(\"Done\")\n", "expected_output": "1\n2\n3\n4\n5\nDone", "must_contain": "for,range"}};
 const LESSON_CACHE = {};
 let CUR_LESSON = null;
@@ -1369,7 +1472,15 @@ async function loadLessonContent(q) {
   return (LESSON_CACHE[q] = row || DEFAULT_LESSONS[q] || null);
 }
 async function openLesson() {
-  if (SPECIALIZATION !== "software") { go("name"); return; }
+  if (SPECIALIZATION === "robotics") {
+    if (LEVEL === 2 && LESSON === 3) { go("learn"); return; }
+    go("name"); return;
+  }
+  if (LESSON === 3) {
+    CUR_LESSON = { title: { en: "Customer Management System", ar: "نظام إدارة العملاء" } };
+    go("learn");
+    return;
+  }
   S.busy = true;
   try { CUR_LESSON = await loadLessonContent(QUIZ_NAME); } catch (e) { CUR_LESSON = null; }
   S.busy = false;
@@ -1380,10 +1491,160 @@ function mdLite(txt) {   // "## title", blank line = paragraph, ``` = code block
     ? '<pre class="code">' + esc(part.replace(/^(python|py)\n/, "").replace(/^\n|\n$/g, "")) + '</pre>'
     : part.split(/\n{2,}/).map(b => b.trim()).filter(Boolean).map(b => b.indexOf("## ") === 0 ? "<h3>" + esc(b.slice(3)) + "</h3>" : "<p>" + esc(b).replace(/\n/g, "<br>") + "</p>").join("")).join("");
 }
+const ROBOTICS_LESSON3_HTML = "<!DOCTYPE html>\n<html lang=\"ar\" dir=\"rtl\">\n<head>\n<meta charset=\"utf-8\">\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1, viewport-fit=cover\">\n<title>مراجعة الالتراسونيك والسيرفو + جراج ذكي</title>\n<style>\n:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);\n--bg:#fffaf0;--card:#fff;--text:#2b2b3a;--muted:#666;--a:#ff7a00;--b:#1e88e5;--code:#1f2233;--codet:#e8ecff;--line:#f0e2c8}\n@media (prefers-color-scheme:dark){:root:not([data-theme=\"light\"]){--bg:#14151f;--card:#1e2030;--text:#eef0ff;--muted:#a8adc8;--code:#0d0e16;--line:#33364d}}\n:root[data-theme=\"dark\"]{--bg:#14151f;--card:#1e2030;--text:#eef0ff;--muted:#a8adc8;--code:#0d0e16;--line:#33364d}\nhtml{scroll-padding-top:env(safe-area-inset-top,0px)}\n*{box-sizing:border-box}\nbody{margin:0;background:var(--bg);color:var(--text);font-family:\"Segoe UI\",Tahoma,\"Noto Naskh Arabic\",Arial,sans-serif;line-height:1.9;font-size:18px}\nmain{max-width:820px;margin:0 auto;padding:16px}\nh1{text-align:center;color:var(--a);font-size:1.7rem;margin:.4em 0}\nh2{color:var(--b);margin-top:0}\n.card{background:var(--card);border:2px solid var(--line);border-radius:18px;padding:16px 18px;margin:16px 0}\n.tag{display:inline-block;background:var(--a);color:#fff;border-radius:99px;padding:0 12px;font-size:.85rem}\npre{direction:ltr;text-align:left;background:var(--code);color:var(--codet);padding:12px;border-radius:12px;overflow-x:auto;font-size:.85rem;line-height:1.5}\ntable{width:100%;border-collapse:collapse}\ntd,th{border:1px solid var(--line);padding:6px 10px;text-align:center}\n.q{background:rgba(30,136,229,.1);border-radius:12px;padding:8px 12px;margin:8px 0}\n.demo{text-align:center}\ninput[type=range]{width:90%}\nsvg{max-width:100%;height:auto}\n.big{font-size:1.4rem;font-weight:bold;color:var(--a)}\nul{padding-inline-start:22px}\n\n\n/* CANTRICK Lesson 3 additions — scoped to this lesson only */\n.lesson3-hero{background:linear-gradient(135deg,#fff7e7,#fff);border:2px solid var(--line);border-radius:22px;padding:18px;margin:16px 0;text-align:center}\n.lesson3-hero .mini-road{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:10px}\n.lesson3-chip{display:inline-block;padding:5px 12px;border-radius:999px;background:#fff0d9;color:#c65e00;font-weight:700;font-size:.85rem}\n.lesson3-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:14px 0}\n.lesson3-info{border:2px solid var(--line);border-radius:16px;padding:14px;background:var(--card)}\n.lesson3-info h3{margin:0 0 6px;color:var(--b)}\n.lesson3-info p{margin:5px 0}\n.servo-demo{border:2px solid var(--line);border-radius:18px;padding:16px;background:linear-gradient(180deg,rgba(30,136,229,.06),transparent);margin:14px 0}\n.servo-stage{height:170px;position:relative;display:flex;justify-content:center;align-items:flex-end;overflow:hidden}\n.servo-base{width:100px;height:44px;border-radius:10px 10px 5px 5px;background:#536dfe;position:relative;box-shadow:0 6px 0 rgba(0,0,0,.08)}\n.servo-base:before{content:\"\";position:absolute;width:34px;height:34px;border-radius:50%;background:#eee;left:33px;top:-17px;border:5px solid #ff7a00}\n.servo-arm{position:absolute;width:10px;height:105px;border-radius:8px;background:#ff7a00;bottom:39px;left:calc(50% - 5px);transform-origin:50% 100%;transform:rotate(0deg);transition:transform .25s ease}\n.servo-angle{font-size:1.35rem;font-weight:800;color:var(--a);text-align:center;margin:5px}\n.servo-labels{display:flex;justify-content:space-between;font-size:.82rem;color:var(--muted);direction:ltr}\n.lesson3-step{display:flex;gap:10px;align-items:flex-start;margin:10px 0;padding:10px 12px;border-radius:13px;background:rgba(30,136,229,.06)}\n.lesson3-step b{min-width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:var(--b);color:white}\n.lesson3-check{background:rgba(255,122,0,.08);border:2px dashed var(--a);border-radius:16px;padding:14px;margin:14px 0}\n.lesson3-finish{display:block;width:100%;border:0;border-radius:16px;padding:15px;background:var(--a);color:#fff;font-size:1.08rem;font-weight:800;cursor:pointer;box-shadow:0 6px 18px rgba(255,122,0,.22);margin-top:18px}\n@media(max-width:640px){.lesson3-grid{grid-template-columns:1fr}.servo-stage{height:150px}}\n\n</style>\n</head>\n<body>\n<main>\n<h1>🚗 جراج ذكي بالأردوينو</h1>\n<p style=\"text-align:center;color:var(--muted)\">سيشن للطالب (9 سنين) — مراجعة + مشروع | المدة المقترحة: 45–60 دقيقة</p>\n\n<div class=\"card\">\n<h2>🗺️ خطة السيشن</h2>\n<ol>\n<li>مراجعة الالتراسونيك (10 د)</li>\n<li>مراجعة السيرفو (10 د)</li>\n<li>المشروع: الجراج الذكي (25–30 د)</li>\n<li>تحدي أخير (5 د)</li>\n</ol>\n</div>\n\n<div class=\"card\">\n<span class=\"tag\">الجزء 1</span>\n<h2>🦇 الالتراسونيك (HC-SR04)</h2>\n<p><b>الفكرة للطفل:</b> زي الخفاش! الحساس يصرخ بصوت عالي جدًا (مش بنسمعه)، الصوت يخبط في حاجة ويرجع، والحساس يحسب الوقت اللي أخده الصدى. كل ما الوقت أطول = الحاجة أبعد.</p>\n<table>\n<tr><th>الرجل</th><th>بتعمل إيه؟</th><th>نوصلها بـ</th></tr>\n<tr><td>VCC</td><td>الكهربا</td><td>5V</td></tr>\n<tr><td>GND</td><td>الأرضي</td><td>GND</td></tr>\n<tr><td>Trig</td><td>يصرخ 📢</td><td>بن 9</td></tr>\n<tr><td>Echo</td><td>يسمع الصدى 👂</td><td>بن 10</td></tr>\n</table>\n<pre>const int trigPin = 9;\nconst int echoPin = 10;\n\nvoid setup() {\n  Serial.begin(9600);\n  pinMode(trigPin, OUTPUT);\n  pinMode(echoPin, INPUT);\n}\n\nvoid loop() {\n  digitalWrite(trigPin, LOW);\n  delayMicroseconds(2);\n  digitalWrite(trigPin, HIGH);   // صرخة!\n  delayMicroseconds(10);\n  digitalWrite(trigPin, LOW);\n\n  long time = pulseIn(echoPin, HIGH);      // وقت الصدى\n  int distance = time * 0.034 / 2;         // بالسنتيمتر\n\n  Serial.println(distance);\n  delay(200);\n}</pre>\n\n<div class=\"demo\">\n<p><b>🎮 جرّب بنفسك:</b> حرّك المسافة وشوف الصدى</p>\n<input type=\"range\" id=\"d1\" min=\"2\" max=\"60\" value=\"30\">\n<p>المسافة: <span class=\"big\" id=\"v1\">30</span> سم</p>\n</div>\n</div>\n\n<div class=\"card\">\n<span class=\"tag\">الجزء 2</span>\n<h2>🦾 السيرفو موتور</h2>\n<p><b>الفكرة للطفل:</b> موتور \"مطيع\" — بنقوله روح على زاوية كذا، وهو يروح ويقف مكانه بالظبط (من 0 لـ 180 درجة).</p>\n<div class=\"lesson3-grid\">\n  <div class=\"lesson3-info\">\n    <h3>🦾 يعني إيه Servo Motor؟</h3>\n    <p>السيرفو موتور موتور نقدر نحدد له <b>زاوية</b> معينة، فيتحرك إليها ويتوقف عندها. عشان كده هو مناسب جدًا لبوابة الجراج.</p>\n    <p><b>فكر فيه كذراع بوابة:</b> 0° = مقفولة، 90° = مفتوحة، والزاوية بينهما تحدد مكان الذراع.</p>\n  </div>\n  <div class=\"lesson3-info\">\n    <h3>🧠 Servo vs Motor</h3>\n    <p>الموتور العادي نستخدمه غالبًا للحركة المستمرة، أما السيرفو فنطلب منه <b>زاوية</b> محددة.</p>\n    <p>في مشروعنا: الأردوينو لا يقول فقط \"تحرك\"؛ بل يقول للسيرفو <b>اذهب إلى 0 أو 90 درجة</b>.</p>\n  </div>\n</div>\n\n<div class=\"servo-demo\">\n  <h3 style=\"color:var(--b);margin-top:0\">🎮 جرّب السيرفو بنفسك</h3>\n  <p>حرّك الشريط واختار زاوية للذراع. لاحظ أن <b>الزاوية هي التي تحدد مكان الذراع</b>.</p>\n  <div class=\"servo-stage\"><div class=\"servo-base\"></div><div id=\"servoArm\" class=\"servo-arm\"></div></div>\n  <div class=\"servo-angle\"><span id=\"servoAngle\">90</span>°</div>\n  <input id=\"servoSlider\" type=\"range\" min=\"0\" max=\"180\" value=\"90\" style=\"width:100%\">\n  <div class=\"servo-labels\"><span>0° مقفولة</span><span>90°</span><span>180°</span></div>\n</div>\n\n<div class=\"lesson3-step\"><b>1</b><div><strong>نستدعي المكتبة</strong><br><code>#include &lt;Servo.h&gt;</code> عشان نستخدم أوامر السيرفو.</div></div>\n<div class=\"lesson3-step\"><b>2</b><div><strong>نعمل Servo object</strong><br><code>Servo myServo;</code> ده الاسم اللي هنستخدمه للتحكم في السيرفو.</div></div>\n<div class=\"lesson3-step\"><b>3</b><div><strong>نوصل إشارة السيرفو</strong><br><code>myServo.attach(6);</code> معناها إن سلك الإشارة متوصل بالـPin 6.</div></div>\n<div class=\"lesson3-step\"><b>4</b><div><strong>نختار الزاوية</strong><br><code>myServo.write(90);</code> يعني: حرّك السيرفو إلى 90 درجة.</div></div>\n\n<div class=\"lesson3-check\">\n  <b>⭐ قاعدة مهمة:</b> الرقم داخل <code>write()</code> هو الزاوية المطلوبة. في هذا الدرس نستخدم مدى <b>0° إلى 180°</b> للسيرفو المستخدم في المشروع.\n</div>\n\n<table>\n<tr><th>لون السلك</th><th>بيوصل بـ</th></tr>\n<tr><td>🟤 بني</td><td>GND</td></tr>\n<tr><td>🔴 أحمر</td><td>5V</td></tr>\n<tr><td>🟠 برتقالي</td><td>بن 6 (إشارة)</td></tr>\n</table>\n<pre>#include &lt;Servo.h&gt;\nServo myServo;\n\nvoid setup() {\n  myServo.attach(6);\n}\n\nvoid loop() {\n  myServo.write(0);     // زاوية 0\n  delay(1000);\n  myServo.write(90);    // زاوية 90\n  delay(1000);\n  myServo.write(180);   // زاوية 180\n  delay(1000);\n}</pre>\n</div>\n\n<div class=\"card\">\n<span class=\"tag\">الجزء 3</span>\n<h2>🏠 المشروع: الجراج الذكي</h2>\n<p><b>القصة:</b> العربية بتقرّب من الجراج ← الحساس يشوفها ← دراع السيرفو (زي بوابة الجراج) يفتح ← بعد ما تعدّي يقفل تاني.</p>\n<p><b>القاعدة:</b> لو المسافة أقل من 15 سم ← افتح. غير كده ← اقفل.</p>\n\n<div class=\"demo\">\n<svg viewBox=\"0 0 320 140\" aria-label=\"محاكاة الجراج\">\n<rect x=\"10\" y=\"100\" width=\"300\" height=\"6\" fill=\"#888\"/>\n<rect x=\"20\" y=\"60\" width=\"26\" height=\"40\" rx=\"4\" fill=\"#1e88e5\"/>\n<text x=\"20\" y=\"52\" font-size=\"12\" fill=\"currentColor\">حساس</text>\n<rect x=\"180\" y=\"40\" width=\"10\" height=\"60\" fill=\"#8d6e63\"/>\n<g id=\"arm\" style=\"transform-origin:185px 100px;transition:transform .4s\">\n<rect x=\"181\" y=\"38\" width=\"8\" height=\"62\" fill=\"#ff7a00\"/>\n</g>\n<g id=\"car\" style=\"transition:transform .3s\">\n<rect x=\"250\" y=\"80\" width=\"50\" height=\"20\" rx=\"6\" fill=\"#e53935\"/>\n<circle cx=\"265\" cy=\"102\" r=\"6\" fill=\"#333\"/><circle cx=\"288\" cy=\"102\" r=\"6\" fill=\"#333\"/>\n</g>\n</svg>\n<p>اسحب العربية: <input type=\"range\" id=\"d2\" min=\"2\" max=\"60\" value=\"40\"></p>\n<p>المسافة: <span class=\"big\" id=\"v2\">40</span> سم — البوابة: <span class=\"big\" id=\"st\">مقفولة 🔒</span></p>\n</div>\n\n<h3>🔌 التوصيل</h3>\n<p>نفس الأسلاك اللي فاتت: الالتراسونيك (Trig=9, Echo=10) + السيرفو (بن 6). الاتنين على 5V و GND.</p>\n\n\n<div class=\"lesson3-hero\">\n  <span class=\"lesson3-chip\">MISSION</span>\n  <h2 style=\"margin:8px 0;color:var(--a)\">🚗 من حساس إلى بوابة ذكية</h2>\n  <div class=\"mini-road\">\n    <span class=\"lesson3-chip\">📏 Ultrasonic يقيس</span>\n    <span class=\"lesson3-chip\">🧠 if يقرر</span>\n    <span class=\"lesson3-chip\">🦾 Servo يتحرك</span>\n    <span class=\"lesson3-chip\">🚪 البوابة تفتح / تقفل</span>\n  </div>\n</div>\n\n<div class=\"lesson3-grid\">\n  <div class=\"lesson3-info\"><h3>📏 1. القياس</h3><p>الـHC-SR04 يرسل موجة صوتية ويقيس زمن رجوعها، ومنه نحسب المسافة بالسنتيمتر.</p></div>\n  <div class=\"lesson3-info\"><h3>🧠 2. القرار</h3><p>لو المسافة <b>أقل من 15 سم</b>، نعتبر العربية قريبة ونفتح البوابة. غير كده نقفلها.</p></div>\n  <div class=\"lesson3-info\"><h3>🦾 3. الحركة</h3><p><code>gate.write(90)</code> تفتح البوابة في نموذجنا، و<code>gate.write(0)</code> تقفلها.</p></div>\n  <div class=\"lesson3-info\"><h3>🔁 4. التكرار</h3><p>الـArduino يكرر القياس والقرار باستمرار، لذلك الجراج يستطيع الاستجابة لاقتراب العربية.</p></div>\n</div>\n<h3>💻 الكود الكامل</h3>\n<pre>#include &lt;Servo.h&gt;\n\nconst int trigPin = 9;\nconst int echoPin = 10;\nServo gate;\n\nvoid setup() {\n  pinMode(trigPin, OUTPUT);\n  pinMode(echoPin, INPUT);\n  gate.attach(6);\n  gate.write(0);            // البوابة مقفولة\n}\n\nvoid loop() {\n  digitalWrite(trigPin, LOW);\n  delayMicroseconds(2);\n  digitalWrite(trigPin, HIGH);\n  delayMicroseconds(10);\n  digitalWrite(trigPin, LOW);\n\n  long time = pulseIn(echoPin, HIGH);\n  int distance = time * 0.034 / 2;\n\n  if (distance &gt; 0 &amp;&amp; distance &lt; 15) {\n    gate.write(90);         // افتح\n    delay(3000);            // استنى العربية تعدّي\n  } else {\n    gate.write(0);          // اقفل\n  }\n  delay(100);\n}</pre>\n\n<h3>🧩 شرح مبسط للطالب</h3>\n<ul>\n<li>أول حاجة: الحساس يقيس المسافة.</li>\n<li><code>if</code> = \"لو\": لو العربية قريبة → افتح.</li>\n<li><code>else</code> = \"غير كده\": اقفل.</li>\n</ul>\n</div>\n\n<div class=\"card\">\n<span class=\"tag\">الجزء 4</span>\n<h2>🏆 تحديات</h2>\n<ul>\n<li>غيّر المسافة من 15 لـ 30. إيه اللي اتغير؟</li>\n<li>خلّي البوابة تفتح 45 درجة بس.</li>\n<li>زوّد <code>buzzer</code> أو LED يشتغل لما البوابة تفتح.</li>\n</ul>\n<p><b>💡 نصيحة للمدرسة:</b> لو السيرفو بيرتعش أو الأردوينو بيعمل ريست، وصّلي السيرفو بباور خارجي (بطاريات) مع توصيل GND مشترك.</p>\n</div>\n\n<div class=\"lesson3-check\">\n  <b>🎯 قبل الاختبار:</b> لازم تكون قادر تشرح: الحساس بيقيس إيه؟ السيرفو بيحدد إيه؟ وإزاي <code>if / else</code> بتخلي البوابة تفتح وتقفل؟\n</div>\n<button class=\"lesson3-finish\" id=\"lesson3Finish\">🚀 أنهيت الشرح — ابدأ الاختبار</button>\n</main>\n\n<script>\nvar d1=document.getElementById('d1'),v1=document.getElementById('v1');\nd1.oninput=function(){v1.textContent=d1.value};\nvar d2=document.getElementById('d2'),v2=document.getElementById('v2'),st=document.getElementById('st'),\narm=document.getElementById('arm'),car=document.getElementById('car');\nfunction upd(){\n  var d=+d2.value;v2.textContent=d;\n  var open=d<15;\n  st.textContent=open?'مفتوحة 🔓':'مقفولة 🔒';\n  arm.style.transform=open?'rotate(-90deg)':'rotate(0deg)';\n  car.style.transform='translateX('+(-(60-d)*2.5)+'px)';\n}\nd2.oninput=upd;upd();\n<\/script>\n\n<script>\n(function(){\n  const slider=document.getElementById('servoSlider');\n  const arm=document.getElementById('servoArm');\n  const angle=document.getElementById('servoAngle');\n  function setServo(v){\n    v=Number(v); angle.textContent=v; arm.style.transform='rotate('+(v-90)+'deg)';\n  }\n  if(slider){ slider.addEventListener('input',()=>setServo(slider.value)); setServo(slider.value); }\n  const finish=document.getElementById('lesson3Finish');\n  if(finish){ finish.addEventListener('click',()=>window.parent.postMessage({type:'CANTRICK_LESSON_COMPLETE',lesson:3},'*')); }\n  function reportHeight(){ window.parent.postMessage({type:'CANTRICK_LESSON_HEIGHT',height:document.documentElement.scrollHeight},'*'); }\n  addEventListener('load',reportHeight); addEventListener('resize',reportHeight);\n  if(window.ResizeObserver) new ResizeObserver(reportHeight).observe(document.documentElement);\n  setTimeout(reportHeight,100); setTimeout(reportHeight,500);\n})();\n<\/script>\n</body>\n</html>\n";
+
+function renderSW3Markdown(md) {
+  const lines = String(md || "").split("\n");
+  let out = "", inCode = false, code = [], inList = null, inTable = false, tableRows = [];
+  const flushList = () => {
+    if (!inList) return;
+    out += "<" + inList + ">" + listItems.join("") + "</" + inList + ">";
+    inList = null; listItems = [];
+  };
+  const flushTable = () => {
+    if (!inTable) return;
+    if (tableRows.length) {
+      out += '<table class="sw3-table">';
+      tableRows.forEach((row, ri) => {
+        const cells = row.split("|").slice(1,-1).map(x => x.trim());
+        if (!cells.length) return;
+        if (cells.every(x => /^:?-{3,}:?$/.test(x))) return;
+        out += "<tr>" + cells.map(c => ri === 0 ? "<th>"+sw3Inline(c)+"</th>" : "<td>"+sw3Inline(c)+"</td>").join("") + "</tr>";
+      });
+      out += "</table>";
+    }
+    inTable = false; tableRows = [];
+  };
+  let listItems = [];
+  const addParagraph = (s) => { if (s.trim()) out += "<p>"+sw3Inline(s.trim())+"</p>"; };
+
+  for (let i=0;i<lines.length;i++) {
+    const line=lines[i];
+    if (line.trim().startsWith("```")) {
+      flushList(); flushTable();
+      if (!inCode) { inCode=true; code=[]; }
+      else {
+        let raw=code.join("\n");
+        if (/^(python|py)\s*\n/.test(raw)) raw=raw.replace(/^(python|py)\s*\n/,"");
+        out += '<pre class="sw3-code"><button class="sw3-copy" type="button">Copy</button><code>'+esc(raw)+'</code></pre>';
+        inCode=false;
+      }
+      continue;
+    }
+    if (inCode) { code.push(line); continue; }
+
+    if (/^\s*\|.*\|\s*$/.test(line)) {
+      flushList();
+      inTable=true; tableRows.push(line); continue;
+    } else if (inTable) flushTable();
+
+    if (/^# /.test(line)) { flushList(); out += "<h1>"+sw3Inline(line.slice(2))+"</h1>"; continue; }
+    if (/^## /.test(line)) { flushList(); out += "<h2>"+sw3Inline(line.slice(3))+"</h2>"; continue; }
+    if (/^### /.test(line)) { flushList(); out += "<h3>"+sw3Inline(line.slice(4))+"</h3>"; continue; }
+
+    const bm=line.match(/^>\s?(.*)$/);
+    if (bm) { flushList(); out += "<blockquote>"+sw3Inline(bm[1])+"</blockquote>"; continue; }
+
+    const om=line.match(/^\s*\d+\.\s+(.*)$/);
+    const um=line.match(/^\s*-\s+(.*)$/);
+    if (om || um) {
+      const typ=om ? "ol" : "ul";
+      if (inList !== typ) { flushList(); inList=typ; listItems=[]; }
+      listItems.push("<li>"+sw3Inline((om||um)[1])+"</li>");
+      continue;
+    }
+    if (!line.trim()) { flushList(); continue; }
+    flushList();
+    addParagraph(line);
+  }
+  if (inCode) {
+    out += '<pre class="sw3-code"><button class="sw3-copy" type="button">Copy</button><code>'+esc(code.join("\n"))+'</code></pre>';
+  }
+  flushList(); flushTable();
+  return out;
+}
+function sw3Inline(s) {
+  let x=esc(String(s));
+  x=x.replace(/`([^`]+)`/g,'<code class="sw3-inline">$1</code>');
+  x=x.replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>');
+  return x;
+}
+function renderSoftwareLesson3(reset) {
+  const host=$("#softwareLesson3Pages");
+  const body=$("#lnBody"), practice=$("#lnPractice"), next=$("#lnNext"), frame=$("#roboticsLesson3Frame");
+  frame.style.display="none"; body.style.display="none"; practice.hidden=true; next.style.display="none"; host.style.display="block";
+  if (!host.dataset.ready || reset) {
+    host.innerHTML =
+      '<div class="sw3-wrap">' +
+      '<div class="sw3-progress"><div class="sw3-progress-top"><span>💼 Customer Management System</span><span id="sw3Count">1 / '+SOFTWARE_LESSON3_PAGES.length+'</span></div>' +
+      '<div class="sw3-progress-track"><div class="sw3-progress-fill" id="sw3Fill"></div></div>' +
+      '<div style="text-align:center;margin-top:8px" id="sw3Dots"></div></div>' +
+      '<div id="sw3Pages"></div>' +
+      '<div class="sw3-nav"><button class="cta ghost" id="sw3Prev">← Previous</button><button class="cta gold sw3-next" id="sw3Next">Next Page →</button></div>' +
+      '</div>';
+    const pagesEl=$("#sw3Pages"), dots=$("#sw3Dots");
+    SOFTWARE_LESSON3_PAGES.forEach((pg,i)=>{
+      const page=document.createElement("article");
+      page.className="sw3-page"+(i===0?" active":"");
+      page.dataset.page=i;
+      page.innerHTML='<div class="sw3-content">'+renderSW3Markdown(pg.content)+'</div>';
+      pagesEl.appendChild(page);
+      const dot=document.createElement("span"); dot.className="sw3-page-dot"+(i===0?" active":""); dots.appendChild(dot);
+    });
+    host.dataset.ready="1"; host.dataset.page="0";
+    $("#sw3Prev").addEventListener("click",()=>sw3SetPage(Number(host.dataset.page)-1));
+    $("#sw3Next").addEventListener("click",()=>{
+      const i=Number(host.dataset.page);
+      if(i<SOFTWARE_LESSON3_PAGES.length-1) sw3SetPage(i+1);
+      else go("name");
+    });
+    host.addEventListener("click",e=>{
+      const b=e.target.closest(".sw3-copy");
+      if(b){
+        const code=b.parentElement.querySelector("code")?.textContent||"";
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(code).then(()=>{b.textContent="Copied ✓";setTimeout(()=>b.textContent="Copy",900);}).catch(()=>{b.textContent="Select & copy";setTimeout(()=>b.textContent="Copy",900);});
+        } else {
+          b.textContent="Select & copy"; setTimeout(()=>b.textContent="Copy",900);
+        }
+      }
+    });
+  }
+  sw3SetPage(Number(host.dataset.page||0));
+}
+function sw3SetPage(i) {
+  const host=$("#softwareLesson3Pages"), pages=host.querySelectorAll(".sw3-page"), dots=host.querySelectorAll(".sw3-page-dot");
+  i=Math.max(0,Math.min(SOFTWARE_LESSON3_PAGES.length-1,i)); host.dataset.page=String(i);
+  pages.forEach((x,k)=>x.classList.toggle("active",k===i)); dots.forEach((x,k)=>x.classList.toggle("active",k===i));
+  $("#sw3Count").textContent=(i+1)+" / "+SOFTWARE_LESSON3_PAGES.length;
+  $("#sw3Fill").style.width=((i+1)/SOFTWARE_LESSON3_PAGES.length*100)+"%";
+  $("#sw3Prev").disabled=i===0;
+  $("#sw3Next").textContent=i===SOFTWARE_LESSON3_PAGES.length-1?"Continue to Quiz →":"Next Page →";
+  host.scrollIntoView({behavior:"smooth",block:"start"});
+}
 function renderLearn(reset) {
-  const c = CUR_LESSON; if (!c) return;
   $("#lnMission").textContent = missionTitle();
   const ls = lessonData(); $("#lnTitle").textContent = ls && ls.title ? L(ls.title) : "";
+  const isGarage = SPECIALIZATION === "robotics" && LEVEL === 2 && LESSON === 3;
+  const isSoftware3 = SPECIALIZATION === "software" && LESSON === 3;
+  const frame = $("#roboticsLesson3Frame");
+  if (isSoftware3) {
+    renderSoftwareLesson3(reset);
+    return;
+  }
+  $("#softwareLesson3Pages").style.display="none";
+  if (isGarage) {
+    $("#lnBody").style.display = "none";
+    $("#lnPractice").hidden = true;
+    $("#lnNext").style.display = "none";
+    frame.style.display = "block";
+    if (!frame.srcdoc || reset) frame.srcdoc = ROBOTICS_LESSON3_HTML;
+    return;
+  }
+  frame.style.display = "none";
+  $("#lnBody").style.display = "block";
+  $("#lnNext").style.display = "block";
+  const c = CUR_LESSON; if (!c) return;
   $("#lnBody").innerHTML = mdLite(c["content_" + S.lang] || c.content_en || c.content_ar);
   $("#lnTask").textContent = c["task_" + S.lang] || c.task_en || c.task_ar || "";
   $("#lnPractice").hidden = !(c.starter_code || c.task_en || c.task_ar);
@@ -1494,6 +1755,24 @@ function renderName() {
   $("#nameMission").textContent = missionTitle();
   const ls = lessonData(); $("#nameTopic").textContent = ls && ls.title ? L(ls.title) : "";
 }
+
+function renderPhoto(){
+  const input=$("#projectPhotoInput"), preview=$("#photoPreview"), wrap=$("#photoPreviewWrap"), btn=$("#photoContinueBtn"), err=$("#photoErr");
+  err.textContent=""; input.value=""; wrap.hidden=true; btn.disabled=true; S.projectImage="";
+}
+function bindPhoto(){
+  const input=$("#projectPhotoInput"), preview=$("#photoPreview"), wrap=$("#photoPreviewWrap"), btn=$("#photoContinueBtn"), change=$("#photoChangeBtn"), err=$("#photoErr");
+  input.addEventListener("change",()=>{
+    err.textContent="";
+    const f=input.files && input.files[0]; if(!f) return;
+    if(!/^image\/(jpeg|png|webp)$/.test(f.type)){ err.textContent="اختار صورة JPG أو PNG أو WEBP."; input.value=""; return; }
+    if(f.size>8*1024*1024){ err.textContent="الصورة كبيرة جدًا. اختار صورة أقل من 8MB."; input.value=""; return; }
+    const rd=new FileReader(); rd.onload=()=>{ S.projectImage=rd.result; preview.src=S.projectImage; wrap.hidden=false; btn.disabled=false; }; rd.readAsDataURL(f);
+  });
+  change.addEventListener("click",()=>input.click());
+  btn.addEventListener("click",()=>{ if(!S.projectImage){err.textContent="ارفع صورة المشروع الأول.";return;} go("result"); });
+}
+
 function renderLaunch() {
   $("#launchName").textContent = S.name;
   $("#launchMission").textContent = missionTitle();
@@ -1511,11 +1790,20 @@ async function runCountdown() {
 }
 function updateCrumbs() {
   const parts = [];
-  if (["levels", "lessons", "learn", "name", "launch", "quiz", "result"].indexOf(S.screen) > -1) parts.push(spec().name[S.lang]);
-  if (["lessons", "learn", "name", "launch", "quiz", "result"].indexOf(S.screen) > -1) parts.push(t("level") + " " + LEVEL);
-  if (["learn", "name", "launch", "quiz", "result"].indexOf(S.screen) > -1) parts.push(t("lesson") + " " + LESSON);
+  if (["levels", "lessons", "learn", "name", "launch", "quiz", "photo", "result"].indexOf(S.screen) > -1) parts.push(spec().name[S.lang]);
+  if (["lessons", "learn", "name", "launch", "quiz", "photo", "result"].indexOf(S.screen) > -1) parts.push(t("level") + " " + LEVEL);
+  if (["learn", "name", "launch", "quiz", "photo", "result"].indexOf(S.screen) > -1) parts.push(t("lesson") + " " + LESSON);
   $("#crumbs").innerHTML = parts.map(p => '<span class="c">' + esc(p) + '</span>').join('<span class="sep"></span>');
 }
+
+window.addEventListener("message", e => {
+  if (!e.data || e.data.type !== "CANTRICK_LESSON_COMPLETE") return;
+  if (SPECIALIZATION === "robotics" && LEVEL === 2 && LESSON === 3 && S.screen === "learn") go("name");
+  if (e.data.type === "CANTRICK_LESSON_HEIGHT") {
+    const f=$("#roboticsLesson3Frame"); if(f && S.screen === "learn" && Number(e.data.height)>0) f.style.height=Math.min(Math.max(Number(e.data.height)+12,900),5000)+"px";
+  }
+});
+
 function bindScreenInput() {
   document.addEventListener("click", e => {
     const node = e.target.closest && e.target.closest(".node");
@@ -1527,15 +1815,21 @@ function bindScreenInput() {
     if (node.dataset.kind === "level") { LEVEL = +node.dataset.n; go("lessons"); }
     else {
       LESSON = +node.dataset.n;
-      if (SPECIALIZATION === "software") QUIZ_NAME = SW_LESSONS.find(x => x.level === LEVEL && x.n === LESSON).quiz;
+      if (SPECIALIZATION === "software") {
+        const swMatch = (SW_LESSONS || []).find(x => x.level === LEVEL && x.n === LESSON);
+        QUIZ_NAME = swMatch ? swMatch.quiz : ("Software - Python - Customer Management System");
+      } else {
+        QUIZ_NAME = "Arduino - Level " + LEVEL + " - Lesson " + LESSON;
+      }
       openLesson();
     }
   });
   $("#backBtn").addEventListener("click", () => {
-    const back = { levels: "explore", lessons: "levels", learn: "lessons", name: (SPECIALIZATION === "software" && CUR_LESSON) ? "learn" : "lessons" }[S.screen];
+    const back = { levels: "explore", lessons: "levels", learn: "lessons", name: (SPECIALIZATION === "software" && CUR_LESSON) ? "learn" : "lessons", photo: "quiz" }[S.screen];
     if (back) go(back);
   });
   $("#startBtn").addEventListener("click", submitName);
+  bindPhoto();
   $("#lnNext").addEventListener("click", () => go("name"));
   $("#pyRun").addEventListener("click", runPython);
   $("#pyReset").addEventListener("click", () => renderLearn(true));
@@ -1544,6 +1838,7 @@ function bindScreenInput() {
   $("#nameInput").addEventListener("input", () => { $("#nameInput").classList.remove("err"); $("#nameErr").textContent = ""; });
   $("#qCard").addEventListener("click", e => {
     const opt = e.target.closest(".opt"); if (opt) { answer(+opt.dataset.i); return; }
+    if (e.target.closest("#submitTextAnswer")) { submitTextAnswer(); return; }
     if (e.target.closest("#nextBtn")) nextQuestion();
   });
   $("#retryBtn").addEventListener("click", saveResult);
@@ -1583,25 +1878,60 @@ async function submitName() {
 function startQuiz() {
   S.qi = 0; S.score = 0; S.answers = new Array(TOTAL).fill(null); S.saveState = "idle";
 }
+function normalizeCodeAnswer(v) {
+  return String(v || "").replace(/```(?:cpp|c|arduino)?/gi, "").replace(/```/g, "").replace(/\s+/g, "").replace(/[“”]/g, '"').replace(/[‘’]/g, "'").trim().toLowerCase();
+}
+function isTextQuestion(q) { return q.type === "text" || q.type === "code_task" || q.type === "debug"; }
+function isCodeTask(q) { return q.type === "code_task"; }
+function isDebugTask(q) { return q.type === "debug"; }
+function evaluateSoftwareText(q, value) {
+  const n = normalizeCodeAnswer(value);
+  if (q.type === "text") return n === normalizeCodeAnswer(q.answer);
+  if (q.type === "debug") {
+    const must = (q.answer && q.answer.mustContain) || [];
+    const not = (q.answer && q.answer.mustNotContain) || [];
+    return must.every(x => n.indexOf(normalizeCodeAnswer(x)) !== -1) && not.every(x => n.indexOf(normalizeCodeAnswer(x)) === -1);
+  }
+  if (q.type === "code_task") {
+    const required = q.answer && q.answer.required || [];
+    const anyOf = q.answer && q.answer.anyOf || [];
+    const hasRequired = required.every(x => n.indexOf(normalizeCodeAnswer(x)) !== -1);
+    const hasAnyOf = anyOf.every(group => group.some(x => n.indexOf(normalizeCodeAnswer(x)) !== -1));
+    return hasRequired && hasAnyOf;
+  }
+  return false;
+}
+
 function renderQuiz(mode) {
   const q = QUESTIONS[S.qi], picked = S.answers[S.qi];
   $("#qLabel").innerHTML = t("mission_word") + ' <bdi dir="ltr">' + pad2(S.qi + 1) + " / " + pad2(TOTAL) + "</bdi>";
   updateQuizHeader();
-  const opts = q.options.map((o, i) => {
-    let cls = "";
-    if (picked !== null) cls = i === q.correct ? " ok" : (i === picked ? " bad" : " dim");
-    return '<button class="opt' + (q.codeOptions ? " code-o" : "") + cls + '" data-i="' + i + '" style="--i:' + i + '"' + (picked !== null ? " disabled" : "") + '>' +
-      '<span class="ltr">' + LETTERS[S.lang][i] + '</span><span class="otxt">' + esc(L(o)) + '</span></button>';
-  }).join("");
   const card = $("#qCard");
-  card.innerHTML =
-    '<div class="q-text">' + esc(L(q.q)) + '</div>' +
-    (q.code ? '<pre class="code">' + esc(q.code) + '</pre>' : "") +
-    '<div class="opts">' + opts + '</div><div class="fb" id="fb"></div>';
+  let body = '<div class="q-text">' + esc(L(q.q)) + '</div>' + (q.code ? '<pre class="code">' + esc(q.code) + '</pre>' : "");
+  if (isTextQuestion(q)) {
+    const val = picked && typeof picked === "object" ? picked.value : "";
+    const disabled = picked !== null ? " disabled" : "";
+    const big = (q.type === "code_task") ? " big-code-answer" : "";
+    const ph = q.type === "code_task" ? (S.lang === "ar" ? "اكتب كود Python كامل هنا..." : "Write the full Python code here...") : (S.lang === "ar" ? "اكتب التصحيح هنا..." : "Write your corrected code here...");
+    body += '<div class="answer-wrap' + big + '">' +
+      '<textarea id="textAnswer" class="code-answer" rows="' + (q.type === "code_task" ? 16 : 7) + '" dir="ltr" spellcheck="false" placeholder="' + ph + '"' + disabled + '>' + esc(val) + '</textarea>' +
+      '<button class="cta answer-submit" id="submitTextAnswer"' + disabled + '>' + (S.lang === "ar" ? "إرسال الحل" : "Submit Solution") + '</button>' +
+      '</div>';
+  } else {
+    const opts = q.options.map((o, i) => {
+      let cls = "";
+      if (picked !== null) cls = i === q.correct ? " ok" : (i === picked ? " bad" : " dim");
+      return '<button class="opt' + (q.codeOptions ? " code-o" : "") + cls + '" data-i="' + i + '" style="--i:' + i + '"' + (picked !== null ? " disabled" : "") + '>' +
+        '<span class="ltr">' + LETTERS[S.lang][i] + '</span><span class="otxt">' + esc(L(o)) + '</span></button>';
+    }).join("");
+    body += '<div class="opts">' + opts + '</div>';
+  }
+  card.innerHTML = body + '<div class="fb" id="fb"></div>';
   card.className = mode === "pre" ? "qcard pre" : "qcard";
   if (mode === "enter") { void card.offsetWidth; card.className = "qcard enter"; }
   if (picked !== null) showFeedback(q, picked);
 }
+
 function playCardIn() {
   const card = $("#qCard");
   card.className = "qcard"; void card.offsetWidth; card.className = "qcard enter";
@@ -1612,7 +1942,7 @@ function updateQuizHeader() {
   let h = "";
   for (let i = 0; i < TOTAL; i++) {
     let c = "";
-    if (S.answers[i] !== null) c = S.answers[i] === QUESTIONS[i].correct ? "ok" : "bad";
+    if (S.answers[i] !== null) c = isTextQuestion(QUESTIONS[i]) ? (S.answers[i].correct ? "ok" : "bad") : (S.answers[i] === QUESTIONS[i].correct ? "ok" : "bad");
     else if (i === S.qi) c = "cur";
     h += '<span class="tn ' + c + '"></span>';
     if (i < TOTAL - 1) h += '<span class="tl' + (S.answers[i] !== null ? " done" : "") + '"></span>';
@@ -1620,17 +1950,36 @@ function updateQuizHeader() {
   $("#track").innerHTML = h;
 }
 function showFeedback(q, picked) {
-  const ok = picked === q.correct, fb = $("#fb");
+  const ok = isTextQuestion(q) ? !!picked && picked.correct === true : picked === q.correct;
+  const fb = $("#fb");
   fb.className = "fb show " + (ok ? "ok" : "bad");
+  const correctText = isTextQuestion(q) ? (q.type === "code_task" ? (S.lang === "ar" ? "الحل يُقيَّم حسب المتطلبات الأساسية للمهمة." : "The solution is evaluated against the core task requirements.") : (q.type === "debug" ? (S.lang === "ar" ? "اكتب التصحيح المطلوب في نص المهمة." : "Write the correction requested in the task.") : q.answer)) : q.options[q.correct];
   fb.innerHTML =
     '<div class="fb-head ' + (ok ? "ok" : "bad") + '">' + (ok ? CHECK : CROSS) + "<strong>" + t(ok ? "correct" : "wrong") + "</strong></div>" +
-    (ok ? "" : '<p class="fb-ans">' + t("correct_is") + ' <span' + (q.codeOptions ? ' dir="ltr" class="mono"' : "") + ">" + esc(L(q.options[q.correct])) + "</span></p>") +
+    (ok ? "" : '<p class="fb-ans">' + t("correct_is") + ' <span dir="ltr" class="mono">' + esc(correctText) + "</span></p>") +
     '<p class="fb-why">' + esc(L(q.why)) + "</p>" +
     '<div class="fb-actions"><button class="cta" id="nextBtn">' + t(S.qi === TOTAL - 1 ? "finish" : "next") + "</button></div>";
+}
+function submitTextAnswer() {
+  if (S.busy || S.screen !== "quiz" || S.answers[S.qi] !== null) return;
+  const q = QUESTIONS[S.qi];
+  const el = $("#textAnswer");
+  if (!el) return;
+  const value = el.value.trim();
+  if (!value) { toast(S.lang === "ar" ? "اكتب إجابتك الأول" : "Write your answer first"); el.focus(); return; }
+  const correct = evaluateSoftwareText(q, value);
+  S.answers[S.qi] = { value, correct };
+  if (correct) S.score++;
+  el.disabled = true;
+  const btn = $("#submitTextAnswer"); if (btn) btn.disabled = true;
+  updateQuizHeader();
+  showFeedback(q, S.answers[S.qi]);
+  const nb = $("#nextBtn"); if (nb) { nb.focus({preventScroll:true}); nb.scrollIntoView({behavior:"smooth",block:"nearest"}); }
 }
 function answer(i) {
   if (S.busy || S.screen !== "quiz") return;
   const q = QUESTIONS[S.qi];
+  if (isTextQuestion(q)) return;
   if (S.answers[S.qi] !== null || !q.options[i]) return;
   S.answers[S.qi] = i;
   if (i === q.correct) S.score++;
@@ -1645,7 +1994,7 @@ function answer(i) {
 }
 async function nextQuestion() {
   if (S.busy || S.answers[S.qi] === null) return;
-  if (S.qi >= TOTAL - 1) { go("result"); return; }
+  if (S.qi >= TOTAL - 1) { go("photo"); return; }
   S.busy = true;
   const card = $("#qCard");
   card.classList.remove("enter"); card.classList.add("leaving");
@@ -1665,6 +2014,7 @@ function renderResult(final) {
   $("#resName").textContent = S.name;
   $("#gTot").textContent = TOTAL;
   $("#resMsg").textContent = t(perfKey(S.score, TOTAL));
+  const rimg=$("#resultProjectPhoto"); rimg.hidden=!S.projectImage; if(S.projectImage) rimg.src=S.projectImage;
   const panel = $("#resultPanel");
   if (final === true) {
     panel.classList.remove("pre");
