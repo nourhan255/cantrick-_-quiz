@@ -1451,7 +1451,7 @@ function lessonsFor() {
   });
 }
 const levelActive = n => SPECIALIZATION === "software" ? (SW_LESSONS || []).some(x => x.level === n) : n === LEVEL;
-const lessonActive = l => SPECIALIZATION === "software" ? !!l.title : true;
+const lessonActive = l => SPECIALIZATION === "software" ? true : true;
 
 // ---- SOFTWARE LESSON (shown before the quiz) + Python practice ----
 // Content comes from the Supabase table "software_lessons" (row per quiz_name). DEFAULT_LESSONS is only a fallback.
